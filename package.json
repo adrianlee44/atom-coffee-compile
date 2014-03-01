@@ -1,0 +1,19 @@
+{
+  "name": "coffee-compile",
+  "main": "./lib/coffee-compile",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Preview compiled Javascript in Atom",
+  "activationEvents": [
+    "coffee-compile:compile"
+  ],
+  "repository": "https://github.com/adrianlee44/atom-coffee-compile",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+    "coffee-script": "^1.7.1",
+    "underscore-plus": "^1.0.4"
+  }
+}

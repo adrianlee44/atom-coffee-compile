@@ -1,0 +1,16 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  '.overlayer':
+      'Coffee Compile': 'coffee-compile:compile'
+
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Coffee Compile'
+      'submenu': [
+        { 'label': 'Compile', 'command': 'coffee-compile:compile' }
+      ]
+    ]
+  }
+]
