@@ -41,3 +41,4 @@ class CoffeeCompileView extends ScrollView
       fontFamily: atom.config.get('editor.fontFamily')
 
   getTitle: => "Compiled #{@filePath}"
+  getUri:   => "coffeecompile://#{@filePath}"
