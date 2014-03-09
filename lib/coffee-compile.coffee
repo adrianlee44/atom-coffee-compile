@@ -1,4 +1,4 @@
-url = require 'url'
+url         = require 'url'
 querystring = require 'querystring'
 
 CoffeeCompileView = require './coffee-compile-view'
@@ -17,7 +17,9 @@ module.exports =
       new CoffeeCompileView(pathname)
 
   display: ->
-    editor = atom.workspace.getActiveEditor()
+    editor     = atom.workspace.getActiveEditor()
+    activePane = atom.workspace.getActivePane()
+
     return unless editor?
 
     unless editor.getGrammar().scopeName is "source.coffee"
@@ -25,7 +27,7 @@ module.exports =
       return
 
     range = editor.getSelectedBufferRange()
-    code =
+    code  =
       if range.isEmpty()
         editor.getText()
       else
@@ -33,7 +35,12 @@ module.exports =
 
     uri = "coffeecompile://#{editor.getPath()}"
 
-    atom.workspace.open(uri, split: 'right', changeFocus: true, searchAllPanes: true).done (coffeeCompileView) ->
+    # If a pane with the uri
+    pane = atom.workspace.paneContainer.paneForUri uri
+    # If not, always split right
+    pane ?= activePane.splitRight()
+
+    atom.workspace.openUriInPane(uri, pane, {}).done (coffeeCompileView) ->
       if coffeeCompileView instanceof CoffeeCompileView
         coffeeCompileView.setCode(code)
         coffeeCompileView.renderCompiled()
