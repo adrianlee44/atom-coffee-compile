@@ -71,7 +71,7 @@ describe "CoffeeCompile", ->
 
   describe "when the editor's grammar is not coffeescript", ->
     it "should not preview compiled js", ->
-      atom.config.set "coffee-compile", []
+      atom.config.set "coffee-compile.grammars", []
       atom.workspaceView.attachToDom()
 
       waitsForPromise ->
