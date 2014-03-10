@@ -25,7 +25,8 @@ class CoffeeCompileView extends ScrollView
 
   renderCompiled: ->
     try
-      text = coffee.compile @code, bare: true
+      bare = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
+      text = coffee.compile @code, {bare}
     catch e
       text = e.stack
 

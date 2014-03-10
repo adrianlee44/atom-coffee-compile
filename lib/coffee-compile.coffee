@@ -8,6 +8,7 @@ module.exports =
     grammars: [
       'source.coffee'
     ]
+    noTopLevelFunctionWrapper: true
 
   activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
