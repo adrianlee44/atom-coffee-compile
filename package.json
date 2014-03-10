@@ -4,9 +4,6 @@
   "version": "0.1.4",
   "private": true,
   "description": "Preview compiled Javascript in Atom",
-  "activationEvents": [
-    "coffee-compile:compile"
-  ],
   "repository": "https://github.com/adrianlee44/atom-coffee-compile",
   "license": "MIT",
   "engines": {
@@ -15,5 +12,9 @@
   "dependencies": {
     "coffee-script": "^1.7.1",
     "underscore-plus": "^1.0.4"
+  },
+  "devDependencies": {
+    "wrench": "^1.5.8",
+    "temp": "^0.7.0"
   }
 }
