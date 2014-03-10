@@ -42,3 +42,4 @@ class CoffeeCompileView extends ScrollView
 
   getTitle: => "Compiled #{@filePath}"
   getUri:   => "coffeecompile://#{@filePath}"
+  getPath:  => @filePath

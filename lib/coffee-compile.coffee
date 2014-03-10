@@ -4,9 +4,12 @@ querystring = require 'querystring'
 CoffeeCompileView = require './coffee-compile-view'
 
 module.exports =
-  coffeeCompileView: null
+  configDefaults:
+    grammars: [
+      'source.coffee'
+    ]
 
-  activate: (state) ->
+  activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
 
     atom.workspace.registerOpener (uriToOpen) ->
@@ -22,7 +25,8 @@ module.exports =
 
     return unless editor?
 
-    unless editor.getGrammar().scopeName is "source.coffee"
+    grammars = atom.config.get('coffee-compile.grammars') or []
+    unless editor.getGrammar().scopeName in grammars
       console.warn("Cannot compile non-Coffeescript to Javascript")
       return
 
