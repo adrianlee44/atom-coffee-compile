@@ -11,6 +11,9 @@ Preview Coffeescript to Javascript in Atom
 - Line numbers
 
 ## Changelog
+- 2014-03-10   v0.2.0   Litcoffee support
+                        Top-level wrapper function option
+                        Grammar config option
 - 2014-03-09   v0.1.4   Fixed spliting pane in certain pane arrangement breaks Atom
 - 2014-03-07   v0.1.3   Fixed view breaking with jshint
 - 2014-03-01   v0.1.2   Code cleanup
