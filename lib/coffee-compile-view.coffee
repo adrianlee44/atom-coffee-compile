@@ -10,9 +10,15 @@ class CoffeeCompileView extends ScrollView
       @div class: 'editor editor-colors', =>
         @div outlet: 'compiledCode', class: 'lang-javascript lines'
 
-  constructor: (@filePath) ->
+  constructor: (@editorId) ->
     super
-    @bindEvents()
+
+    @editor = @getEditor @editorId
+    if @editor?
+      @trigger 'title-changed'
+      @bindEvents()
+    else
+      @parents('.pane').view()?.destroyItem(this)
 
   destroy: ->
     @unsubscribe()
@@ -22,13 +28,29 @@ class CoffeeCompileView extends ScrollView
     @subscribe this, 'core:move-up', => @scrollUp()
     @subscribe this, 'core:move-down', => @scrollDown()
 
-  setCode: (@code, @grammar) ->
+  getEditor: (id) ->
+    for editor in atom.workspace.getEditors()
+      return editor if editor.id?.toString() is id.toString()
+    return null
+
+  getSelectedCode: ->
+    range = @editor.getSelectedBufferRange()
+    code  =
+      if range.isEmpty()
+        @editor.getText()
+      else
+        @editor.getTextInBufferRange(range)
+
+    return code
 
   renderCompiled: ->
+    code             = @getSelectedCode()
+    grammarScopeName = @editor.getGrammar().scopeName
+
     try
       bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
-      literate = @grammar is "source.litcoffee"
-      text     = coffee.compile @code, {bare, literate}
+      literate = grammarScopeName is "source.litcoffee"
+      text     = coffee.compile code, {bare, literate}
     catch e
       text = e.stack
 
@@ -44,6 +66,13 @@ class CoffeeCompileView extends ScrollView
       fontSize: atom.config.get('editor.fontSize') or 12
       fontFamily: atom.config.get('editor.fontFamily')
 
-  getTitle: -> "Compiled #{path.basename(@filePath)}"
-  getUri:   -> "coffeecompile://#{@filePath}"
-  getPath:  -> @filePath
+  getTitle: ->
+    if @editor.getPath()
+      "Compiled #{path.basename(@editor.getPath())}"
+    else if @editor
+      "Compiled #{@editor.getTitle()}"
+    else
+      "Compiled Javascript"
+
+  getUri:   -> "coffeecompile://editor/#{@editorId}"
+  getPath:  -> @editor.getPath()

@@ -8,6 +8,8 @@ module.exports =
     grammars: [
       'source.coffee'
       'source.litcoffee'
+      'text.plain'
+      'text.plain.null-grammar'
     ]
     noTopLevelFunctionWrapper: true
 
@@ -15,11 +17,11 @@ module.exports =
     atom.workspaceView.command 'coffee-compile:compile', => @display()
 
     atom.workspace.registerOpener (uriToOpen) ->
-      {protocol, pathname} = url.parse uriToOpen
+      {protocol, host, pathname} = url.parse uriToOpen
       pathname = querystring.unescape(pathname) if pathname
 
       return unless protocol is 'coffeecompile:'
-      new CoffeeCompileView(pathname)
+      new CoffeeCompileView(pathname.substr(1))
 
   display: ->
     editor     = atom.workspace.getActiveEditor()
@@ -32,14 +34,7 @@ module.exports =
       console.warn("Cannot compile non-Coffeescript to Javascript")
       return
 
-    range = editor.getSelectedBufferRange()
-    code  =
-      if range.isEmpty()
-        editor.getText()
-      else
-        editor.getTextInBufferRange(range)
-
-    uri = "coffeecompile://#{editor.getPath()}"
+    uri = "coffeecompile://editor/#{editor.id}"
 
     # If a pane with the uri
     pane = atom.workspace.paneContainer.paneForUri uri
@@ -48,5 +43,4 @@ module.exports =
 
     atom.workspace.openUriInPane(uri, pane, {}).done (coffeeCompileView) ->
       if coffeeCompileView instanceof CoffeeCompileView
-        coffeeCompileView.setCode(code, grammar)
         coffeeCompileView.renderCompiled()
