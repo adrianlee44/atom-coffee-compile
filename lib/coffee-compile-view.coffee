@@ -1,13 +1,14 @@
 {$, $$$, EditorView, ScrollView} = require 'atom'
 coffee = require 'coffee-script'
 _ = require 'underscore-plus'
+path = require 'path'
 
 module.exports =
 class CoffeeCompileView extends ScrollView
   @content: ->
     @div class: 'coffee-compile native-key-bindings', tabindex: -1, =>
-      @pre class: 'editor-colors', =>
-        @code outlet: 'compiledCode', class: 'lang-javascript'
+      @div class: 'editor editor-colors', =>
+        @div outlet: 'compiledCode', class: 'lang-javascript lines'
 
   constructor: (@filePath) ->
     super
@@ -35,13 +36,14 @@ class CoffeeCompileView extends ScrollView
     @compiledCode.empty()
 
     for tokens in grammar.tokenizeLines(text)
-      @compiledCode.append(EditorView.buildLineHtml({tokens, text}))
+      attributes = class: "line"
+      @compiledCode.append(EditorView.buildLineHtml({tokens, text, attributes}))
 
     # Match editor styles
     @compiledCode.css
       fontSize: atom.config.get('editor.fontSize') or 12
       fontFamily: atom.config.get('editor.fontFamily')
 
-  getTitle: => "Compiled #{@filePath}"
-  getUri:   => "coffeecompile://#{@filePath}"
-  getPath:  => @filePath
+  getTitle: -> "Compiled #{path.basename(@filePath)}"
+  getUri:   -> "coffeecompile://#{@filePath}"
+  getPath:  -> @filePath
