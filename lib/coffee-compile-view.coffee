@@ -21,12 +21,13 @@ class CoffeeCompileView extends ScrollView
     @subscribe this, 'core:move-up', => @scrollUp()
     @subscribe this, 'core:move-down', => @scrollDown()
 
-  setCode: (@code) ->
+  setCode: (@code, @grammar) ->
 
   renderCompiled: ->
     try
-      bare = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
-      text = coffee.compile @code, {bare}
+      bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
+      literate = @grammar is "source.litcoffee"
+      text     = coffee.compile @code, {bare, literate}
     catch e
       text = e.stack
 

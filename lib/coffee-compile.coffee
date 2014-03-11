@@ -7,6 +7,7 @@ module.exports =
   configDefaults:
     grammars: [
       'source.coffee'
+      'source.litcoffee'
     ]
     noTopLevelFunctionWrapper: true
 
@@ -27,7 +28,7 @@ module.exports =
     return unless editor?
 
     grammars = atom.config.get('coffee-compile.grammars') or []
-    unless editor.getGrammar().scopeName in grammars
+    unless (grammar = editor.getGrammar().scopeName) in grammars
       console.warn("Cannot compile non-Coffeescript to Javascript")
       return
 
@@ -47,5 +48,5 @@ module.exports =
 
     atom.workspace.openUriInPane(uri, pane, {}).done (coffeeCompileView) ->
       if coffeeCompileView instanceof CoffeeCompileView
-        coffeeCompileView.setCode(code)
+        coffeeCompileView.setCode(code, grammar)
         coffeeCompileView.renderCompiled()
