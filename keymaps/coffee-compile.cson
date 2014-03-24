@@ -9,3 +9,4 @@
 # https://atom.io/docs/latest/advanced/keymaps
 '.editor':
   'cmd-shift-c': 'coffee-compile:compile'
+  'cmd-s': 'coffee-compile:autocompile'

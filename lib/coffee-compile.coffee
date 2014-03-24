@@ -1,6 +1,7 @@
 url         = require 'url'
 querystring = require 'querystring'
-
+coffee = require 'coffee-script'
+fs = require 'fs'
 CoffeeCompileView = require './coffee-compile-view'
 
 module.exports =
@@ -15,6 +16,9 @@ module.exports =
 
   activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
+    atom.workspaceView.command 'coffee-compile:autocompile', (e) =>
+      e.abortKeyBinding()
+      @autoCompileOnSave()
 
     atom.workspace.registerOpener (uriToOpen) ->
       {protocol, host, pathname} = url.parse uriToOpen
@@ -44,3 +48,11 @@ module.exports =
     atom.workspace.openUriInPane(uri, pane, {}).done (coffeeCompileView) ->
       if coffeeCompileView instanceof CoffeeCompileView
         coffeeCompileView.renderCompiled()
+
+  autoCompileOnSave: ->
+    editor = atom.workspace.getActiveEditor()
+    path = editor.getPath()
+    if path.indexOf(".coffee") > -1
+      newPath = path.substr(0,path.length-6) + "js"
+      compiled = coffee.compile editor.getText()
+      fs.writeFile newPath, compiled
