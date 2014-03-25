@@ -6,9 +6,11 @@ Preview Coffeescript to Javascript in Atom
 ![](https://raw.github.com/adrianlee44/atom-coffee-compile/master/screenshot.png)
 
 ## TODO
+- Recompile on change option
+- Line numbers
 - Add tests
 - Travis integration
-- Line numbers
+- Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
 - 2014-03-11   v0.2.1   Compiled view style now matches editor style
