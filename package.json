@@ -3,7 +3,7 @@
   "main": "./lib/coffee-compile",
   "version": "0.2.1",
   "private": true,
-  "description": "Preview compiled Javascript in Atom",
+  "description": "Preview/save compiled Javascript in Atom",
   "repository": "https://github.com/adrianlee44/atom-coffee-compile",
   "license": "MIT",
   "engines": {
