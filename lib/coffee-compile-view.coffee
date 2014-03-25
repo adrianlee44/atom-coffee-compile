@@ -2,6 +2,7 @@
 coffee = require 'coffee-script'
 _ = require 'underscore-plus'
 path = require 'path'
+fs = require 'fs'
 
 module.exports =
 class CoffeeCompileView extends ScrollView
@@ -28,6 +29,9 @@ class CoffeeCompileView extends ScrollView
     @subscribe this, 'core:move-up', => @scrollUp()
     @subscribe this, 'core:move-down', => @scrollDown()
 
+    if atom.config.get('coffee-compile.compileOnSave')
+      @subscribe @editor.buffer, 'saved', => @saveCompiled()
+
   getEditor: (id) ->
     for editor in atom.workspace.getEditors()
       return editor if editor.id?.toString() is id.toString()
@@ -43,14 +47,34 @@ class CoffeeCompileView extends ScrollView
 
     return code
 
-  renderCompiled: ->
-    code             = @getSelectedCode()
+  compile: (code) ->
     grammarScopeName = @editor.getGrammar().scopeName
 
+    bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
+    literate = grammarScopeName is "source.litcoffee"
+
+    return coffee.compile code, {bare, literate}
+
+  saveCompiled: (callback) ->
     try
-      bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
-      literate = grammarScopeName is "source.litcoffee"
-      text     = coffee.compile code, {bare, literate}
+      text     = @compile @editor.getText()
+      srcPath  = @editor.getPath()
+      srcExt   = path.extname srcPath
+      destPath = path.join(
+        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
+      )
+      fs.writeFileSync destPath, text
+
+    catch e
+      console.error "Coffee-compile: #{e.stack}"
+
+    callback?()
+
+  renderCompiled: (callback) ->
+    code = @getSelectedCode()
+
+    try
+      text = @compile code
     catch e
       text = e.stack
 
@@ -65,6 +89,8 @@ class CoffeeCompileView extends ScrollView
     @compiledCode.css
       fontSize: atom.config.get('editor.fontSize') or 12
       fontFamily: atom.config.get('editor.fontFamily')
+
+    callback?()
 
   getTitle: ->
     if @editor.getPath()

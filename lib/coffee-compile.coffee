@@ -12,6 +12,7 @@ module.exports =
       'text.plain.null-grammar'
     ]
     noTopLevelFunctionWrapper: true
+    compileOnSave: false
 
   activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
