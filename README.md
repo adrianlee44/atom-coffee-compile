@@ -13,6 +13,7 @@ Preview Coffeescript to Javascript in Atom
 - Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
+- 2014-03-25   v0.3.0   Added `compile on save` feature (disabled by default)
 - 2014-03-11   v0.2.1   Compiled view style now matches editor style
 - 2014-03-10   v0.2.0   Litcoffee support, Top-level wrapper function option, Grammar config option
 - 2014-03-09   v0.1.4   Fixed spliting pane in certain pane arrangement breaks Atom
