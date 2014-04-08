@@ -69,6 +69,13 @@ describe "CoffeeCompile", ->
 
         expect(compiledPane).toHaveFocus()
 
+    it "should focus editor when option is set", ->
+      runs ->
+        atom.config.set "coffee-compile.focusEditorAfterCompile", true
+        [editorPane, compiledPane] = atom.workspaceView.getPanes()
+
+        expect(editorPane).toHaveFocus()
+
   describe "when the editor's grammar is not coffeescript", ->
     it "should not preview compiled js", ->
       atom.config.set "coffee-compile.grammars", []
