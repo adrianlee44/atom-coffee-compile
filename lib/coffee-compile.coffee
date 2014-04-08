@@ -45,7 +45,6 @@ module.exports =
     atom.workspace.openUriInPane(uri, pane, {}).done (coffeeCompileView) ->
       if coffeeCompileView instanceof CoffeeCompileView
         coffeeCompileView.renderCompiled()
-        activePane.activate()
 
         if atom.config.get('coffee-compile.compileOnSave')
           coffeeCompileView.saveCompiled()
