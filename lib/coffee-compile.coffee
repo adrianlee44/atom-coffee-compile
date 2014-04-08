@@ -13,6 +13,7 @@ module.exports =
     ]
     noTopLevelFunctionWrapper: true
     compileOnSave: false
+    focusEditorAfterCompile: false
 
   activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
