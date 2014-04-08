@@ -1,6 +1,6 @@
 'context-menu':
   '.overlayer':
-      'Coffee Compile': 'coffee-compile:compile'
+    'Coffee Compile': 'coffee-compile:compile'
 
 'menu': [
   {
