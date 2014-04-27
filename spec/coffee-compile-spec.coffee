@@ -15,6 +15,13 @@ describe "CoffeeCompile", ->
     waitsForPromise "language-coffee-script to activate", ->
       atom.packages.activatePackage('language-coffee-script')
 
+    atom.config.set('coffee-compile.grammars', [
+      'source.coffee'
+      'source.litcoffee'
+      'text.plain'
+      'text.plain.null-grammar'
+    ])
+
     atom.workspaceView.attachToDom()
 
   describe "should open a new pane", ->
