@@ -12,9 +12,5 @@
   "dependencies": {
     "coffee-script": "^1.7.1",
     "underscore-plus": "^1.0.4"
-  },
-  "devDependencies": {
-    "wrench": "^1.5.8",
-    "temp": "^0.7.0"
   }
 }
