@@ -1,4 +1,4 @@
-# coffee-compile package
+# coffee-compile package [![Build Status](https://travis-ci.org/adrianlee44/atom-coffee-compile.svg?branch=master)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
 
 Preview/save compiled Javascript in Atom
 - `cmd+shift+c` Compiles Coffeescript
