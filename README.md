@@ -8,8 +8,6 @@ Preview/save compiled Javascript in Atom
 ## TODO
 - Recompile on change option
 - Line numbers
-- Add tests
-- Travis integration
 - Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
