@@ -10,8 +10,8 @@ describe "CoffeeCompileView", ->
     atom.workspaceView = new WorkspaceView
     atom.workspace = atom.workspaceView.model
 
-    editor = atom.project.openSync('test.coffee')
-    compiled = new CoffeeCompileView editor.id
+    editor   = atom.project.openSync('test.coffee')
+    compiled = new CoffeeCompileView {editor}
 
     waitsForPromise ->
       atom.packages.activatePackage('language-coffee-script')

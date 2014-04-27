@@ -65,15 +65,25 @@ describe "CoffeeCompile", ->
     it "should focus on compiled pane", ->
       runs ->
         [editorPane, compiledPane] = atom.workspaceView.getPanes()
-        compiled = compiledPane.getActiveItem()
-
         expect(compiledPane).toHaveFocus()
+
+  describe "focus editor after compile", ->
+    beforeEach ->
+      atom.config.set "coffee-compile.focusEditorAfterCompile", true
+      atom.workspaceView.attachToDom()
+
+      waitsForPromise ->
+        atom.workspace.open "test.coffee"
+
+      runs ->
+        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+
+      waitsFor ->
+        CoffeeCompileView::renderCompiled.callCount > 0
 
     it "should focus editor when option is set", ->
       runs ->
-        atom.config.set "coffee-compile.focusEditorAfterCompile", true
         [editorPane, compiledPane] = atom.workspaceView.getPanes()
-
         expect(editorPane).toHaveFocus()
 
   describe "when the editor's grammar is not coffeescript", ->

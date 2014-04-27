@@ -11,21 +11,24 @@ class CoffeeCompileView extends ScrollView
       @div class: 'editor editor-colors', =>
         @div outlet: 'compiledCode', class: 'lang-javascript lines'
 
-  constructor: (@editorId) ->
+  constructor: ({@editorId, @editor}) ->
     super
 
-    @editor = @getEditor @editorId
+    if @editorId? and not @editor
+      @editor = @getEditor @editorId
+
     if @editor?
       @trigger 'title-changed'
       @bindEvents()
-    else
-      @parents('.pane').view()?.destroyItem(this)
 
   destroy: ->
     @unsubscribe()
 
   bindEvents: ->
-    @subscribe atom.syntax, 'grammar-updated', _.debounce((=> @renderCompiled()), 250)
+    @subscribe atom.syntax,
+      'grammar-updated',
+      _.debounce((=> @renderCompiled()), 250)
+
     @subscribe this, 'core:move-up', => @scrollUp()
     @subscribe this, 'core:move-down', => @scrollDown()
 
@@ -93,12 +96,10 @@ class CoffeeCompileView extends ScrollView
     callback?()
 
   getTitle: ->
-    if @editor.getPath()
-      "Compiled #{path.basename(@editor.getPath())}"
-    else if @editor
+    if @editor?
       "Compiled #{@editor.getTitle()}"
     else
       "Compiled Javascript"
 
   getUri:   -> "coffeecompile://editor/#{@editorId}"
-  getPath:  -> @editor.getPath()
+  getPath:  -> @editor?.getPath() or ""

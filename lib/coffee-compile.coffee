@@ -23,7 +23,7 @@ module.exports =
       pathname = querystring.unescape(pathname) if pathname
 
       return unless protocol is 'coffeecompile:'
-      new CoffeeCompileView(pathname.substr(1))
+      new CoffeeCompileView(editorId: pathname.substr(1))
 
   display: ->
     editor     = atom.workspace.getActiveEditor()
