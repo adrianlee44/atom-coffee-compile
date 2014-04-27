@@ -1,27 +1,18 @@
-temp   = require "temp"
-wrench = require "wrench"
-path   = require "path"
-
 CoffeeCompileView = require '../lib/coffee-compile-view'
 {WorkspaceView} = require 'atom'
 
 describe "CoffeeCompile", ->
   beforeEach ->
-    fixturesPath = path.join __dirname, "fixtures"
-    tempPath     = temp.mkdirSync "atom"
-    wrench.copyDirSyncRecursive fixturesPath, tempPath, forceDelete: true
-    atom.project.setPath tempPath
-
     jasmine.unspy window, "setTimeout"
 
     atom.workspaceView = new WorkspaceView
     atom.workspace     = atom.workspaceView.model
     spyOn(CoffeeCompileView.prototype, "renderCompiled")
 
-    waitsForPromise ->
+    waitsForPromise "coffee-compile package to activate", ->
       atom.packages.activatePackage('coffee-compile')
 
-    waitsForPromise ->
+    waitsForPromise "language-coffee-script to activate", ->
       atom.packages.activatePackage('language-coffee-script')
 
     atom.workspaceView.attachToDom()
@@ -30,13 +21,13 @@ describe "CoffeeCompile", ->
     beforeEach ->
       atom.workspaceView.attachToDom()
 
-      waitsForPromise ->
-        atom.workspace.open "test.coffee"
+      waitsForPromise "fixture file to open", ->
+        atom.workspace.open "coffee-compile-fixtures.coffee"
 
       runs ->
         atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
 
-      waitsFor ->
+      waitsFor "renderCompiled to be called", ->
         CoffeeCompileView::renderCompiled.callCount > 0
 
     it "should always split to the right", ->
@@ -92,7 +83,7 @@ describe "CoffeeCompile", ->
       atom.workspaceView.attachToDom()
 
       waitsForPromise ->
-        atom.workspace.open "test.coffee"
+        atom.workspace.open "coffee-compile-fixtures.coffee"
 
       runs ->
         spyOn(atom.workspace, "open").andCallThrough()
