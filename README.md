@@ -1,7 +1,8 @@
 # coffee-compile package [![Build Status](https://travis-ci.org/adrianlee44/atom-coffee-compile.svg?branch=master)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
 
 Preview/save compiled Javascript in Atom
-- `cmd+shift+c` Compiles Coffeescript
+- Mac: `cmd+shift+c`
+- Linux/Windows: `ctrl-alt-c`
 
 ![](https://raw.github.com/adrianlee44/atom-coffee-compile/master/screenshot.png)
 
@@ -11,6 +12,7 @@ Preview/save compiled Javascript in Atom
 - Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
+- 2014-06-22   v0.4.0   Added keybinding for Linux and Windows
 - 2014-04-24   v0.3.2   Fixed horizontal scrolling
 - 2014-04-08   v0.3.1   Added `focus editor after compile` option (disabled by default)
 - 2014-03-25   v0.3.0   Added `compile on save` feature (disabled by default)
