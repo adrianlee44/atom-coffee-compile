@@ -1,67 +1,70 @@
-{$, $$$, EditorView, ScrollView} = require 'atom'
+{EditorView} = require 'atom'
 coffee = require 'coffee-script'
-_ = require 'underscore-plus'
 path = require 'path'
 fs = require 'fs'
 
 module.exports =
-class CoffeeCompileView extends ScrollView
-  @content: ->
-    @div class: 'coffee-compile native-key-bindings', tabindex: -1, =>
-      @div class: 'editor editor-colors', =>
-        @div outlet: 'compiledCode', class: 'lang-javascript lines'
-
-  constructor: ({@editorId, @editor}) ->
+class CoffeeCompileView extends EditorView
+  initialize: ({@sourceEditorId, @sourceEditor}) ->
     super
 
-    if @editorId? and not @editor
-      @editor = @getEditor @editorId
+    if @sourceEditorId? and not @sourceEditor
+      @sourceEditor = @getSourceEditor @sourceEditorId
 
-    if @editor?
+    if @sourceEditor?
       @trigger 'title-changed'
-      @bindEvents()
+      @bindCoffeeCompileEvents()
 
-  destroy: ->
-    @unsubscribe()
+    # set editor grammar to Javascript
+    @editor.setGrammar atom.syntax.selectGrammar("hello.js")
 
-  bindEvents: ->
-    @subscribe atom.syntax,
-      'grammar-updated',
-      _.debounce((=> @renderCompiled()), 250)
+    # mini EditorView doesn't allow changing line height
+    # This is used to force line-height changes
+    @css 'line-height', atom.config.get('editor.lineHeight') or @configDefaults.lineHeight
 
-    @subscribe this, 'core:move-up', => @scrollUp()
-    @subscribe this, 'core:move-down', => @scrollDown()
+    return @editor
 
+  bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave')
-      @subscribe @editor.buffer, 'saved', => @saveCompiled()
+      @subscribe @sourceEditor.buffer, 'saved', => @saveCompiled()
 
-  getEditor: (id) ->
+    # Add scrolling to mini EditorView
+    @scrollView.on 'mousewheel', (e) =>
+      if delta = e.originalEvent.wheelDeltaY
+        @scrollTop(@scrollTop() - delta)
+        false
+
+    @verticalScrollbar. on 'scroll', =>
+      @scrollTop(@verticalScrollbar.scrollTop(), adjustVerticalScrollbar: false)
+
+  getSourceEditor: (id) ->
     for editor in atom.workspace.getEditors()
       return editor if editor.id?.toString() is id.toString()
+
     return null
 
   getSelectedCode: ->
-    range = @editor.getSelectedBufferRange()
+    range = @sourceEditor.getSelectedBufferRange()
     code  =
       if range.isEmpty()
-        @editor.getText()
+        @sourceEditor.getText()
       else
-        @editor.getTextInBufferRange(range)
+        @sourceEditor.getTextInBufferRange(range)
 
     return code
 
   compile: (code) ->
-    grammarScopeName = @editor.getGrammar().scopeName
+    grammarScopeName = @sourceEditor.getGrammar().scopeName
 
     bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
     literate = grammarScopeName is "source.litcoffee"
 
     return coffee.compile code, {bare, literate}
 
-  saveCompiled: (callback) ->
+  saveCompiled: ->
     try
-      text     = @compile @editor.getText()
-      srcPath  = @editor.getPath()
+      text     = @compile @sourceEditor.getText()
+      srcPath  = @sourceEditor.getPath()
       srcExt   = path.extname srcPath
       destPath = path.join(
         path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
@@ -71,9 +74,7 @@ class CoffeeCompileView extends ScrollView
     catch e
       console.error "Coffee-compile: #{e.stack}"
 
-    callback?()
-
-  renderCompiled: (callback) ->
+  renderCompiled: ->
     code = @getSelectedCode()
 
     try
@@ -81,25 +82,19 @@ class CoffeeCompileView extends ScrollView
     catch e
       text = e.stack
 
-    grammar = atom.syntax.selectGrammar("hello.js", text)
-    @compiledCode.empty()
+    @getEditor().setText text
 
-    for tokens in grammar.tokenizeLines(text)
-      attributes = class: "line"
-      @compiledCode.append(EditorView.buildLineHtml({tokens, text, attributes}))
+  updateDisplay: ->
+    # Style cursor to work with new line height
+    lineHeight = atom.config.get('editor.lineHeight') or @configDefaults.lineHeight
+    @overlayer.find('.cursor').css 'line-height', lineHeight * 0.8
 
-    # Match editor styles
-    @compiledCode.css
-      fontSize: atom.config.get('editor.fontSize') or 12
-      fontFamily: atom.config.get('editor.fontFamily')
-
-    callback?()
+    super
 
   getTitle: ->
-    if @editor?
-      "Compiled #{@editor.getTitle()}"
+    if @sourceEditor?
+      "Compiled #{@sourceEditor.getTitle()}"
     else
       "Compiled Javascript"
 
-  getUri:   -> "coffeecompile://editor/#{@editorId}"
-  getPath:  -> @editor?.getPath() or ""
+  getUri: -> "coffeecompile://editor/#{@sourceEditorId}"
