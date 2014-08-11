@@ -10,7 +10,6 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "coffee-script": "^1.7.1",
-    "underscore-plus": "^1.0.4"
+    "coffee-script": "^1.7.1"
   }
 }
