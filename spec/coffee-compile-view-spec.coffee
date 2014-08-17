@@ -7,28 +7,33 @@ describe "CoffeeCompileView", ->
   editor   = null
 
   beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    atom.workspace = atom.workspaceView.model
+    atom.config.set 'core.useReactEditor', false
 
-    editor   = atom.project.openSync('test.coffee')
-    compiled = new CoffeeCompileView {editor}
+    atom.workspaceView = new WorkspaceView
+    atom.workspace     = atom.workspaceView.model
+
+    waitsForPromise ->
+      atom.project.open('test.coffee').then (o) ->
+        editor = o
 
     waitsForPromise ->
       atom.packages.activatePackage('language-coffee-script')
 
-  afterEach ->
-    compiled.destroy()
+    runs ->
+      compiled = new CoffeeCompileView {sourceEditor: editor}
 
   describe "renderCompiled", ->
     it "should compile the whole file and display compiled js", ->
-      waitsFor ->
-        done = false
-        compiled.renderCompiled -> done = true
-        return done
-      , "Coffeescript should be compiled", 750
+      spyOn compiled, "renderCompiled"
 
       runs ->
-        expect(compiled.find('.line')).toExist()
+        compiled.renderCompiled()
+
+      waitsFor "Coffeescript should be compiled", ->
+        compiled.renderCompiled.callCount > 0
+
+      runs ->
+        expect(compiled.scrollView).toExist()
 
   describe "saveCompiled", ->
     filePath = null
@@ -40,11 +45,13 @@ describe "CoffeeCompileView", ->
       fs.unlink(filePath) if fs.existsSync(filePath)
 
     it "should compile and create a js file", ->
-      waitsFor ->
-        done = false
-        compiled.saveCompiled -> done = true
-        return done
-      , "Compile on save", 750
+      callback = jasmine.createSpy 'save'
+
+      runs ->
+        compiled.saveCompiled callback
+
+      waitsFor "Compile on save", ->
+        callback.callCount > 0
 
       runs ->
         expect(fs.existsSync(filePath)).toBeTruthy()
