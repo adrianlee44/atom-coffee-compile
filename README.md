@@ -8,10 +8,10 @@ Preview/save compiled Javascript in Atom
 
 ## TODO
 - Recompile on change option
-- Line numbers
 - Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
+- 2014-08-17   v0.5.0   Convert compiled view to editor which brings line numbers and code selection
 - 2014-06-22   v0.4.0   Added keybinding for Linux and Windows
 - 2014-04-24   v0.3.2   Fixed horizontal scrolling
 - 2014-04-08   v0.3.1   Added `focus editor after compile` option (disabled by default)
