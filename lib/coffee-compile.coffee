@@ -25,7 +25,6 @@ module.exports =
       return unless protocol is 'coffeecompile:'
 
       new CoffeeCompileView
-        mini: true
         sourceEditorId: pathname.substr(1)
 
   display: ->
@@ -40,11 +39,6 @@ module.exports =
       return
 
     uri = "coffeecompile://editor/#{editor.id}"
-
-    # If a pane with the uri
-    pane = atom.workspace.paneContainer.paneForUri uri
-    # If not, always split right
-    pane ?= activePane.splitRight()
 
     atom.workspace.open uri,
       searchAllPanes: true

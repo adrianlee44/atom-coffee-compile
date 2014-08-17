@@ -5,37 +5,45 @@ fs = require 'fs'
 
 module.exports =
 class CoffeeCompileView extends EditorView
-  initialize: ({@sourceEditorId, @sourceEditor}) ->
+  constructor: ({@sourceEditorId, @sourceEditor}) ->
     super
 
     if @sourceEditorId? and not @sourceEditor
       @sourceEditor = @getSourceEditor @sourceEditorId
 
     if @sourceEditor?
-      @trigger 'title-changed'
       @bindCoffeeCompileEvents()
 
-    # set editor grammar to Javascript
-    @editor.setGrammar atom.syntax.selectGrammar("hello.js")
+    if atom.config.get 'core.useReactEditor'
+      # set editor grammar to Javascript
+      @editor.setGrammar atom.syntax.selectGrammar("hello.js")
 
-    # mini EditorView doesn't allow changing line height
-    # This is used to force line-height changes
-    @css 'line-height', atom.config.get('editor.lineHeight') or @configDefaults.lineHeight
+  initialize: (options) ->
+    # Old EditorView requires mini editor to work properly
+    unless atom.config.get 'core.useReactEditor'
+      options.mini = true
+      super options
 
-    return @editor
+      # set editor grammar to Javascript
+      @editor.setGrammar atom.syntax.selectGrammar("hello.js")
+
+      # mini EditorView doesn't allow changing line height
+      # This is used to force line-height changes
+      @css 'line-height', atom.config.get('editor.lineHeight') or @configDefaults.lineHeight
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave')
       @subscribe @sourceEditor.buffer, 'saved', => @saveCompiled()
 
-    # Add scrolling to mini EditorView
-    @scrollView.on 'mousewheel', (e) =>
-      if delta = e.originalEvent.wheelDeltaY
-        @scrollTop(@scrollTop() - delta)
-        false
+    unless atom.config.get 'core.useReactEditor'
+      # Add scrolling to mini EditorView
+      @scrollView.on 'mousewheel', (e) =>
+        if delta = e.originalEvent.wheelDeltaY
+          @scrollTop(@scrollTop() - delta)
+          false
 
-    @verticalScrollbar. on 'scroll', =>
-      @scrollTop(@verticalScrollbar.scrollTop(), adjustVerticalScrollbar: false)
+      @verticalScrollbar. on 'scroll', =>
+        @scrollTop(@verticalScrollbar.scrollTop(), adjustVerticalScrollbar: false)
 
   getSourceEditor: (id) ->
     for editor in atom.workspace.getEditors()
@@ -61,7 +69,7 @@ class CoffeeCompileView extends EditorView
 
     return coffee.compile code, {bare, literate}
 
-  saveCompiled: ->
+  saveCompiled: (callback) ->
     try
       text     = @compile @sourceEditor.getText()
       srcPath  = @sourceEditor.getPath()
@@ -69,7 +77,7 @@ class CoffeeCompileView extends EditorView
       destPath = path.join(
         path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
       )
-      fs.writeFileSync destPath, text
+      fs.writeFile destPath, text, callback
 
     catch e
       console.error "Coffee-compile: #{e.stack}"
