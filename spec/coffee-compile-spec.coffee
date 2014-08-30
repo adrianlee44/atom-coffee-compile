@@ -38,7 +38,7 @@ describe "CoffeeCompile", ->
     it "should always split to the right", ->
       runs ->
         expect(atom.workspaceView.getPaneViews()).toHaveLength 2
-        [editorPane, compiledPane] = atom.workspaceView.getPanes()
+        [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
 
         expect(editorPane.items).toHaveLength 1
 
@@ -46,7 +46,7 @@ describe "CoffeeCompile", ->
 
     it "should have the same instance", ->
       runs ->
-        [editorPane, compiledPane] = atom.workspaceView.getPanes()
+        [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
         compiled = compiledPane.getActiveItem()
 
         expect(compiled).toBeInstanceOf(CoffeeCompileView)
@@ -56,7 +56,7 @@ describe "CoffeeCompile", ->
         [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
         compiled = compiledPane.getActiveItem()
 
-        expect(compiled.getUri()).toBe atom.workspaceView.getActivePaneItem().getUri()
+        expect(compiled.getUri()).toBe atom.workspace.getActivePaneItem().getUri()
 
     it "should focus on compiled pane", ->
       runs ->
