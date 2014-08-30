@@ -14,36 +14,12 @@ class CoffeeCompileView extends EditorView
     if @sourceEditor?
       @bindCoffeeCompileEvents()
 
-    if atom.config.get 'core.useReactEditor'
-      # set editor grammar to Javascript
-      @editor.setGrammar atom.syntax.selectGrammar("hello.js")
-
-  initialize: (options) ->
-    # Old EditorView requires mini editor to work properly
-    unless atom.config.get 'core.useReactEditor'
-      options.mini = true
-      super options
-
-      # set editor grammar to Javascript
-      @editor.setGrammar atom.syntax.selectGrammar("hello.js")
-
-      # mini EditorView doesn't allow changing line height
-      # This is used to force line-height changes
-      @css 'line-height', atom.config.get('editor.lineHeight') or @configDefaults.lineHeight
+    # set editor grammar to Javascript
+    @editor.setGrammar atom.syntax.selectGrammar("hello.js")
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave')
       @subscribe @sourceEditor.buffer, 'saved', => @saveCompiled()
-
-    unless atom.config.get 'core.useReactEditor'
-      # Add scrolling to mini EditorView
-      @scrollView.on 'mousewheel', (e) =>
-        if delta = e.originalEvent.wheelDeltaY
-          @scrollTop(@scrollTop() - delta)
-          false
-
-      @verticalScrollbar. on 'scroll', =>
-        @scrollTop(@verticalScrollbar.scrollTop(), adjustVerticalScrollbar: false)
 
   getSourceEditor: (id) ->
     for editor in atom.workspace.getEditors()
@@ -91,13 +67,6 @@ class CoffeeCompileView extends EditorView
       text = e.stack
 
     @getEditor().setText text
-
-  updateDisplay: ->
-    # Style cursor to work with new line height
-    lineHeight = atom.config.get('editor.lineHeight') or @configDefaults.lineHeight
-    @overlayer.find('.cursor').css 'line-height', lineHeight * 0.8
-
-    super
 
   getTitle: ->
     if @sourceEditor?
