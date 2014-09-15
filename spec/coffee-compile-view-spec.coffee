@@ -57,6 +57,13 @@ describe "CoffeeCompileView", ->
 
       expect(compiled.saveCompiled).toHaveBeenCalled()
 
+    it "should also recompile the preview pane", ->
+      spyOn compiled, "renderCompiled"
+
+      editor.save()
+
+      expect(compiled.renderCompiled).toHaveBeenCalled()
+
     it "should compile and create a js file", ->
       callback = jasmine.createSpy 'save'
 

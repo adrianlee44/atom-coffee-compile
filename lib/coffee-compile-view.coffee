@@ -8,6 +8,9 @@ class CoffeeCompileView extends EditorView
   constructor: ({@sourceEditorId, @sourceEditor}) ->
     super
 
+    # Used for unsubscribing callbacks on editor text buffer
+    @disposables = []
+
     if @sourceEditorId? and not @sourceEditor
       @sourceEditor = @getSourceEditor @sourceEditorId
 
@@ -19,7 +22,18 @@ class CoffeeCompileView extends EditorView
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave')
-      @subscribe @sourceEditor.getBuffer(), 'saved', => @saveCompiled()
+      buffer = @sourceEditor.getBuffer()
+
+      @disposables.push buffer.onDidSave =>
+        @renderCompiled()
+        @saveCompiled()
+
+      @disposables.push buffer.onDidReload =>
+        @renderCompiled()
+        @saveCompiled()
+
+  destroy: ->
+    disposable.dispose() for disposable in @disposables
 
   getSourceEditor: (id) ->
     for editor in atom.workspace.getEditors()
