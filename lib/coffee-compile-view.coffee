@@ -19,7 +19,7 @@ class CoffeeCompileView extends EditorView
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave')
-      @subscribe @sourceEditor.buffer, 'saved', => @saveCompiled()
+      @subscribe @sourceEditor.getBuffer(), 'saved', => @saveCompiled()
 
   getSourceEditor: (id) ->
     for editor in atom.workspace.getEditors()
