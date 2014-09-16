@@ -3,8 +3,6 @@ CoffeeCompileView = require '../lib/coffee-compile-view'
 
 describe "CoffeeCompile", ->
   beforeEach ->
-    atom.config.set 'core.useReactEditor', false
-
     atom.workspaceView = new WorkspaceView
     atom.workspace     = atom.workspaceView.model
     spyOn(CoffeeCompileView.prototype, "renderCompiled").andCallThrough()
