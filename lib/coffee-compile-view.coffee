@@ -26,11 +26,11 @@ class CoffeeCompileView extends EditorView
 
       @disposables.push buffer.onDidSave =>
         @renderCompiled()
-        @saveCompiled()
+        CoffeeCompileView.saveCompiled @sourceEditor
 
       @disposables.push buffer.onDidReload =>
         @renderCompiled()
-        @saveCompiled()
+        CoffeeCompileView.saveCompiled @sourceEditor
 
   destroy: ->
     disposable.dispose() for disposable in @disposables
@@ -51,32 +51,11 @@ class CoffeeCompileView extends EditorView
 
     return code
 
-  compile: (code) ->
-    grammarScopeName = @sourceEditor.getGrammar().scopeName
-
-    bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
-    literate = grammarScopeName is "source.litcoffee"
-
-    return coffee.compile code, {bare, literate}
-
-  saveCompiled: (callback) ->
-    try
-      text     = @compile @sourceEditor.getText()
-      srcPath  = @sourceEditor.getPath()
-      srcExt   = path.extname srcPath
-      destPath = path.join(
-        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
-      )
-      fs.writeFile destPath, text, callback
-
-    catch e
-      console.error "Coffee-compile: #{e.stack}"
-
   renderCompiled: ->
     code = @getSelectedCode()
 
     try
-      text = @compile code
+      text = CoffeeCompileView.compile @sourceEditor, code
     catch e
       text = e.stack
 
@@ -89,3 +68,24 @@ class CoffeeCompileView extends EditorView
       "Compiled Javascript"
 
   getUri: -> "coffeecompile://editor/#{@sourceEditorId}"
+
+  @compile: (editor, code) ->
+    grammarScopeName = editor.getGrammar().scopeName
+
+    bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
+    literate = grammarScopeName is "source.litcoffee"
+
+    return coffee.compile code, {bare, literate}
+
+  @saveCompiled: (editor, callback) ->
+    try
+      text     = CoffeeCompileView.compile editor, editor.getText()
+      srcPath  = editor.getPath()
+      srcExt   = path.extname srcPath
+      destPath = path.join(
+        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
+      )
+      fs.writeFile destPath, text, callback
+
+    catch e
+      console.error "Coffee-compile: #{e.stack}"

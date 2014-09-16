@@ -51,11 +51,11 @@ describe "CoffeeCompileView", ->
       fs.unlink(coffeeFilePath) if fs.existsSync(coffeeFilePath)
 
     it "should compile and create a js when saving", ->
-      spyOn compiled, "saveCompiled"
+      spyOn CoffeeCompileView, "saveCompiled"
 
       editor.save()
 
-      expect(compiled.saveCompiled).toHaveBeenCalled()
+      expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
 
     it "should also recompile the preview pane", ->
       spyOn compiled, "renderCompiled"
@@ -68,7 +68,7 @@ describe "CoffeeCompileView", ->
       callback = jasmine.createSpy 'save'
 
       runs ->
-        compiled.saveCompiled callback
+        CoffeeCompileView.saveCompiled editor, callback
 
       waitsFor "Compile on save", ->
         callback.callCount > 0
