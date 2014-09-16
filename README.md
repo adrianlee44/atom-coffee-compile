@@ -1,8 +1,14 @@
 # coffee-compile package [![Build Status](https://travis-ci.org/adrianlee44/atom-coffee-compile.svg?branch=master)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
 
-Preview/save compiled Javascript in Atom
+Preview and/or save compiled Javascript in Atom
 - Mac: `cmd+shift+c`
 - Linux/Windows: `ctrl-alt-c`
+
+## Options
+- No top level function wrapper (default: true)
+- Compile on save (default: false)
+- Compile on save without preview pane (default: false)
+- Focus editor after compile (default: false)
 
 ![](https://raw.github.com/adrianlee44/atom-coffee-compile/master/screenshot.png)
 
@@ -11,6 +17,7 @@ Preview/save compiled Javascript in Atom
 - Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
+- 2014-09-16   v0.8.0   Added `compile on save without preview` feature (disabled by default)
 - 2014-09-14   v0.7.0   Fixed compile on save and updated calback API
 - 2014-08-29   v0.6.0   Updated CoffeeCompile to support Atom's new ReactEditor
 - 2014-08-17   v0.5.0   Converted compiled view to editor which brings line numbers and code selection
