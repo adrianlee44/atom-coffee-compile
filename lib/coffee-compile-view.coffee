@@ -21,7 +21,8 @@ class CoffeeCompileView extends EditorView
     @editor.setGrammar atom.syntax.selectGrammar("hello.js")
 
   bindCoffeeCompileEvents: ->
-    if atom.config.get('coffee-compile.compileOnSave')
+    if atom.config.get('coffee-compile.compileOnSave') and not
+        atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       buffer = @sourceEditor.getBuffer()
 
       @disposables.push buffer.onDidSave =>

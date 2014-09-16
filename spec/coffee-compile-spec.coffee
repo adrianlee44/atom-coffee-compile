@@ -1,6 +1,42 @@
 CoffeeCompileView = require '../lib/coffee-compile-view'
 {WorkspaceView} = require 'atom'
 
+describe "CoffeeCompile compile on save without preview", ->
+  beforeEach ->
+    atom.workspaceView = new WorkspaceView
+    atom.workspace     = atom.workspaceView.model
+    spyOn CoffeeCompileView, "saveCompiled"
+
+  it "should call savedCompiled", ->
+    atom.config.set("coffee-compile.compileOnSaveWithoutPreview", true)
+
+    waitsForPromise "coffee-compile package to activate", ->
+      atom.packages.activatePackage('coffee-compile')
+
+    atom.workspaceView.attachToDom()
+
+    waitsForPromise "fixture file to open", ->
+      atom.workspace.open "coffee-compile-fixtures.coffee"
+
+    runs ->
+      atom.workspaceView.trigger "core:save"
+      expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
+
+  it "should not call saveCompiled when option is disabled", ->
+    atom.config.set("coffee-compile.compileOnSaveWithoutPreview", false)
+
+    waitsForPromise "coffee-compile package to activate", ->
+      atom.packages.activatePackage('coffee-compile')
+
+    atom.workspaceView.attachToDom()
+
+    waitsForPromise "fixture file to open", ->
+      atom.workspace.open "coffee-compile-fixtures.coffee"
+
+    runs ->
+      atom.workspaceView.trigger "core:save"
+      expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
+
 describe "CoffeeCompile", ->
   beforeEach ->
     atom.workspaceView = new WorkspaceView

@@ -13,10 +13,14 @@ module.exports =
     ]
     noTopLevelFunctionWrapper: true
     compileOnSave: false
+    compileOnSaveWithoutPreview: false
     focusEditorAfterCompile: false
 
   activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
+
+    if atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
+      atom.workspaceView.command 'core:save', => @save()
 
     atom.workspace.registerOpener (uriToOpen) ->
       {protocol, host, pathname} = url.parse uriToOpen
@@ -26,6 +30,13 @@ module.exports =
 
       new CoffeeCompileView
         sourceEditorId: pathname.substr(1)
+
+  save: ->
+    editor = atom.workspace.getActiveEditor()
+
+    return unless editor?
+
+    CoffeeCompileView.saveCompiled editor
 
   display: ->
     editor     = atom.workspace.getActiveEditor()
