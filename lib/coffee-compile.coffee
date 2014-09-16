@@ -31,10 +31,16 @@ module.exports =
       new CoffeeCompileView
         sourceEditorId: pathname.substr(1)
 
+  checkGrammar: (editor) ->
+    grammars = atom.config.get('coffee-compile.grammars') or []
+    return (grammar = editor.getGrammar().scopeName) in grammars
+
   save: ->
     editor = atom.workspace.getActiveEditor()
 
     return unless editor?
+
+    return unless @checkGrammar editor
 
     CoffeeCompileView.saveCompiled editor
 
@@ -43,6 +49,9 @@ module.exports =
     activePane = atom.workspace.getActivePane()
 
     return unless editor?
+
+    unless @checkGrammar editor
+      return console.warn("Cannot compile non-Coffeescript to Javascript")
 
     grammars = atom.config.get('coffee-compile.grammars') or []
     unless (grammar = editor.getGrammar().scopeName) in grammars
