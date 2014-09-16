@@ -37,7 +37,7 @@ class CoffeeCompileView extends EditorView
     disposable.dispose() for disposable in @disposables
 
   getSourceEditor: (id) ->
-    for editor in atom.workspace.getEditors()
+    for editor in atom.workspace.getTextEditors()
       return editor if editor.id?.toString() is id.toString()
 
     return null
