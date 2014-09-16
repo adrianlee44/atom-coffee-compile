@@ -17,6 +17,7 @@ Preview and/or save compiled Javascript in Atom
 - Open compiled JS in pane if `compile on save` option is enabled
 
 ## Changelog
+- 2014-09-16   v0.8.1   Fixed not able to compile and save when opening a preview pane
 - 2014-09-16   v0.8.0   Added `compile on save without preview` feature (disabled by default)
 - 2014-09-14   v0.7.0   Fixed compile on save and updated calback API
 - 2014-08-29   v0.6.0   Updated CoffeeCompile to support Atom's new ReactEditor
