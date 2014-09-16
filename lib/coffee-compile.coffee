@@ -58,8 +58,9 @@ module.exports =
       if coffeeCompileView instanceof CoffeeCompileView
         coffeeCompileView.renderCompiled()
 
-        if atom.config.get('coffee-compile.compileOnSave')
-          coffeeCompileView.saveCompiled()
+        if atom.config.get('coffee-compile.compileOnSave') or
+            atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
+          CoffeeCompileView.saveCompiled editor
 
         if atom.config.get('coffee-compile.focusEditorAfterCompile')
           activePane.activate()

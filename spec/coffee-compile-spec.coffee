@@ -37,6 +37,46 @@ describe "CoffeeCompile compile on save without preview", ->
       atom.workspaceView.trigger "core:save"
       expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
 
+describe "CoffeeCompile compile on save", ->
+  beforeEach ->
+    atom.workspaceView = new WorkspaceView
+    atom.workspace     = atom.workspaceView.model
+
+    spyOn CoffeeCompileView, "saveCompiled"
+    spyOn(CoffeeCompileView.prototype, "renderCompiled").andCallThrough()
+
+    waitsForPromise "coffee-compile package to activate", ->
+      atom.packages.activatePackage('coffee-compile')
+
+    atom.workspaceView.attachToDom()
+
+    waitsForPromise "fixture file to open", ->
+      atom.workspace.open "coffee-compile-fixtures.coffee"
+
+  it "should call savedCompiled", ->
+    atom.config.set "coffee-compile.compileOnSave", true
+
+    runs ->
+      atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+
+    waitsFor ->
+      CoffeeCompileView::renderCompiled.callCount > 0
+
+    runs ->
+      expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
+
+  it "should not call savedCompiled", ->
+    atom.config.set "coffee-compile.compileOnSave", false
+
+    runs ->
+      atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+
+    waitsFor ->
+      CoffeeCompileView::renderCompiled.callCount > 0
+
+    runs ->
+      expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
+
 describe "CoffeeCompile", ->
   beforeEach ->
     atom.workspaceView = new WorkspaceView
