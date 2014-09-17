@@ -7,6 +7,16 @@ describe "CoffeeCompile compile on save without preview", ->
     atom.workspace     = atom.workspaceView.model
     spyOn CoffeeCompileView, "saveCompiled"
 
+    waitsForPromise "language-coffee-script to activate", ->
+      atom.packages.activatePackage('language-coffee-script')
+
+    atom.config.set('coffee-compile.grammars', [
+      'source.coffee'
+      'source.litcoffee'
+      'text.plain'
+      'text.plain.null-grammar'
+    ])
+
   it "should call savedCompiled", ->
     atom.config.set("coffee-compile.compileOnSaveWithoutPreview", true)
 
