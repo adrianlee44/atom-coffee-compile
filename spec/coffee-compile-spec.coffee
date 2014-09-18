@@ -1,100 +1,10 @@
 CoffeeCompileView = require '../lib/coffee-compile-view'
 {WorkspaceView} = require 'atom'
 
-describe "CoffeeCompile compile on save without preview", ->
-  beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    atom.workspace     = atom.workspaceView.model
-    spyOn CoffeeCompileView, "saveCompiled"
-
-    waitsForPromise "language-coffee-script to activate", ->
-      atom.packages.activatePackage('language-coffee-script')
-
-    atom.config.set('coffee-compile.grammars', [
-      'source.coffee'
-      'source.litcoffee'
-      'text.plain'
-      'text.plain.null-grammar'
-    ])
-
-  it "should call savedCompiled", ->
-    atom.config.set("coffee-compile.compileOnSaveWithoutPreview", true)
-
-    waitsForPromise "coffee-compile package to activate", ->
-      atom.packages.activatePackage('coffee-compile')
-
-    atom.workspaceView.attachToDom()
-
-    waitsForPromise "fixture file to open", ->
-      atom.workspace.open "coffee-compile-fixtures.coffee"
-
-    runs ->
-      atom.workspaceView.trigger "core:save"
-      expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
-
-  it "should not call saveCompiled when option is disabled", ->
-    atom.config.set("coffee-compile.compileOnSaveWithoutPreview", false)
-
-    waitsForPromise "coffee-compile package to activate", ->
-      atom.packages.activatePackage('coffee-compile')
-
-    atom.workspaceView.attachToDom()
-
-    waitsForPromise "fixture file to open", ->
-      atom.workspace.open "coffee-compile-fixtures.coffee"
-
-    runs ->
-      atom.workspaceView.trigger "core:save"
-      expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
-
-describe "CoffeeCompile compile on save", ->
-  beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    atom.workspace     = atom.workspaceView.model
-
-    spyOn CoffeeCompileView, "saveCompiled"
-    spyOn(CoffeeCompileView.prototype, "renderCompiled").andCallThrough()
-
-    waitsForPromise "coffee-compile package to activate", ->
-      atom.packages.activatePackage('coffee-compile')
-
-    atom.workspaceView.attachToDom()
-
-    waitsForPromise "fixture file to open", ->
-      atom.workspace.open "coffee-compile-fixtures.coffee"
-
-  it "should call savedCompiled", ->
-    atom.config.set "coffee-compile.compileOnSave", true
-
-    runs ->
-      atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
-
-    waitsFor ->
-      CoffeeCompileView::renderCompiled.callCount > 0
-
-    runs ->
-      expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
-
-  it "should not call savedCompiled", ->
-    atom.config.set "coffee-compile.compileOnSave", false
-
-    runs ->
-      atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
-
-    waitsFor ->
-      CoffeeCompileView::renderCompiled.callCount > 0
-
-    runs ->
-      expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
-
 describe "CoffeeCompile", ->
   beforeEach ->
     atom.workspaceView = new WorkspaceView
     atom.workspace     = atom.workspaceView.model
-    spyOn(CoffeeCompileView.prototype, "renderCompiled").andCallThrough()
-
-    waitsForPromise "coffee-compile package to activate", ->
-      atom.packages.activatePackage('coffee-compile')
 
     waitsForPromise "language-coffee-script to activate", ->
       atom.packages.activatePackage('language-coffee-script')
@@ -106,9 +16,78 @@ describe "CoffeeCompile", ->
       'text.plain.null-grammar'
     ])
 
-  describe "should open a new pane", ->
+    atom.workspaceView.attachToDom()
+
+    spyOn(CoffeeCompileView.prototype, "renderCompiled").andCallThrough()
+
+  describe "compile on save without preview", ->
     beforeEach ->
-      atom.workspaceView.attachToDom()
+      spyOn CoffeeCompileView, "saveCompiled"
+
+    it "should call savedCompiled", ->
+      atom.config.set("coffee-compile.compileOnSaveWithoutPreview", true)
+
+      waitsForPromise "coffee-compile package to activate", ->
+        atom.packages.activatePackage('coffee-compile')
+
+      waitsForPromise "fixture file to open", ->
+        atom.workspace.open "coffee-compile-fixtures.coffee"
+
+      runs ->
+        atom.workspaceView.trigger "core:save"
+        expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
+
+    it "should not call saveCompiled when option is disabled", ->
+      atom.config.set("coffee-compile.compileOnSaveWithoutPreview", false)
+
+      waitsForPromise "coffee-compile package to activate", ->
+        atom.packages.activatePackage('coffee-compile')
+
+      waitsForPromise "fixture file to open", ->
+        atom.workspace.open "coffee-compile-fixtures.coffee"
+
+      runs ->
+        atom.workspaceView.trigger "core:save"
+        expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
+
+  describe "compile on save", ->
+    beforeEach ->
+      spyOn CoffeeCompileView, "saveCompiled"
+
+      waitsForPromise "coffee-compile package to activate", ->
+        atom.packages.activatePackage('coffee-compile')
+
+      waitsForPromise "fixture file to open", ->
+        atom.workspace.open "coffee-compile-fixtures.coffee"
+
+    it "should call savedCompiled", ->
+      atom.config.set "coffee-compile.compileOnSave", true
+
+      runs ->
+        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+
+      waitsFor ->
+        CoffeeCompileView::renderCompiled.callCount > 0
+
+      runs ->
+        expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
+
+    it "should not call savedCompiled", ->
+      atom.config.set "coffee-compile.compileOnSave", false
+
+      runs ->
+        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+
+      waitsFor ->
+        CoffeeCompileView::renderCompiled.callCount > 0
+
+      runs ->
+        expect(CoffeeCompileView.saveCompiled).not.toHaveBeenCalled()
+
+  describe "open a new pane", ->
+    beforeEach ->
+      waitsForPromise "coffee-compile package to activate", ->
+        atom.packages.activatePackage('coffee-compile')
 
       waitsForPromise "fixture file to open", ->
         atom.workspace.open "coffee-compile-fixtures.coffee"
@@ -150,7 +129,9 @@ describe "CoffeeCompile", ->
   describe "focus editor after compile", ->
     beforeEach ->
       atom.config.set "coffee-compile.focusEditorAfterCompile", true
-      atom.workspaceView.attachToDom()
+
+      waitsForPromise "coffee-compile package to activate", ->
+        atom.packages.activatePackage('coffee-compile')
 
       waitsForPromise ->
         atom.workspace.open "test.coffee"
@@ -169,7 +150,9 @@ describe "CoffeeCompile", ->
   describe "when the editor's grammar is not coffeescript", ->
     it "should not preview compiled js", ->
       atom.config.set "coffee-compile.grammars", []
-      atom.workspaceView.attachToDom()
+
+      waitsForPromise "coffee-compile package to activate", ->
+        atom.packages.activatePackage('coffee-compile')
 
       waitsForPromise ->
         atom.workspace.open "coffee-compile-fixtures.coffee"
