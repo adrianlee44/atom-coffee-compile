@@ -1,7 +1,8 @@
-{EditorView} = require 'atom'
-coffee = require 'coffee-script'
-path = require 'path'
-fs = require 'fs'
+{EditorView} = require "atom"
+coffee = require "coffee-script"
+fs = require "fs"
+helper = require "./helper"
+mkdirp = require "mkdirp"
 
 module.exports =
 class CoffeeCompileView extends EditorView
@@ -53,10 +54,15 @@ class CoffeeCompileView extends EditorView
     return code
 
   renderCompiled: ->
-    code = @getSelectedCode()
+    code    = @getSelectedCode()
+    options = helper.compileOptions @sourceEditor
 
     try
-      text = CoffeeCompileView.compile @sourceEditor, code
+      text = coffee.compile code, options
+
+      if options.sourceMap and text.js
+        text = text.js
+
     catch e
       text = e.stack
 
@@ -70,23 +76,31 @@ class CoffeeCompileView extends EditorView
 
   getUri: -> "coffeecompile://editor/#{@sourceEditorId}"
 
-  @compile: (editor, code) ->
-    grammarScopeName = editor.getGrammar().scopeName
-
-    bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
-    literate = grammarScopeName is "source.litcoffee"
-
-    return coffee.compile code, {bare, literate}
-
   @saveCompiled: (editor, callback) ->
+    options = helper.compileOptions editor
+
     try
-      text     = CoffeeCompileView.compile editor, editor.getText()
-      srcPath  = editor.getPath()
-      srcExt   = path.extname srcPath
-      destPath = path.join(
-        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
-      )
-      fs.writeFile destPath, text, callback
+      text = coffee.compile editor.getText(), options
+
+      if options.sourceMap
+
+        v3SourceMap = text.v3SourceMap
+
+        mkdirp options.sourceMapDir, {}, (err) ->
+          if err
+            console.error err
+            return
+
+          fs.writeFile options.sourceMapPath, v3SourceMap
+
+        text = text.js
+
+      mkdirp options.generatedDir, {}, (err) ->
+        if err
+          console.error err
+          return
+
+        fs.writeFile options.generatedPath, text, callback
 
     catch e
       console.error "Coffee-compile: #{e.stack}"

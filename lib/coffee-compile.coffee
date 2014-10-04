@@ -12,8 +12,11 @@ module.exports =
       'text.plain.null-grammar'
     ]
     noTopLevelFunctionWrapper: true
+    sourceMap: false
+    sourceMapDirectory: "."
     compileOnSave: false
     compileOnSaveWithoutPreview: false
+    compileDirectory: "."
     focusEditorAfterCompile: false
 
   activate: ->
