@@ -17,6 +17,9 @@ describe "CoffeeCompileView", ->
     waitsForPromise ->
       atom.packages.activatePackage('language-coffee-script')
 
+    waitsForPromise "coffee-compile package to activate", ->
+      atom.packages.activatePackage('coffee-compile')
+
   describe "renderCompiled", ->
     beforeEach ->
       runs ->
