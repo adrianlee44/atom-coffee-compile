@@ -22,7 +22,7 @@ module.exports =
     if atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       atom.workspaceView.command 'core:save', => @save()
 
-    atom.workspace.registerOpener (uriToOpen) ->
+    atom.workspace.addOpener (uriToOpen) ->
       {protocol, host, pathname} = url.parse uriToOpen
       pathname = querystring.unescape(pathname) if pathname
 

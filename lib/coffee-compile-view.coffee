@@ -1,10 +1,10 @@
-{EditorView} = require 'atom'
+{TextEditorView} = require 'atom'
 coffee = require 'coffee-script'
 path = require 'path'
 fs = require 'fs'
 
 module.exports =
-class CoffeeCompileView extends EditorView
+class CoffeeCompileView extends TextEditorView
   constructor: ({@sourceEditorId, @sourceEditor}) ->
     super
 
@@ -17,8 +17,11 @@ class CoffeeCompileView extends EditorView
     if @sourceEditor?
       @bindCoffeeCompileEvents()
 
+  initialize: ->
     # set editor grammar to Javascript
     @editor.setGrammar atom.syntax.selectGrammar("hello.js")
+
+    super
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave') and not
