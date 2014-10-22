@@ -63,13 +63,3 @@ module.exports =
     atom.workspace.open uri,
       searchAllPanes: true
       split: "right"
-    .done (coffeeCompileView) ->
-      if coffeeCompileView instanceof CoffeeCompileView
-        coffeeCompileView.renderCompiled()
-
-        if atom.config.get('coffee-compile.compileOnSave') or
-            atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-          CoffeeCompileView.saveCompiled editor
-
-        if atom.config.get('coffee-compile.focusEditorAfterCompile')
-          activePane.activate()

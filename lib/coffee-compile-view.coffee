@@ -6,7 +6,11 @@ fs = require 'fs'
 module.exports =
 class CoffeeCompileView extends TextEditorView
   constructor: ({@sourceEditorId, @sourceEditor}) ->
-    super
+    @view = super
+
+    # HACK: Since the html is getting passed back instead of the instance,
+    # the return object doesn't have getTitle function
+    @view.getTitle = @getTitle.bind(this)
 
     # Used for unsubscribing callbacks on editor text buffer
     @disposables = []
@@ -17,11 +21,20 @@ class CoffeeCompileView extends TextEditorView
     if @sourceEditor?
       @bindCoffeeCompileEvents()
 
-  initialize: ->
     # set editor grammar to Javascript
-    @editor.setGrammar atom.syntax.selectGrammar("hello.js")
+    @view.getModel().setGrammar atom.syntax.selectGrammar("hello.js")
 
-    super
+    @renderCompiled()
+
+    if atom.config.get('coffee-compile.compileOnSave') or
+        atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
+      CoffeeCompileView.saveCompiled @sourceEditor
+
+    # TODO: Disable for now. Re-enable this in next release
+    # if atom.config.get('coffee-compile.focusEditorAfterCompile')
+    #   activePane.activate()
+
+    return @view
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave') and not
@@ -63,7 +76,7 @@ class CoffeeCompileView extends TextEditorView
     catch e
       text = e.stack
 
-    @getEditor().setText text
+    @view.getModel().setText text
 
   getTitle: ->
     if @sourceEditor?
