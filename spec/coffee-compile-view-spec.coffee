@@ -22,7 +22,7 @@ describe "CoffeeCompileView", ->
       runs ->
         compiled = new CoffeeCompileView {sourceEditor: editor}
 
-    it "should compile the whole file and display compiled js", ->
+    xit "should compile the whole file and display compiled js", ->
       spyOn compiled, "renderCompiled"
 
       runs ->
@@ -57,7 +57,7 @@ describe "CoffeeCompileView", ->
 
       expect(CoffeeCompileView.saveCompiled).toHaveBeenCalled()
 
-    it "should also recompile the preview pane", ->
+    xit "should also recompile the preview pane", ->
       spyOn compiled, "renderCompiled"
 
       editor.save()
