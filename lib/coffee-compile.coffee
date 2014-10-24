@@ -57,3 +57,15 @@ module.exports =
     atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
       split: "right"
+    .then (view) ->
+      uriToOpen = view.getUri()
+
+      return unless uriToOpen
+
+      {protocol, pathname} = url.parse uriToOpen
+      pathname = querystring.unescape(pathname) if pathname
+
+      return unless protocol is 'coffeecompile:'
+
+      if atom.config.get('coffee-compile.focusEditorAfterCompile')
+        activePane.activate()

@@ -26,10 +26,6 @@ class CoffeeCompileView extends TextEditorView
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       util.compileToFile @sourceEditor
 
-    # TODO: Disable for now. Re-enable this in next release
-    # if atom.config.get('coffee-compile.focusEditorAfterCompile')
-    #   activePane.activate()
-
     return @view
 
   bindMethods: ->
