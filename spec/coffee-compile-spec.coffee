@@ -56,12 +56,6 @@ describe "CoffeeCompile", ->
 
   describe "open a new pane", ->
     beforeEach ->
-      waitsForPromise "coffee-compile package to activate", ->
-        atom.packages.activatePackage('coffee-compile')
-
-      waitsForPromise "fixture file to open", ->
-        atom.workspace.open "coffee-compile-fixtures.coffee"
-
       runs ->
         atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
 
@@ -82,23 +76,17 @@ describe "CoffeeCompile", ->
         [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
         expect(compiledPane).toHaveFocus()
 
-  xdescribe "focus editor after compile", ->
+  describe "focus editor after compile", ->
     beforeEach ->
       atom.config.set "coffee-compile.focusEditorAfterCompile", true
 
-      waitsForPromise "coffee-compile package to activate", ->
-        atom.packages.activatePackage('coffee-compile')
-
-      waitsForPromise ->
-        atom.workspace.open "test.coffee"
-
+    it "should focus editor when option is set", ->
       runs ->
         atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
 
       waitsFor ->
         CoffeeCompileView::renderCompiled.callCount > 0
 
-    xit "should focus editor when option is set", ->
       runs ->
         [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
         expect(editorPane).toHaveFocus()
