@@ -1,20 +1,19 @@
 CoffeeCompileView = require '../lib/coffee-compile-view'
 {WorkspaceView} = require 'atom'
-fs = require 'fs'
 util = require '../lib/util'
 
-describe "CoffeeCompile", ->
+describe 'CoffeeCompile', ->
   editor = null
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
     atom.workspace     = atom.workspaceView.model
 
-    waitsForPromise "language-coffee-script to activate", ->
-      atom.packages.activatePackage('language-coffee-script')
+    waitsForPromise 'language-coffee-script to activate', ->
+      atom.packages.activatePackage 'language-coffee-script'
 
     waitsForPromise ->
-      atom.packages.activatePackage('coffee-compile')
+      atom.packages.activatePackage 'coffee-compile'
 
     waitsForPromise ->
       atom.workspace.open('coffee-compile-fixtures.coffee').then (o) ->
@@ -23,23 +22,17 @@ describe "CoffeeCompile", ->
     runs ->
       atom.workspaceView.attachToDom()
 
-      spyOn(CoffeeCompileView.prototype, "renderCompiled").andCallThrough()
+      spyOn(CoffeeCompileView.prototype, 'renderCompiled').andCallThrough()
 
-  describe "compile on save", ->
+  describe 'compile on save', ->
     beforeEach ->
-      spyOn util, "compileToFile"
+      spyOn util, 'compileToFile'
 
-      waitsForPromise "coffee-compile package to activate", ->
-        atom.packages.activatePackage('coffee-compile')
-
-      waitsForPromise "fixture file to open", ->
-        atom.workspace.open "coffee-compile-fixtures.coffee"
-
-    it "should call util.compileToFile", ->
-      atom.config.set "coffee-compile.compileOnSave", true
+    it 'should call util.compileToFile', ->
+      atom.config.set 'coffee-compile.compileOnSave', true
 
       runs ->
-        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+        atom.workspaceView.getActiveView().trigger 'coffee-compile:compile'
 
       waitsFor ->
         util.compileToFile.callCount > 0
@@ -47,22 +40,22 @@ describe "CoffeeCompile", ->
       runs ->
         expect(util.compileToFile).toHaveBeenCalled()
 
-    it "should not call util.compileToFile", ->
-      atom.config.set "coffee-compile.compileOnSave", false
+    it 'should not call util.compileToFile', ->
+      atom.config.set 'coffee-compile.compileOnSave', false
 
       runs ->
-        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+        atom.workspaceView.getActiveView().trigger 'coffee-compile:compile'
         expect(util.compileToFile).not.toHaveBeenCalled()
 
-  describe "open a new pane", ->
+  describe 'open a new pane', ->
     beforeEach ->
       runs ->
-        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+        atom.workspaceView.getActiveView().trigger 'coffee-compile:compile'
 
-      waitsFor "renderCompiled to be called", ->
+      waitsFor 'renderCompiled to be called', ->
         CoffeeCompileView::renderCompiled.callCount > 0
 
-    it "should always split to the right", ->
+    it 'should always split to the right', ->
       runs ->
         expect(atom.workspaceView.getPaneViews()).toHaveLength 2
         [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
@@ -71,37 +64,43 @@ describe "CoffeeCompile", ->
 
         compiled = compiledPane.getActiveItem()
 
-    it "should focus on compiled pane", ->
+    it 'should focus on compiled pane', ->
       runs ->
         [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
         expect(compiledPane).toHaveFocus()
 
-  describe "focus editor after compile", ->
-    beforeEach ->
-      atom.config.set "coffee-compile.focusEditorAfterCompile", true
+  describe 'focus editor after compile', ->
+    callback = null
 
-    it "should focus editor when option is set", ->
+    beforeEach ->
+      callback = jasmine.createSpy 'pane'
+
+      atom.config.set 'coffee-compile.focusEditorAfterCompile', true
+
+      atom.workspace.onDidOpen callback
+
+    it 'should focus editor when option is set', ->
       runs ->
-        atom.workspaceView.getActiveView().trigger "coffee-compile:compile"
+        atom.workspaceView.getActiveView().trigger 'coffee-compile:compile'
 
       waitsFor ->
-        CoffeeCompileView::renderCompiled.callCount > 0
+        callback.callCount > 0
 
       runs ->
         [editorPane, compiledPane] = atom.workspaceView.getPaneViews()
         expect(editorPane).toHaveFocus()
 
   describe "when the editor's grammar is not coffeescript", ->
-    it "should not preview compiled js", ->
-      atom.config.set "coffee-compile.grammars", []
+    it 'should not preview compiled js', ->
+      atom.config.set 'coffee-compile.grammars', []
 
-      waitsForPromise "coffee-compile package to activate", ->
+      waitsForPromise 'coffee-compile package to activate', ->
         atom.packages.activatePackage('coffee-compile')
 
       waitsForPromise ->
-        atom.workspace.open "coffee-compile-fixtures.coffee"
+        atom.workspace.open 'coffee-compile-fixtures.coffee'
 
       runs ->
-        spyOn(atom.workspace, "open").andCallThrough()
-        atom.workspaceView.getActiveView().trigger 'markdown-preview:show'
+        spyOn(atom.workspace, 'open').andCallThrough()
+        atom.workspaceView.getActiveView().trigger 'coffee-compile:compile'
         expect(atom.workspace.open).not.toHaveBeenCalled()
