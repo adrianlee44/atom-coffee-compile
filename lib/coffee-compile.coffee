@@ -2,6 +2,7 @@ url         = require 'url'
 querystring = require 'querystring'
 
 CoffeeCompileView = require './coffee-compile-view'
+util              = require './util'
 
 module.exports =
   configDefaults:
@@ -23,7 +24,7 @@ module.exports =
       atom.workspaceView.command 'core:save', => @save()
 
     atom.workspace.addOpener (uriToOpen) ->
-      {protocol, host, pathname} = url.parse uriToOpen
+      {protocol, pathname} = url.parse uriToOpen
       pathname = querystring.unescape(pathname) if pathname
 
       return unless protocol is 'coffeecompile:'
@@ -42,7 +43,7 @@ module.exports =
 
     return unless @checkGrammar editor
 
-    CoffeeCompileView.saveCompiled editor
+    util.compileToFile editor
 
   display: ->
     editor     = atom.workspace.getActiveEditor()
@@ -53,13 +54,6 @@ module.exports =
     unless @checkGrammar editor
       return console.warn("Cannot compile non-Coffeescript to Javascript")
 
-    grammars = atom.config.get('coffee-compile.grammars') or []
-    unless (grammar = editor.getGrammar().scopeName) in grammars
-      console.warn("Cannot compile non-Coffeescript to Javascript")
-      return
-
-    uri = "coffeecompile://editor/#{editor.id}"
-
-    atom.workspace.open uri,
+    atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
       split: "right"

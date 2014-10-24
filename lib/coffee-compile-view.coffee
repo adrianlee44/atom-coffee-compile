@@ -1,25 +1,21 @@
 {TextEditorView} = require 'atom'
-coffee = require 'coffee-script'
-path = require 'path'
-fs = require 'fs'
+util = require './util'
 
 module.exports =
 class CoffeeCompileView extends TextEditorView
   constructor: ({@sourceEditorId, @sourceEditor}) ->
     @view = super
 
-    # HACK: Since the html is getting passed back instead of the instance,
-    # the return object doesn't have getTitle function
-    @view.getTitle = @getTitle.bind(this)
-
     # Used for unsubscribing callbacks on editor text buffer
     @disposables = []
 
     if @sourceEditorId? and not @sourceEditor
-      @sourceEditor = @getSourceEditor @sourceEditorId
+      @sourceEditor = util.getTextEditorById @sourceEditorId
 
     if @sourceEditor?
       @bindCoffeeCompileEvents()
+
+    @bindMethods()
 
     # set editor grammar to Javascript
     @view.getModel().setGrammar atom.syntax.selectGrammar("hello.js")
@@ -28,13 +24,22 @@ class CoffeeCompileView extends TextEditorView
 
     if atom.config.get('coffee-compile.compileOnSave') or
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-      CoffeeCompileView.saveCompiled @sourceEditor
+      util.compileToFile @sourceEditor
 
     # TODO: Disable for now. Re-enable this in next release
     # if atom.config.get('coffee-compile.focusEditorAfterCompile')
     #   activePane.activate()
 
     return @view
+
+  bindMethods: ->
+    # HACK: Since the html is getting passed back instead of the instance,
+    # the return object doesn't have getTitle function
+    @view.getTitle = @getTitle.bind this
+
+    @view.beforeRemove = @destroy.bind this
+
+    @view.getUri = @getUri.bind this
 
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave') and not
@@ -43,36 +48,21 @@ class CoffeeCompileView extends TextEditorView
 
       @disposables.push buffer.onDidSave =>
         @renderCompiled()
-        CoffeeCompileView.saveCompiled @sourceEditor
+        util.compileToFile @sourceEditor
 
       @disposables.push buffer.onDidReload =>
         @renderCompiled()
-        CoffeeCompileView.saveCompiled @sourceEditor
+        util.compileToFile @sourceEditor
 
   destroy: ->
     disposable.dispose() for disposable in @disposables
 
-  getSourceEditor: (id) ->
-    for editor in atom.workspace.getTextEditors()
-      return editor if editor.id?.toString() is id.toString()
-
-    return null
-
-  getSelectedCode: ->
-    range = @sourceEditor.getSelectedBufferRange()
-    code  =
-      if range.isEmpty()
-        @sourceEditor.getText()
-      else
-        @sourceEditor.getTextInBufferRange(range)
-
-    return code
-
   renderCompiled: ->
-    code = @getSelectedCode()
+    code = util.getSelectedCode @sourceEditor
 
     try
-      text = CoffeeCompileView.compile @sourceEditor, code
+      literate = util.isLiterate @sourceEditor
+      text     = util.compile code, literate
     catch e
       text = e.stack
 
@@ -85,24 +75,3 @@ class CoffeeCompileView extends TextEditorView
       "Compiled Javascript"
 
   getUri: -> "coffeecompile://editor/#{@sourceEditorId}"
-
-  @compile: (editor, code) ->
-    grammarScopeName = editor.getGrammar().scopeName
-
-    bare     = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
-    literate = grammarScopeName is "source.litcoffee"
-
-    return coffee.compile code, {bare, literate}
-
-  @saveCompiled: (editor, callback) ->
-    try
-      text     = CoffeeCompileView.compile editor, editor.getText()
-      srcPath  = editor.getPath()
-      srcExt   = path.extname srcPath
-      destPath = path.join(
-        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
-      )
-      fs.writeFile destPath, text, callback
-
-    catch e
-      console.error "Coffee-compile: #{e.stack}"
