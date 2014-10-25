@@ -1,14 +1,16 @@
 'context-menu':
-  '.overlayer':
-    'Coffee Compile': 'coffee-compile:compile'
+  '.overlayer': [{
+    label: 'Coffee Compile'
+    command: 'coffee-compile:compile'
+  }]
 
 'menu': [
   {
-    'label': 'Packages'
-    'submenu': [
-      'label': 'Coffee Compile'
-      'submenu': [
-        { 'label': 'Compile', 'command': 'coffee-compile:compile' }
+    submenu: 'Packages'
+    submenu: [
+      label: 'Coffee Compile'
+      submenu: [
+        { label: 'Compile', label: 'coffee-compile:compile' }
       ]
     ]
   }
