@@ -5,17 +5,27 @@ CoffeeCompileView = require './coffee-compile-view'
 util              = require './util'
 
 module.exports =
-  configDefaults:
-    grammars: [
-      'source.coffee'
-      'source.litcoffee'
-      'text.plain'
-      'text.plain.null-grammar'
-    ]
-    noTopLevelFunctionWrapper: true
-    compileOnSave: false
-    compileOnSaveWithoutPreview: false
-    focusEditorAfterCompile: false
+  config:
+    grammars:
+      type: 'array'
+      default: [
+        'source.coffee'
+        'source.litcoffee'
+        'text.plain'
+        'text.plain.null-grammar'
+      ]
+    noTopLevelFunctionWrapper:
+      type: 'boolean'
+      default: true
+    compileOnSave:
+      type: 'boolean'
+      default: false
+    compileOnSaveWithoutPreview:
+      type: 'boolean'
+      default: false
+    focusEditorAfterCompile:
+      type: 'boolean'
+      default: false
 
   activate: ->
     atom.workspaceView.command 'coffee-compile:compile', => @display()
