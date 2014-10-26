@@ -94,13 +94,14 @@ describe 'CoffeeCompile', ->
     it 'should not preview compiled js', ->
       atom.config.set 'coffee-compile.grammars', []
 
-      waitsForPromise 'coffee-compile package to activate', ->
-        atom.packages.activatePackage('coffee-compile')
-
       waitsForPromise ->
         atom.workspace.open 'coffee-compile-fixtures.coffee'
 
       runs ->
+        spyOn console, 'warn'
         spyOn(atom.workspace, 'open').andCallThrough()
+
         atom.workspaceView.getActiveView().trigger 'coffee-compile:compile'
+
+        expect(console.warn).toHaveBeenCalled()
         expect(atom.workspace.open).not.toHaveBeenCalled()

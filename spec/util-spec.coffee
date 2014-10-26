@@ -22,10 +22,6 @@ describe "util", ->
       expect(util.getTextEditorById id).toBe null
 
   describe 'compile', ->
-    beforeEach ->
-      waitsForPromise "coffee-compile package to activate", ->
-        atom.packages.activatePackage('coffee-compile')
-
     it 'should compile bare', ->
       expected = """
       hello(world);

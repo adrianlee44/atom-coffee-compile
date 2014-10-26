@@ -11,16 +11,18 @@ describe "CoffeeCompileView", ->
     atom.workspace     = atom.workspaceView.model
 
     waitsForPromise ->
+      atom.packages.activatePackage('language-coffee-script')
+
+    waitsForPromise ->
+      atom.packages.activatePackage 'coffee-compile'
+
+    waitsForPromise ->
       atom.project.open('test.coffee').then (o) ->
         editor = o
 
-    waitsForPromise ->
-      atom.packages.activatePackage('language-coffee-script')
+  it "should compile the whole file and display compiled js", ->
+    spyOn CoffeeCompileView.prototype, "renderCompiled"
 
-  describe "renderCompiled", ->
-    it "should compile the whole file and display compiled js", ->
-      spyOn CoffeeCompileView.prototype, "renderCompiled"
+    compiled = new CoffeeCompileView {sourceEditor: editor}
 
-      compiled = new CoffeeCompileView {sourceEditor: editor}
-
-      expect(CoffeeCompileView.prototype.renderCompiled).toHaveBeenCalled()
+    expect(CoffeeCompileView.prototype.renderCompiled).toHaveBeenCalled()
