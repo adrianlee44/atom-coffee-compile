@@ -20,6 +20,12 @@ describe 'CoffeeCompile', ->
         editor = o
 
     runs ->
+      atom.config.set 'coffee-compile.grammars', [
+        'source.coffee'
+        'source.litcoffee'
+        'text.plain'
+        'text.plain.null-grammar'
+      ]
       atom.workspaceView.attachToDom()
 
       spyOn(CoffeeCompileView.prototype, 'renderCompiled').andCallThrough()
