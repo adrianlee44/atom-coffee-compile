@@ -15,6 +15,7 @@ Preview and/or save compiled Javascript in Atom
 ## TODO
 - Recompile on change option
 - Open compiled JS in pane if `compile on save` option is enabled
+- Add sourcemap support
 
 ## Changelog
 - 2014-10-22   v0.8.3   Fixed preview not working due to API changes
