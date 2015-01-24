@@ -1,10 +1,10 @@
-{TextEditorView} = require 'atom'
+{TextEditorView} = require 'atom-space-pen-views'
 util = require './util'
 
 module.exports =
 class CoffeeCompileView extends TextEditorView
   constructor: ({@sourceEditorId, @sourceEditor}) ->
-    @view = super
+    super
 
     # Used for unsubscribing callbacks on editor text buffer
     @disposables = []
@@ -15,10 +15,8 @@ class CoffeeCompileView extends TextEditorView
     if @sourceEditor?
       @bindCoffeeCompileEvents()
 
-    @bindMethods()
-
     # set editor grammar to Javascript
-    @view.getModel().setGrammar atom.syntax.selectGrammar("hello.js")
+    this.getModel().setGrammar atom.grammars.selectGrammar("hello.js")
 
     @renderCompiled()
 
@@ -26,32 +24,19 @@ class CoffeeCompileView extends TextEditorView
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       util.compileToFile @sourceEditor
 
-    return @view
-
-  bindMethods: ->
-    # HACK: Since the html is getting passed back instead of the instance,
-    # the return object doesn't have getTitle function
-    @view.getTitle = @getTitle.bind this
-
-    @view.beforeRemove = @destroy.bind this
-
-    @view.getUri = @getUri.bind this
-
   bindCoffeeCompileEvents: ->
     if atom.config.get('coffee-compile.compileOnSave') and not
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-      buffer = @sourceEditor.getBuffer()
 
-      @disposables.push buffer.onDidSave =>
-        @renderCompiled()
-        util.compileToFile @sourceEditor
-
-      @disposables.push buffer.onDidReload =>
-        @renderCompiled()
-        util.compileToFile @sourceEditor
+      @disposables.push @sourceEditor.getBuffer().onDidSave => @renderAndSave()
+      @disposables.push @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
   destroy: ->
     disposable.dispose() for disposable in @disposables
+
+  renderAndSave: ->
+    @renderCompiled()
+    util.compileToFile @sourceEditor
 
   renderCompiled: ->
     code = util.getSelectedCode @sourceEditor
@@ -62,7 +47,7 @@ class CoffeeCompileView extends TextEditorView
     catch e
       text = e.stack
 
-    @view.getModel().setText text
+    this.getModel().setText text
 
   getTitle: ->
     if @sourceEditor?
@@ -70,4 +55,4 @@ class CoffeeCompileView extends TextEditorView
     else
       "Compiled Javascript"
 
-  getUri: -> "coffeecompile://editor/#{@sourceEditorId}"
+  getURI: -> "coffeecompile://editor/#{@sourceEditorId}"

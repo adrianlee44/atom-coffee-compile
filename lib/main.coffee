@@ -28,10 +28,10 @@ module.exports =
       default: false
 
   activate: ->
-    atom.workspaceView.command 'coffee-compile:compile', => @display()
+    atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
 
     if atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-      atom.workspaceView.command 'core:save', => @save()
+      atom.commands.add 'atom-workspace', 'core:save': => @save()
 
     atom.workspace.addOpener (uriToOpen) ->
       {protocol, pathname} = url.parse uriToOpen
@@ -47,7 +47,7 @@ module.exports =
     return (grammar = editor.getGrammar().scopeName) in grammars
 
   save: ->
-    editor = atom.workspace.getActiveEditor()
+    editor = atom.workspace.getActiveTextEditor()
 
     return unless editor?
 
@@ -56,7 +56,7 @@ module.exports =
     util.compileToFile editor
 
   display: ->
-    editor     = atom.workspace.getActiveEditor()
+    editor     = atom.workspace.getActiveTextEditor()
     activePane = atom.workspace.getActivePane()
 
     return unless editor?
@@ -68,7 +68,7 @@ module.exports =
       searchAllPanes: true
       split: "right"
     .then (view) ->
-      uriToOpen = view.getUri()
+      uriToOpen = view.getURI()
 
       return unless uriToOpen
 

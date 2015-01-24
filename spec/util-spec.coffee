@@ -1,13 +1,10 @@
 util = require '../lib/util'
-{Workspace} = require 'atom'
 fs = require 'fs'
 
 describe "util", ->
   editor = null
 
   beforeEach ->
-    atom.workspace = new Workspace()
-
     waitsForPromise ->
       atom.workspace.open('coffee-compile-fixtures.coffee').then (o) ->
         editor = o

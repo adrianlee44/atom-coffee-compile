@@ -7,7 +7,7 @@
 
 # For more detailed documentation see
 # https://atom.io/docs/latest/advanced/keymaps
-'.platform-darwin .editor':
+'.platform-darwin atom-text-editor':
   'cmd-shift-c': 'coffee-compile:compile'
-'.platform-win32 .editor, .platform-linux .editor':
+'.platform-win32 atom-text-editor, .platform-linux atom-text-editor':
   'ctrl-alt-c': 'coffee-compile:compile'

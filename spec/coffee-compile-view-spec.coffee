@@ -1,5 +1,4 @@
 CoffeeCompileView = require '../lib/coffee-compile-view'
-{WorkspaceView} = require 'atom'
 fs = require 'fs'
 
 describe "CoffeeCompileView", ->
@@ -7,9 +6,6 @@ describe "CoffeeCompileView", ->
   editor   = null
 
   beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    atom.workspace     = atom.workspaceView.model
-
     waitsForPromise ->
       atom.packages.activatePackage('language-coffee-script')
 

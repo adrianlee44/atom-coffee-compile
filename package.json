@@ -1,6 +1,6 @@
 {
   "name": "coffee-compile",
-  "main": "./lib/coffee-compile",
+  "main": "./lib/main",
   "version": "0.8.4",
   "private": true,
   "description": "Preview and/or save compiled Javascript in Atom",
@@ -10,6 +10,7 @@
     "atom": ">=0.124.0"
   },
   "dependencies": {
+    "atom-space-pen-views": "^2.0.3",
     "coffee-script": "^1.7.1"
   }
 }
