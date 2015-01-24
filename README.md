@@ -18,6 +18,7 @@ Preview and/or save compiled Javascript in Atom
 - Add sourcemap support
 
 ## Changelog
+- 2015-01-24   v0.9.0   Updated to using Atom 1.0 API
 - 2014-10-27   v0.8.4   Reenabled focusing on editor. Cleaned up package.
 - 2014-10-22   v0.8.3   Fixed preview not working due to API changes
 - 2014-09-16   v0.8.2   Added check to make sure user is compiling and saving Coffeescript
