@@ -18,6 +18,7 @@ Preview and/or save compiled Javascript in Atom
 - Add sourcemap support
 
 ## Changelog
+- 2015-01-26   v0.9.1   Fixed `No top level function wrapper` not working
 - 2015-01-24   v0.9.0   Updated to using Atom 1.0 API
 - 2014-10-27   v0.8.4   Reenabled focusing on editor. Cleaned up package.
 - 2014-10-22   v0.8.3   Fixed preview not working due to API changes
