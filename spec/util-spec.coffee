@@ -31,7 +31,10 @@ describe "util", ->
       atom.config.set('coffee-compile.noTopLevelFunctionWrapper', false)
 
       expected = """
-      hello(world);
+      (function() {
+        hello(world);
+
+      }).call(this);
 
       """
 

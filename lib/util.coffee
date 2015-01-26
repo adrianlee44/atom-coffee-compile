@@ -21,7 +21,8 @@ module.exports =
   @returns {String} Compiled code
   ###
   compile: (code, literate = false) ->
-    bare = atom.config.get('coffee-compile.noTopLevelFunctionWrapper') or true
+    bare  = atom.config.get('coffee-compile.noTopLevelFunctionWrapper')
+    bare ?= true
 
     return coffee.compile code, {bare, literate}
 
