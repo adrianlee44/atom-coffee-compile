@@ -6,11 +6,12 @@
 
 'menu': [
   {
-    submenu: 'Packages'
+    label: 'Packages'
     submenu: [
       label: 'Coffee Compile'
       submenu: [
-        { label: 'Compile', label: 'coffee-compile:compile' }
+        label: 'Compile'
+        command: 'coffee-compile:compile'
       ]
     ]
   }
