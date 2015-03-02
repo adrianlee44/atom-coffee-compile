@@ -18,6 +18,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Add sourcemap support
 
 ## Changelog
+- 2015-03-01   v0.11.0   Fixed compiled not searchable. Added coffee-compile to menu
 - 2015-01-29   v0.10.0   Updated coffee-script to 1.9.0
 - 2015-01-26   v0.9.1   Fixed `No top level function wrapper` not working
 - 2015-01-24   v0.9.0   Updated to using Atom 1.0 API
