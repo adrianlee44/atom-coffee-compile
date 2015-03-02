@@ -69,3 +69,7 @@ module.exports =
 
     catch e
       console.error "Coffee-compile: #{e.stack}"
+
+  checkGrammar: (editor) ->
+    grammars = atom.config.get('coffee-compile.grammars') or []
+    return (grammar = editor.getGrammar().scopeName) in grammars

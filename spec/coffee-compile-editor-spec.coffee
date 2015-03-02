@@ -1,7 +1,7 @@
-CoffeeCompileView = require '../lib/coffee-compile-view'
+CoffeeCompileEditor = require '../lib/coffee-compile-editor'
 fs = require 'fs'
 
-describe "CoffeeCompileView", ->
+describe "CoffeeCompileEditor", ->
   compiled = null
   editor   = null
 
@@ -17,8 +17,8 @@ describe "CoffeeCompileView", ->
         editor = o
 
   it "should compile the whole file and display compiled js", ->
-    spyOn CoffeeCompileView.prototype, "renderCompiled"
+    spyOn CoffeeCompileEditor.prototype, "renderCompiled"
 
-    compiled = new CoffeeCompileView {sourceEditor: editor}
+    compiled = new CoffeeCompileEditor {sourceEditor: editor}
 
-    expect(CoffeeCompileView.prototype.renderCompiled).toHaveBeenCalled()
+    expect(CoffeeCompileEditor.prototype.renderCompiled).toHaveBeenCalled()

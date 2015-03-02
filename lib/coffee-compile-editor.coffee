@@ -1,22 +1,18 @@
-{TextEditorView} = require 'atom-space-pen-views'
+{TextEditor} = require 'atom'
 util = require './util'
 
 module.exports =
-class CoffeeCompileView extends TextEditorView
-  constructor: ({@sourceEditorId, @sourceEditor}) ->
+class CoffeeCompileEditor extends TextEditor
+  constructor: ({@sourceEditor}) ->
     super
 
     # Used for unsubscribing callbacks on editor text buffer
     @disposables = []
-
-    if @sourceEditorId? and not @sourceEditor
-      @sourceEditor = util.getTextEditorById @sourceEditorId
-
-    if @sourceEditor?
-      @bindCoffeeCompileEvents()
+    
+    @bindCoffeeCompileEvents() if @sourceEditor?
 
     # set editor grammar to Javascript
-    this.getModel().setGrammar atom.grammars.selectGrammar("hello.js")
+    @setGrammar atom.grammars.selectGrammar("hello.js")
 
     @renderCompiled()
 
@@ -31,8 +27,10 @@ class CoffeeCompileView extends TextEditorView
       @disposables.push @sourceEditor.getBuffer().onDidSave => @renderAndSave()
       @disposables.push @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
-  destroy: ->
+  destroyed: ->
     disposable.dispose() for disposable in @disposables
+
+    super
 
   renderAndSave: ->
     @renderCompiled()
@@ -47,7 +45,7 @@ class CoffeeCompileView extends TextEditorView
     catch e
       text = e.stack
 
-    this.getModel().setText text
+    @setText text
 
   getTitle: ->
     if @sourceEditor?

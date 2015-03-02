@@ -1,4 +1,4 @@
-CoffeeCompileView = require '../lib/coffee-compile-view'
+CoffeeCompileEditor = require '../lib/coffee-compile-editor'
 util = require '../lib/util'
 
 describe 'CoffeeCompile', ->
@@ -27,7 +27,7 @@ describe 'CoffeeCompile', ->
         'text.plain.null-grammar'
       ]
 
-      spyOn(CoffeeCompileView.prototype, 'renderCompiled').andCallThrough()
+      spyOn(CoffeeCompileEditor.prototype, 'renderCompiled').andCallThrough()
 
   describe 'compile on save', ->
     beforeEach ->
@@ -58,7 +58,7 @@ describe 'CoffeeCompile', ->
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
 
       waitsFor 'renderCompiled to be called', ->
-        CoffeeCompileView::renderCompiled.callCount > 0
+        CoffeeCompileEditor::renderCompiled.callCount > 0
 
     it 'should always split to the right', ->
       runs ->

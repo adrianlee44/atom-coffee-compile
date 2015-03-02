@@ -1,8 +1,8 @@
 url         = require 'url'
 querystring = require 'querystring'
 
-CoffeeCompileView = require './coffee-compile-view'
-util              = require './util'
+CoffeeCompileEditor = require './coffee-compile-editor'
+util                = require './util'
 
 module.exports =
   config:
@@ -39,19 +39,17 @@ module.exports =
 
       return unless protocol is 'coffeecompile:'
 
-      new CoffeeCompileView
-        sourceEditorId: pathname.substr(1)
+      sourceEditorId = pathname.substr(1)
+      sourceEditor   = util.getTextEditorById sourceEditorId
 
-  checkGrammar: (editor) ->
-    grammars = atom.config.get('coffee-compile.grammars') or []
-    return (grammar = editor.getGrammar().scopeName) in grammars
+      return unless sourceEditor?
+
+      return new CoffeeCompileEditor {sourceEditor}
 
   save: ->
     editor = atom.workspace.getActiveTextEditor()
 
-    return unless editor?
-
-    return unless @checkGrammar editor
+    return if not editor? or not util.checkGrammar editor
 
     util.compileToFile editor
 
@@ -61,21 +59,12 @@ module.exports =
 
     return unless editor?
 
-    unless @checkGrammar editor
+    unless util.checkGrammar editor
       return console.warn("Cannot compile non-Coffeescript to Javascript")
 
     atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
       split: "right"
-    .then (view) ->
-      uriToOpen = view.getURI()
-
-      return unless uriToOpen
-
-      {protocol, pathname} = url.parse uriToOpen
-      pathname = querystring.unescape(pathname) if pathname
-
-      return unless protocol is 'coffeecompile:'
-
+    .then ->
       if atom.config.get('coffee-compile.focusEditorAfterCompile')
         activePane.activate()
