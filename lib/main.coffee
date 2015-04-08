@@ -26,6 +26,9 @@ module.exports =
     focusEditorAfterCompile:
       type: 'boolean'
       default: false
+    compileCjsx:
+      type: 'boolean'
+      default: false
 
   activate: ->
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
