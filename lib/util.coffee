@@ -1,7 +1,8 @@
 coffee = require 'coffee-script'
 fs     = require 'fs'
 path   = require 'path'
-cjsx_transform = require 'coffee-react-transform'
+
+cjsx_transform = null
 
 module.exports =
   ###
@@ -25,7 +26,11 @@ module.exports =
     bare  = atom.config.get('coffee-compile.noTopLevelFunctionWrapper')
     bare ?= true
 
-    code = cjsx_transform(code)
+    if atom.config.get('coffee-compile.compileCjsx')
+      unless cjsx_transform
+        cjsx_transform = require 'coffee-react-transform'
+      code = cjsx_transform(code)
+
     return coffee.compile code, {bare, literate}
 
   ###
