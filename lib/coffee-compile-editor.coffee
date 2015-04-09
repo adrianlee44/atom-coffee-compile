@@ -6,9 +6,6 @@ class CoffeeCompileEditor extends TextEditor
   constructor: ({@sourceEditor}) ->
     super
 
-    # Used for unsubscribing callbacks on editor text buffer
-    @disposables = []
-    
     @bindCoffeeCompileEvents() if @sourceEditor?
 
     # set editor grammar to Javascript
@@ -24,13 +21,8 @@ class CoffeeCompileEditor extends TextEditor
     if atom.config.get('coffee-compile.compileOnSave') and not
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
 
-      @disposables.push @sourceEditor.getBuffer().onDidSave => @renderAndSave()
-      @disposables.push @sourceEditor.getBuffer().onDidReload => @renderAndSave()
-
-  destroyed: ->
-    disposable.dispose() for disposable in @disposables
-
-    super
+      @disposables.add @sourceEditor.getBuffer().onDidSave => @renderAndSave()
+      @disposables.add @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
   renderAndSave: ->
     @renderCompiled()
