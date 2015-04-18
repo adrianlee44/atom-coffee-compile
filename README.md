@@ -19,6 +19,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Add sourcemap support
 
 ## Changelog
+- 2015-04-17   v0.13.0   Updated coffee-script to 1.9.2
 - 2015-04-09   v0.12.0   Added `Compile CJSX` option (disabled by default)
 - 2015-03-01   v0.11.0   Fixed compiled not searchable. Added coffee-compile to menu
 - 2015-01-29   v0.10.0   Updated coffee-script to 1.9.0
