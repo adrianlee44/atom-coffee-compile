@@ -20,13 +20,6 @@ describe 'CoffeeCompile', ->
         editor = o
 
     runs ->
-      atom.config.set 'coffee-compile.grammars', [
-        'source.coffee'
-        'source.litcoffee'
-        'text.plain'
-        'text.plain.null-grammar'
-      ]
-
       spyOn(CoffeeCompileEditor.prototype, 'renderCompiled').andCallThrough()
 
   describe 'compile on save', ->
@@ -94,19 +87,3 @@ describe 'CoffeeCompile', ->
       runs ->
         [editorPane, compiledPane] = atom.workspace.getPanes()
         expect(editorPane.isActive()).toBe(true)
-
-  describe "when the editor's grammar is not coffeescript", ->
-    it 'should not preview compiled js', ->
-      atom.config.set 'coffee-compile.grammars', []
-
-      waitsForPromise ->
-        atom.workspace.open 'coffee-compile-fixtures.coffee'
-
-      runs ->
-        spyOn console, 'warn'
-        spyOn(atom.workspace, 'open').andCallThrough()
-
-        atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
-
-        expect(console.warn).toHaveBeenCalled()
-        expect(atom.workspace.open).not.toHaveBeenCalled()

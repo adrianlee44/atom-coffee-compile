@@ -13,5 +13,13 @@
     "coffee-react-transform": "3.1.0",
     "coffee-script": "1.9.2",
     "mkdirp": "^0.5.0"
+  },
+  "consumedServices": {
+    "coffee-compile.provider": {
+      "description": "A package for compiling coffeescript",
+      "versions": {
+        "1.0.0": "registerProviders"
+      }
+    }
   }
 }

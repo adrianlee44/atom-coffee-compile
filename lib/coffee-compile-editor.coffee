@@ -8,7 +8,6 @@ class CoffeeCompileEditor extends TextEditor
 
     if atom.config.get('coffee-compile.compileOnSave') and not
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-
       @disposables.add @sourceEditor.getBuffer().onDidSave => @renderAndSave()
       @disposables.add @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
@@ -29,8 +28,7 @@ class CoffeeCompileEditor extends TextEditor
     code = util.getSelectedCode @sourceEditor
 
     try
-      literate = util.isLiterate @sourceEditor
-      text     = util.compile code, literate
+      text = util.compile code, @sourceEditor
     catch e
       text = e.stack
 

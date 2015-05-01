@@ -25,7 +25,7 @@ describe "util", ->
 
       """
 
-      expect(util.compile('hello world')).toBe expected
+      expect(util.compile('hello world', editor)).toBe expected
 
     it 'should compile with wrapper', ->
       atom.config.set('coffee-compile.noTopLevelFunctionWrapper', false)
@@ -38,7 +38,18 @@ describe "util", ->
 
       """
 
-      expect(util.compile('hello world')).toBe expected
+      expect(util.compile('hello world', editor)).toBe expected
+
+  describe 'compile litcoffee', ->
+    litcoffeeEditor = null
+
+    beforeEach ->
+      waitsForPromise ->
+        atom.packages.activatePackage('language-coffee-script')
+
+      waitsForPromise ->
+        atom.workspace.open('test.litcoffee').then (o) ->
+          litcoffeeEditor = o
 
     it 'should compile literate', ->
       source = """
@@ -57,7 +68,7 @@ describe "util", ->
 
       """
 
-      expect(util.compile(source, true)).toBe expected
+      expect(util.compile(source, litcoffeeEditor)).toBe expected
 
   describe 'getSelectedCode', ->
     text = """
@@ -77,22 +88,6 @@ describe "util", ->
       editor.setSelectedBufferRange([[0, 0], [0, 16]])
 
       expect(util.getSelectedCode(editor)).toBe "# This is a test"
-
-  describe 'isLiterate', ->
-    beforeEach ->
-      waitsForPromise ->
-        atom.packages.activatePackage('language-coffee-script')
-
-    it 'should return true', ->
-      waitsForPromise ->
-        atom.project.open('test.litcoffee').then (o) ->
-          editor = o
-
-      runs ->
-        expect(util.isLiterate(editor)).toBe true
-
-    it 'should return false', ->
-      expect(util.isLiterate(editor)).toBe false
 
   describe 'compileToFile', ->
     filePath = null

@@ -3,17 +3,11 @@ querystring = require 'querystring'
 
 CoffeeCompileEditor = require './coffee-compile-editor'
 util                = require './util'
+pluginManager       = require './plugin-manager'
+coffeeProvider      = require './coffee-provider'
 
 module.exports =
   config:
-    grammars:
-      type: 'array'
-      default: [
-        'source.coffee'
-        'source.litcoffee'
-        'text.plain'
-        'text.plain.null-grammar'
-      ]
     noTopLevelFunctionWrapper:
       type: 'boolean'
       default: true
@@ -54,6 +48,9 @@ module.exports =
       else if value
         saveDisposable = atom.commands.add 'atom-workspace', 'core:save': => @save()
 
+    # NOTE: Remove once coffeescript provider is moved to a new package
+    @registerProviders coffeeProvider
+
     atom.workspace.addOpener (uriToOpen) ->
       {protocol, pathname} = url.parse uriToOpen
       pathname = querystring.unescape(pathname) if pathname
@@ -70,7 +67,7 @@ module.exports =
   save: ->
     editor = atom.workspace.getActiveTextEditor()
 
-    if editor? and util.checkGrammar(editor)
+    if editor? and pluginManager.isEditorLanguageSupported(editor)
       util.compileToFile editor
 
   display: ->
@@ -79,8 +76,8 @@ module.exports =
 
     return unless editor?
 
-    unless util.checkGrammar editor
-      return console.warn("Cannot compile non-Coffeescript to Javascript")
+    unless pluginManager.isEditorLanguageSupported editor
+      return console.warn("Coffee compile: Invalid language")
 
     atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
@@ -88,3 +85,6 @@ module.exports =
     .then ->
       if atom.config.get('coffee-compile.focusEditorAfterCompile')
         activePane.activate()
+
+  registerProviders: (provider) ->
+    pluginManager.register provider

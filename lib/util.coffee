@@ -1,7 +1,5 @@
-coffee = require 'coffee-script'
-fsUtil = require './fs-util'
-
-cjsx_transform = null
+fsUtil        = require './fs-util'
+pluginManager = require './plugin-manager'
 
 module.exports =
   ###
@@ -18,19 +16,24 @@ module.exports =
   ###
   @name compile
   @param {String} code
-  @param {Boolean} literate (default false)
+  @param {Editor} editor
   @returns {String} Compiled code
   ###
-  compile: (code, literate = false) ->
-    bare  = atom.config.get('coffee-compile.noTopLevelFunctionWrapper')
-    bare ?= true
+  compile: (code, editor) ->
+    language = pluginManager.getLanguageByScope editor.getGrammar().scopeName
 
-    if atom.config.get('coffee-compile.compileCjsx')
-      unless cjsx_transform
-        cjsx_transform = require 'coffee-react-transform'
-      code = cjsx_transform(code)
+    return code unless language?
 
-    return coffee.compile code, {bare, literate}
+    for preCompiler in language.preCompilers
+      code = preCompiler code, editor
+
+    for compiler in language.compilers
+      code = compiler code, editor
+
+    for postCompiler in language.postCompilers
+      code = postCompiler code, editor
+
+    return code
 
   ###
   @name getSelectedCode
@@ -48,23 +51,13 @@ module.exports =
     return text
 
   ###
-  @name isLiterate
-  @param {Editor} editor
-  @returns {Boolean}
-  ###
-  isLiterate: (editor) ->
-    grammarScopeName = editor.getGrammar().scopeName
-    return grammarScopeName is "source.litcoffee"
-
-  ###
   @name compileToFile
   @param {Editor} editor
   @param {Function} callback
   ###
   compileToFile: (editor, callback) ->
     try
-      literate = @isLiterate editor
-      text     = @compile editor.getText(), literate
+      text     = @compile editor.getText(), editor
       srcPath  = editor.getPath()
       destPath = fsUtil.resolvePath editor.getPath()
       destPath = fsUtil.toExt destPath, 'js'
@@ -72,7 +65,3 @@ module.exports =
 
     catch e
       console.error "Coffee-compile: #{e.stack}"
-
-  checkGrammar: (editor) ->
-    grammars = atom.config.get('coffee-compile.grammars') or []
-    return editor.getGrammar().scopeName in grammars
