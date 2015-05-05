@@ -31,6 +31,11 @@ module.exports =
       default: false
       description: 'Provides support for an equivalent of JSX syntax in Coffeescript'
       title: 'Compile CJSX'
+    destination:
+      type: 'string'
+      default: '.'
+      title: 'Destination filepath'
+      description: 'Relative to project root'
 
   activate: ->
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()

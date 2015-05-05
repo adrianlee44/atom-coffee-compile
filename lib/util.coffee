@@ -1,6 +1,5 @@
 coffee = require 'coffee-script'
-fs     = require 'fs'
-path   = require 'path'
+fsUtil = require './fs-util'
 
 cjsx_transform = null
 
@@ -68,11 +67,9 @@ module.exports =
       literate = @isLiterate editor
       text     = @compile editor.getText(), literate
       srcPath  = editor.getPath()
-      srcExt   = path.extname srcPath
-      destPath = path.join(
-        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
-      )
-      fs.writeFile destPath, text, callback
+      destPath = fsUtil.resolvePath editor.getPath()
+      destPath = fsUtil.toExt destPath, 'js'
+      fsUtil.writeFile destPath, text, callback
 
     catch e
       console.error "Coffee-compile: #{e.stack}"
