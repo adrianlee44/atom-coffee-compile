@@ -42,10 +42,17 @@ module.exports =
       description: 'Remove all path parts'
 
   activate: ->
+    saveDisposable = null
+
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
 
-    if atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-      atom.commands.add 'atom-workspace', 'core:save': => @save()
+    atom.config.observe 'coffee-compile.compileOnSaveWithoutPreview', (value) =>
+      if not value and saveDisposable?
+        saveDisposable.dispose()
+        saveDisposable = null
+
+      else if value
+        saveDisposable = atom.commands.add 'atom-workspace', 'core:save': => @save()
 
     atom.workspace.addOpener (uriToOpen) ->
       {protocol, pathname} = url.parse uriToOpen
