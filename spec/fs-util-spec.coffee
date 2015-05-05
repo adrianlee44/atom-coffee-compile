@@ -23,6 +23,11 @@ describe "fs util", ->
       output = fsUtil.resolvePath testPath
       expect(output, "/home/test/github/coffee-compile/test/folder/lib/fs-util.js")
 
+    it "should flatten path", ->
+      atom.config.set("coffee-compile.flatten", true)
+      output = fsUtil.resolvePath testPath
+      expect(output, "/home/test/github/coffee-compile/fs-util.js")
+
   describe "writeFile", ->
     editor = null
     filePath = null

@@ -12,7 +12,14 @@ module.exports =
 
   resolvePath: (srcPath) ->
     relative = atom.config.get('coffee-compile.destination') or '.'
+    flatten = atom.config.get('coffee-compile.flatten')
+
     [projectPath, relativePath] = atom.project.relativizePath(srcPath)
+
+    # Remove all path parts
+    if flatten
+      relativePath = path.basename relativePath
+
     return path.join projectPath, relative, relativePath
 
   writeFile: (filename, data, callback) ->

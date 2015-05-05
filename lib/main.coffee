@@ -36,6 +36,10 @@ module.exports =
       default: '.'
       title: 'Destination filepath'
       description: 'Relative to project root'
+    flatten:
+      type: 'boolean'
+      default: false
+      description: 'Remove all path parts'
 
   activate: ->
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
