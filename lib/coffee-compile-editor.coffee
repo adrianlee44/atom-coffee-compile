@@ -6,7 +6,11 @@ class CoffeeCompileEditor extends TextEditor
   constructor: ({@sourceEditor}) ->
     super
 
-    @bindCoffeeCompileEvents() if @sourceEditor?
+    if atom.config.get('coffee-compile.compileOnSave') and not
+        atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
+
+      @disposables.add @sourceEditor.getBuffer().onDidSave => @renderAndSave()
+      @disposables.add @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
     # set editor grammar to Javascript
     @setGrammar atom.grammars.selectGrammar("hello.js")
@@ -16,13 +20,6 @@ class CoffeeCompileEditor extends TextEditor
     if atom.config.get('coffee-compile.compileOnSave') or
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       util.compileToFile @sourceEditor
-
-  bindCoffeeCompileEvents: ->
-    if atom.config.get('coffee-compile.compileOnSave') and not
-        atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-
-      @disposables.add @sourceEditor.getBuffer().onDidSave => @renderAndSave()
-      @disposables.add @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
   renderAndSave: ->
     @renderCompiled()

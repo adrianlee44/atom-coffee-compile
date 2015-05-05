@@ -59,9 +59,8 @@ module.exports =
   save: ->
     editor = atom.workspace.getActiveTextEditor()
 
-    return if not editor? or not util.checkGrammar editor
-
-    util.compileToFile editor
+    if editor? and util.checkGrammar(editor)
+      util.compileToFile editor
 
   display: ->
     editor     = atom.workspace.getActiveTextEditor()

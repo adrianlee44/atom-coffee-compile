@@ -17,8 +17,8 @@ module.exports =
 
   ###
   @name compile
-  @param {Editor} editor
   @param {String} code
+  @param {Boolean} literate (default false)
   @returns {String} Compiled code
   ###
   compile: (code, literate = false) ->
@@ -54,7 +54,6 @@ module.exports =
   ###
   isLiterate: (editor) ->
     grammarScopeName = editor.getGrammar().scopeName
-
     return grammarScopeName is "source.litcoffee"
 
   ###
@@ -76,4 +75,4 @@ module.exports =
 
   checkGrammar: (editor) ->
     grammars = atom.config.get('coffee-compile.grammars') or []
-    return (grammar = editor.getGrammar().scopeName) in grammars
+    return editor.getGrammar().scopeName in grammars
