@@ -1,3 +1,8 @@
+## v0.14.0 (2015-05-06)
+- Added destination filepath option
+- Added flatten option
+- Fixed toggling `compiled on save` does not work without reloading Atom
+
 ## v0.13.0 (2015-04-17)
 - Updated coffee-script to 1.9.2
 

@@ -5,9 +5,11 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Linux/Windows: `ctrl-alt-c`
 
 ## Options
-- No top level function wrapper (default: true)
 - Compile on save (default: false)
 - Compile on save without preview pane (default: false)
+- Destination filepath (default: '.')
+- Flatten (default: false)
+- No top level function wrapper (default: true)
 - Focus editor after compile (default: false)
 - Compile CJSX (default: false)
 
@@ -20,6 +22,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Support plugins
 
 ## Changelog
+- 2015-05-06   v0.14.0   Added `destination filepath` and `flatten` options
 - 2015-04-17   v0.13.0   Updated coffee-script to 1.9.2
 - 2015-04-09   v0.12.0   Added `Compile CJSX` option (disabled by default)
 
