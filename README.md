@@ -1,4 +1,4 @@
-# coffee-compile package [![Build Status](https://travis-ci.org/adrianlee44/atom-coffee-compile.svg?branch=master)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
+# coffee-compile package [![Build Status](https://img.shields.io/travis/adrianlee44/atom-coffee-compile/master.svg?style=flat-square)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
 
 Preview, compile and/or save CoffeeScript in editor to Javascript
 - Mac: `cmd+shift+c`
@@ -17,9 +17,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 
 ## TODO
 - Recompile on change option
-- Open compiled JS in pane if `compile on save` option is enabled
 - Add sourcemap support
-- Support plugins
 
 ## Changelog
 - 2015-05-06   v0.14.0   Added `destination filepath` and `flatten` options
