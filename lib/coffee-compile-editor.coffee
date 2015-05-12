@@ -37,4 +37,4 @@ class CoffeeCompileEditor extends TextEditor
     @setText text
 
   getTitle: -> "Compiled #{@sourceEditor?.getTitle() or ''}".trim()
-  getURI:   -> "coffeecompile://editor/#{@sourceEditorId}"
+  getURI:   -> "coffeecompile://editor/#{@sourceEditor.id}"
