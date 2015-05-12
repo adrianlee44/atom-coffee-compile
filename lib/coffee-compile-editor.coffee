@@ -1,5 +1,6 @@
 {TextEditor} = require 'atom'
 util = require './util'
+pluginManager = require './plugin-manager'
 
 module.exports =
 class CoffeeCompileEditor extends TextEditor
@@ -11,8 +12,9 @@ class CoffeeCompileEditor extends TextEditor
       @disposables.add @sourceEditor.getBuffer().onDidSave => @renderAndSave()
       @disposables.add @sourceEditor.getBuffer().onDidReload => @renderAndSave()
 
-    # set editor grammar to Javascript
-    @setGrammar atom.grammars.selectGrammar("hello.js")
+    # set editor grammar to correct language
+    grammar = atom.grammars.selectGrammar pluginManager.getCompiledScopeByEditor(@sourceEditor)
+    @setGrammar grammar
 
     @renderCompiled()
 
@@ -34,10 +36,5 @@ class CoffeeCompileEditor extends TextEditor
 
     @setText text
 
-  getTitle: ->
-    if @sourceEditor?
-      "Compiled #{@sourceEditor.getTitle()}"
-    else
-      "Compiled Javascript"
-
-  getURI: -> "coffeecompile://editor/#{@sourceEditorId}"
+  getTitle: -> "Compiled #{@sourceEditor?.getTitle() or ''}".trim()
+  getURI:   -> "coffeecompile://editor/#{@sourceEditorId}"

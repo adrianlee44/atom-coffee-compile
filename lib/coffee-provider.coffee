@@ -10,6 +10,7 @@ module.exports =
     'text.plain'
     'text.plain.null-grammar'
   ]
+  compiledScope: 'source.js'
   preCompile: (code, editor) ->
     if atom.config.get('coffee-compile.compileCjsx')
       unless cjsx_transform

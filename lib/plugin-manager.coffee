@@ -24,6 +24,7 @@ class PluginManager
         preCompilers:  []
         compilers:     []
         postCompilers: []
+        compiledScope: plugin.compiledScope
       language = @languages[selector]
 
       if plugin.preCompile? and typeof plugin.preCompile is "function"
@@ -81,5 +82,12 @@ class PluginManager
   ###
   isEditorLanguageSupported: (editor) ->
     return @isScopeSupported editor.getGrammar().scopeName
+
+  ###
+  @param {Editor} editor
+  @returns {String}
+  ###
+  getCompiledScopeByEditor: (editor) ->
+    return @languages[editor.getGrammar().scopeName]?.compiledScope or ''
 
 module.exports = new PluginManager()
