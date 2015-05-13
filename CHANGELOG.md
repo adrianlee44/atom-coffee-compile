@@ -1,3 +1,6 @@
+## v0.15.0 (2015-05-13)
+- Fixed subsequent compilations not updating same tab
+
 ## v0.14.0 (2015-05-06)
 - Added destination filepath option
 - Added flatten option
