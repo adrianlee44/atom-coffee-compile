@@ -16,9 +16,10 @@ describe "CoffeeCompileEditor", ->
       atom.project.open('test.coffee').then (o) ->
         editor = o
 
-  it "should compile the whole file and display compiled js", ->
+  it "should compile and display compiled js with no errors", ->
     spyOn CoffeeCompileEditor.prototype, "renderCompiled"
 
     compiled = new CoffeeCompileEditor {sourceEditor: editor}
+    compiled.renderCompiled()
 
     expect(CoffeeCompileEditor.prototype.renderCompiled).toHaveBeenCalled()

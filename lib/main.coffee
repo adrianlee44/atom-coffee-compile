@@ -82,7 +82,9 @@ module.exports =
     atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
       split: "right"
-    .then ->
+    .then (editor) ->
+      editor.renderCompiled()
+
       if atom.config.get('coffee-compile.focusEditorAfterCompile')
         activePane.activate()
 

@@ -16,8 +16,6 @@ class CoffeeCompileEditor extends TextEditor
     grammar = atom.grammars.selectGrammar pluginManager.getCompiledScopeByEditor(@sourceEditor)
     @setGrammar grammar
 
-    @renderCompiled()
-
     if atom.config.get('coffee-compile.compileOnSave') or
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       util.compileToFile @sourceEditor
