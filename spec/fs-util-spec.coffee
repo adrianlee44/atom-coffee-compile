@@ -1,3 +1,4 @@
+fs = require 'fs'
 fsUtil = require '../lib/fs-util'
 path = require 'path'
 
