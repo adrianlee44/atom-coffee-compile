@@ -76,6 +76,7 @@ describe 'CoffeeCompile', ->
 
     describe 'when compileOnSaveWithoutPreview = false', ->
       beforeEach ->
+        atom.config.set 'coffee-compile.compileOnSaveWithoutPreview', true
         atom.config.set 'coffee-compile.compileOnSaveWithoutPreview', false
 
       it 'should not call util.compileToFile on editor save', ->

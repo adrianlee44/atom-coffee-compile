@@ -36,19 +36,19 @@ module.exports =
       description: 'Remove all path parts'
 
   activate: ->
-    saveDisposables = null
+    saveDisposables = []
 
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
 
     atom.config.observe 'coffee-compile.compileOnSaveWithoutPreview', (value) =>
-      if not value and saveDisposable?
+      if not value and saveDisposables.length > 0
         sd.dispose() for sd in saveDisposables
-        saveDisposables = null
+        saveDisposables = []
 
       else if value
         saveDisposables = []
-        saveDisposables << atom.workspace.observeTextEditors (editor) =>
-          saveDisposables << editor.onDidSave =>
+        saveDisposables.push atom.workspace.observeTextEditors (editor) =>
+          saveDisposables.push editor.onDidSave =>
             @save(editor)
 
     # NOTE: Remove once coffeescript provider is moved to a new package
