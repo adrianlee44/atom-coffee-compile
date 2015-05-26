@@ -45,6 +45,50 @@ describe 'CoffeeCompile', ->
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
         expect(util.compileToFile).not.toHaveBeenCalled()
 
+  describe 'compile on save without preview', ->
+    beforeEach ->
+      spyOn util, 'compileToFile'
+
+    describe 'when compileOnSaveWithoutPreview = true', ->
+      beforeEach ->
+        atom.config.set 'coffee-compile.compileOnSaveWithoutPreview', true
+
+      it 'should call util.compileToFile on editor save', ->
+        runs ->
+          editor.save()
+
+        waitsFor ->
+          util.compileToFile.callCount > 0
+
+        runs ->
+          expect(util.compileToFile).toHaveBeenCalled()
+
+      it 'should call util.compileToFile on save command', ->
+        runs ->
+          atom.commands.dispatch workspaceElement, 'core:save'
+
+        waitsFor ->
+          util.compileToFile.callCount > 0
+
+        runs ->
+          expect(util.compileToFile).toHaveBeenCalled()
+
+
+    describe 'when compileOnSaveWithoutPreview = false', ->
+      beforeEach ->
+        atom.config.set 'coffee-compile.compileOnSaveWithoutPreview', true
+        atom.config.set 'coffee-compile.compileOnSaveWithoutPreview', false
+
+      it 'should not call util.compileToFile on editor save', ->
+        runs ->
+          editor.save()
+          expect(util.compileToFile).not.toHaveBeenCalled()
+
+      it 'should not call util.compileToFile on save command', ->
+        runs ->
+          atom.commands.dispatch workspaceElement, 'core:save'
+          expect(util.compileToFile).not.toHaveBeenCalled()
+
   describe 'open a new pane', ->
     beforeEach ->
       runs ->
