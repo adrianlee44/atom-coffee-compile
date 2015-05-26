@@ -1,3 +1,6 @@
+## v0.16.0 (2015-05-25)
+- Made `Compile on save without preview` option work with autosave
+
 ## v0.15.0 (2015-05-13)
 - Fixed subsequent compilations not updating same tab
 
