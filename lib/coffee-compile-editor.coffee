@@ -20,6 +20,9 @@ class CoffeeCompileEditor extends TextEditor
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       util.compileToFile @sourceEditor
 
+    # HACK: Override TextBuffer saveAs function
+    @buffer.saveAs = ->
+
   renderAndSave: ->
     @renderCompiled()
     util.compileToFile @sourceEditor
