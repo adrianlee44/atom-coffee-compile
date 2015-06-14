@@ -1,3 +1,6 @@
+## v0.16.0 (2015-06-13)
+- Suppress exception when saving on preview pane
+
 ## v0.16.0 (2015-05-25)
 - Made `Compile on save without preview` option work with autosave
 

@@ -20,7 +20,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Add sourcemap support
 
 ## Changelog
+- 2015-06-13   v0.16.1   Suppress exception when saving on preview pane
 - 2015-05-25   v0.16.0   Made `Compile on save without preview` option work with autosave
-- 2015-05-13   v0.15.0   Fixed subsequent compilations not updating same tab
 
 Check [changelog](https://github.com/adrianlee44/atom-coffee-compile/blob/master/CHANGELOG.md) for more information
