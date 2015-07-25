@@ -11,8 +11,9 @@ module.exports =
     )
 
   resolvePath: (srcPath) ->
-    relative = atom.config.get('coffee-compile.destination') or '.'
-    flatten = atom.config.get('coffee-compile.flatten')
+    destination = atom.config.get('coffee-compile.destination') or '.'
+    flatten     = atom.config.get('coffee-compile.flatten')
+    cwd         = atom.config.get('coffee-compile.cwd') or '.'
 
     [projectPath, relativePath] = atom.project.relativizePath(srcPath)
 
@@ -20,7 +21,8 @@ module.exports =
     if flatten
       relativePath = path.basename relativePath
 
-    return path.join projectPath, relative, relativePath
+    relativePath = path.relative cwd, relativePath
+    return path.join projectPath, destination, relativePath
 
   writeFile: (filename, data, callback) ->
     folder = path.dirname filename
@@ -29,3 +31,15 @@ module.exports =
       throw err if err?
 
       fs.writeFile filename, data, callback
+
+  isPathInSrc: (srcPath) ->
+    source = atom.config.get('coffee-compile.source') or ['.']
+    cwd    = atom.config.get('coffee-compile.cwd') or '.'
+
+    [projectPath, relativePath] = atom.project.relativizePath(srcPath)
+
+    source.some (folderPath) ->
+      fullFolderPath = path.join projectPath, cwd, folderPath
+      relative = path.relative srcPath, fullFolderPath
+
+      return relative isnt "" and !/\w+/.test(relative)

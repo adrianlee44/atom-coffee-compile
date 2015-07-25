@@ -1,13 +1,16 @@
-{TextEditor} = require 'atom'
-util = require './util'
+{TextEditor}  = require 'atom'
+util          = require './util'
 pluginManager = require './plugin-manager'
+fsUtil        = require './fs-util'
 
 module.exports =
 class CoffeeCompileEditor extends TextEditor
   constructor: ({@sourceEditor}) ->
     super
 
-    if atom.config.get('coffee-compile.compileOnSave') and not
+    shouldCompileToFile = @sourceEditor? and fsUtil.isPathInSrc(@sourceEditor.getPath())
+
+    if shouldCompileToFile and atom.config.get('coffee-compile.compileOnSave') and not
         atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
       @disposables.add @sourceEditor.getBuffer().onDidSave => @renderAndSave()
       @disposables.add @sourceEditor.getBuffer().onDidReload => @renderAndSave()
@@ -16,8 +19,8 @@ class CoffeeCompileEditor extends TextEditor
     grammar = atom.grammars.selectGrammar pluginManager.getCompiledScopeByEditor(@sourceEditor)
     @setGrammar grammar
 
-    if atom.config.get('coffee-compile.compileOnSave') or
-        atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
+    if shouldCompileToFile and (atom.config.get('coffee-compile.compileOnSave') or
+        atom.config.get('coffee-compile.compileOnSaveWithoutPreview'))
       util.compileToFile @sourceEditor
 
     # HACK: Override TextBuffer saveAs function

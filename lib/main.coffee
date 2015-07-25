@@ -5,6 +5,7 @@ CoffeeCompileEditor = require './coffee-compile-editor'
 util                = require './util'
 pluginManager       = require './plugin-manager'
 coffeeProvider      = require './coffee-provider'
+fsUtil              = require './fs-util'
 
 module.exports =
   config:
@@ -25,15 +26,29 @@ module.exports =
       default: false
       description: 'Provides support for an equivalent of JSX syntax in Coffeescript'
       title: 'Compile CJSX'
+
+    # file path configurations
+    flatten:
+      type: 'boolean'
+      default: false
+      description: 'Remove all path parts'
+    cwd:
+      type: 'string'
+      default: '.'
+      title: 'cwd'
+      description: 'All sources are relative to this path'
     destination:
       type: 'string'
       default: '.'
       title: 'Destination filepath'
       description: 'Relative to project root'
-    flatten:
-      type: 'boolean'
-      default: false
-      description: 'Remove all path parts'
+    source:
+      type: 'array'
+      default: ['.']
+      title: 'Source filepath(s)'
+      description: 'Source folder, relative to cwd'
+      items:
+        type: 'string'
 
   activate: ->
     saveDisposables = []
@@ -48,8 +63,9 @@ module.exports =
       else if value
         saveDisposables = []
         saveDisposables.push atom.workspace.observeTextEditors (editor) =>
-          saveDisposables.push editor.onDidSave =>
-            @save(editor)
+          if editor? and fsUtil.isPathInSrc(editor.getPath())
+            saveDisposables.push editor.onDidSave =>
+              @save(editor)
 
     # NOTE: Remove once coffeescript provider is moved to a new package
     @registerProviders coffeeProvider

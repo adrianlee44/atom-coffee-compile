@@ -57,9 +57,18 @@ module.exports =
   ###
   compileToFile: (editor, callback) ->
     try
+      srcPath = editor.getPath()
+
+      return unless fsUtil.isPathInSrc srcPath
+
       text     = @compile editor.getText(), editor
-      srcPath  = editor.getPath()
       destPath = fsUtil.resolvePath editor.getPath()
+
+      # Fail silently with just console error when destination is not in project
+      unless atom.project.contains(destPath)
+        console.error "Cannot write files outside of project root"
+        return
+
       destPath = fsUtil.toExt destPath, 'js'
       fsUtil.writeFile destPath, text, callback
 
