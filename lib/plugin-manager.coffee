@@ -15,7 +15,7 @@ class PluginManager
     @languages = {}
 
   register: (plugin) ->
-    if @plugins.indexOf(plugin) isnt -1
+    if @isPluginRegistered(plugin)
       console.warn "#{plugin.id} has already been activated"
       return
 
@@ -89,5 +89,12 @@ class PluginManager
   ###
   getCompiledScopeByEditor: (editor) ->
     return @languages[editor.getGrammar().scopeName]?.compiledScope or ''
+
+  ###
+  @param {Object} plugin
+  @return {Boolean}
+  ###
+  isPluginRegistered: (plugin) ->
+    @plugins.indexOf(plugin) isnt -1
 
 module.exports = new PluginManager()

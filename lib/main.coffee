@@ -68,7 +68,8 @@ module.exports =
               @save(editor)
 
     # NOTE: Remove once coffeescript provider is moved to a new package
-    @registerProviders coffeeProvider
+    unless pluginManager.isPluginRegistered(coffeeProvider)
+      @registerProviders coffeeProvider
 
     atom.workspace.addOpener (uriToOpen) ->
       {protocol, pathname} = url.parse uriToOpen

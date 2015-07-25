@@ -8,10 +8,6 @@ describe "pluginManager", ->
     pluginManager.plugins.length = 0
     pluginManager.languages = {}
 
-  afterEach ->
-    # HACK: to make sure other tests work properly
-    pluginManager.register coffeeProvider
-
   describe "register", ->
     it "should register successfully and return a Disposable", ->
       output = pluginManager.register coffeeProvider
