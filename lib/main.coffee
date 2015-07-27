@@ -63,9 +63,8 @@ module.exports =
       else if value
         saveDisposables = []
         saveDisposables.push atom.workspace.observeTextEditors (editor) =>
-          if editor? and fsUtil.isPathInSrc(editor.getPath())
-            saveDisposables.push editor.onDidSave =>
-              @save(editor)
+          saveDisposables.push editor.onDidSave =>
+            @save(editor)
 
     # NOTE: Remove once coffeescript provider is moved to a new package
     unless pluginManager.isPluginRegistered(coffeeProvider)
