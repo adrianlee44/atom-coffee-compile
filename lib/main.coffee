@@ -84,7 +84,11 @@ module.exports =
       return new CoffeeCompileEditor {sourceEditor}
 
   save: (editor)->
-    if pluginManager.isEditorLanguageSupported(editor)
+    return unless editor?
+
+    isPathInSrc = !!editor.getPath() and fsUtil.isPathInSrc(editor.getPath())
+
+    if isPathInSrc and pluginManager.isEditorLanguageSupported(editor)
       util.compileToFile editor
 
   display: ->

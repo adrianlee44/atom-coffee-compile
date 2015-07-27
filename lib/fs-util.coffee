@@ -34,6 +34,8 @@ module.exports =
 
     [projectPath, relativePath] = atom.project.relativizePath(srcPath)
 
+    return false unless !!projectPath
+
     source.some (folderPath) ->
       fullFolderPath = path.join projectPath, cwd, folderPath
       relative = path.relative srcPath, fullFolderPath
