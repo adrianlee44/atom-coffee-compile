@@ -100,13 +100,8 @@ describe "util", ->
       fs.unlink(filePath) if fs.existsSync(filePath)
 
     it 'should create a js file', ->
-      callback = jasmine.createSpy 'save'
-
-      runs ->
-        util.compileToFile editor, callback
-
-      waitsFor ->
-        callback.callCount > 0
+      waitsForPromise ->
+        util.compileToFile editor
 
       runs ->
         expect(fs.existsSync(filePath)).toBe true

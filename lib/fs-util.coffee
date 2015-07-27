@@ -1,6 +1,5 @@
-fs = require 'fs'
 path = require 'path'
-mkdirp = require 'mkdirp'
+{File} = require 'atom'
 
 module.exports =
   toExt: (srcPath, ext) ->
@@ -24,13 +23,10 @@ module.exports =
     relativePath = path.relative cwd, relativePath
     return path.join projectPath, destination, relativePath
 
-  writeFile: (filename, data, callback) ->
-    folder = path.dirname filename
-
-    mkdirp folder, (err) ->
-      throw err if err?
-
-      fs.writeFile filename, data, callback
+  writeFile: (filename, data) ->
+    file = new File(filename)
+    file.create().then ->
+      file.write data
 
   isPathInSrc: (srcPath) ->
     source = atom.config.get('coffee-compile.source') or ['.']

@@ -56,13 +56,8 @@ describe "fs util", ->
       fs.unlink(filePath) if fs.existsSync(filePath)
 
     it "should make folders and create a js file", ->
-      callback = jasmine.createSpy "write"
-
-      runs ->
-        fsUtil.writeFile filePath, "test", callback
-
-      waitsFor ->
-        callback.callCount > 0
+      waitsForPromise ->
+        fsUtil.writeFile filePath, "test"
 
       runs ->
         expect(fs.existsSync(filePath)).toBe true

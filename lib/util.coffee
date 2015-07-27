@@ -53,9 +53,8 @@ module.exports =
   ###
   @name compileToFile
   @param {Editor} editor
-  @param {Function} callback
   ###
-  compileToFile: (editor, callback) ->
+  compileToFile: (editor) ->
     try
       srcPath = editor.getPath()
 
@@ -69,7 +68,7 @@ module.exports =
           detail: "Cannot write outside of project root"
 
       destPath = fsUtil.toExt destPath, 'js'
-      fsUtil.writeFile destPath, text, callback
+      fsUtil.writeFile destPath, text
 
     catch e
       atom.notifications.addError "Compile-compile: Failed to compile to file",
