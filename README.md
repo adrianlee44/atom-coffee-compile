@@ -22,13 +22,4 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Add sourcemap support
 
 ## Changelog
-### v0.17.1 (2015-07-27)
-- Fix empty preview pane when `compileOnSaveWithoutPreview` is on
-
-### v0.17.0 (2015-07-26)
-- Add `cwd` and `source` option for writing to files
-  - `cwd` sets the root folder to compile (relative to project root)
-  - `source(s)` are folders to compile (relative to cwd)
-- Show error notifications when failed to compile to file
-
 See [changelog](https://github.com/adrianlee44/atom-coffee-compile/blob/master/CHANGELOG.md) for more information

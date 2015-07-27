@@ -1,3 +1,6 @@
+## v0.17.2 (2015-07-27)
+- Fix src check breaking when not opened in project
+
 ## v0.17.1 (2015-07-27)
 - Fix empty preview pane when `compileOnSaveWithoutPreview` is on
 
