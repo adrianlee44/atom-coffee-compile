@@ -37,6 +37,12 @@ module.exports =
     return false unless !!projectPath
 
     source.some (folderPath) ->
+      # if for some reason projectPath, cwd or folderPath aren't strings
+      if typeof projectPath isnt 'string' or
+          typeof cwd isnt 'string' or
+          typeof folderPath isnt 'string'
+        return false
+
       fullFolderPath = path.join projectPath, cwd, folderPath
       relative = path.relative srcPath, fullFolderPath
 
