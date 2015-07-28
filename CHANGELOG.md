@@ -1,3 +1,6 @@
+## v0.17.3 (2015-07-28)
+- Make sure all variables are string before joining
+
 ## v0.17.2 (2015-07-27)
 - Fix src check breaking when not opened in project
 
