@@ -1,0 +1,50 @@
+{
+  "noTopLevelFunctionWrapper": {
+    "type": "boolean",
+    "default": true
+  },
+  "compileOnSave": {
+    "type": "boolean",
+    "default": false
+  },
+  "compileOnSaveWithoutPreview": {
+    "type": "boolean",
+    "default": false
+  },
+  "focusEditorAfterCompile": {
+    "type": "boolean",
+    "default": false
+  },
+  "compileCjsx": {
+    "type": "boolean",
+    "default": false,
+    "description": "Provides support for an equivalent of JSX syntax in Coffeescript",
+    "title": "Compile CJSX"
+  },
+  "flatten": {
+    "type": "boolean",
+    "default": false,
+    "description": "Remove all path parts"
+  },
+  "cwd": {
+    "type": "string",
+    "default": ".",
+    "title": "cwd",
+    "description": "All sources are relative to this path"
+  },
+  "destination": {
+    "type": "string",
+    "default": ".",
+    "title": "Destination filepath",
+    "description": "Relative to project root"
+  },
+  "source": {
+    "type": "array",
+    "default": ["."],
+    "title": "Source filepath(s)",
+    "description": "Source folder, relative to cwd",
+    "items": {
+      "type": "string"
+    }
+  }
+}

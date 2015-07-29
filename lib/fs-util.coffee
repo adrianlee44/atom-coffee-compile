@@ -34,7 +34,7 @@ module.exports =
 
     [projectPath, relativePath] = atom.project.relativizePath(srcPath)
 
-    return false unless !!projectPath
+    return false unless projectPath
 
     source.some (folderPath) ->
       # if for some reason projectPath, cwd or folderPath aren't strings
