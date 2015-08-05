@@ -1,3 +1,6 @@
+## v0.18.0 (2015-08-05)
+- Add project based configurations
+
 ## v0.17.3 (2015-07-28)
 - Make sure all variables are string before joining
 

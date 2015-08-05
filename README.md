@@ -5,6 +5,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Linux/Windows: `ctrl-alt-c`
 
 ## Options
+- `Enable project based configuration` (default: false)
 - `Compile on save` (default: false)
 - `Compile on save without preview pane` (default: false)
 - `Destination filepath` (default: '.')
@@ -14,6 +15,11 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - `No top level function wrapper` (default: true)
 - `Focus editor after compile` (default: false)
 - `Compile CJSX` (default: false)
+
+### Project based configuration
+Add `coffee-compile.cson` to the project root
+
+See [wiki](https://github.com/adrianlee44/atom-coffee-compile/wiki/Project-based-configuration) for more details
 
 ![](https://raw.github.com/adrianlee44/atom-coffee-compile/master/screenshot.png)
 
