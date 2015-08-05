@@ -1,7 +1,7 @@
 {
   "name": "coffee-compile",
   "main": "./lib/main",
-  "version": "0.17.3",
+  "version": "0.18.0",
   "private": true,
   "description": "Preview, compile and/or save CoffeeScript in editor to Javascript",
   "repository": "https://github.com/adrianlee44/atom-coffee-compile",
