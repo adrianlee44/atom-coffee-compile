@@ -1,5 +1,5 @@
-coffee = require 'coffee-script'
-util = require './util'
+coffee         = require 'coffee-script'
+configManager  = require '../config-manager'
 cjsx_transform = null
 
 module.exports =
@@ -12,7 +12,7 @@ module.exports =
   ]
   compiledScope: 'source.js'
   preCompile: (code, editor) ->
-    if atom.config.get('coffee-compile.compileCjsx')
+    if configManager.get('compileCjsx')
       unless cjsx_transform
         cjsx_transform = require 'coffee-react-transform'
 
@@ -23,7 +23,7 @@ module.exports =
   compile: (code, editor) ->
     literate = editor.getGrammar().scopeName is "source.litcoffee"
 
-    bare  = atom.config.get('coffee-compile.noTopLevelFunctionWrapper')
+    bare  = configManager.get('noTopLevelFunctionWrapper')
     bare ?= true
 
     return coffee.compile code, {bare, literate}

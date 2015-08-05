@@ -1,4 +1,5 @@
-path = require 'path'
+path          = require 'path'
+configManager = require './config-manager'
 {File} = require 'atom'
 
 module.exports =
@@ -10,9 +11,9 @@ module.exports =
     )
 
   resolvePath: (srcPath) ->
-    destination = atom.config.get('coffee-compile.destination') or '.'
-    flatten     = atom.config.get('coffee-compile.flatten')
-    cwd         = atom.config.get('coffee-compile.cwd') or '.'
+    destination = configManager.get('destination') or '.'
+    flatten     = configManager.get('flatten')
+    cwd         = configManager.get('cwd') or '.'
 
     [projectPath, relativePath] = atom.project.relativizePath(srcPath)
 
@@ -29,8 +30,8 @@ module.exports =
       file.write data
 
   isPathInSrc: (srcPath) ->
-    source = atom.config.get('coffee-compile.source') or ['.']
-    cwd    = atom.config.get('coffee-compile.cwd') or '.'
+    source = configManager.get('source') or ['.']
+    cwd    = configManager.get('cwd') or '.'
 
     [projectPath, relativePath] = atom.project.relativizePath(srcPath)
 

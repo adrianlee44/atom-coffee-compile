@@ -1,5 +1,5 @@
 pluginManager = require '../lib/plugin-manager'
-coffeeProvider = require '../lib/coffee-provider'
+coffeeProvider = require '../lib/providers/coffee-provider'
 {Disposable} = require 'atom'
 
 describe "pluginManager", ->

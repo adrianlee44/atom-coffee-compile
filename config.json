@@ -46,5 +46,11 @@
     "items": {
       "type": "string"
     }
+  },
+  "enableProjectConfig": {
+    "type": "boolean",
+    "default": false,
+    "title": "Enable project based configuration",
+    "description": "coffee-compile.cson should exist on project root"
   }
 }
