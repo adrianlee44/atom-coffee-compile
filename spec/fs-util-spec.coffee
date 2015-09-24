@@ -87,6 +87,18 @@ describe "fs util", ->
       output = fsUtil.isPathInSrc testPath
       expect(output).toBe true
 
+    it "should return true when root is source (as a string)", ->
+      atom.config.set("coffee-compile.source", ".")
+
+      output = fsUtil.isPathInSrc testPath
+      expect(output).toBe true
+
+    it "should return true when root is invalid value and default to ['.']", ->
+      atom.config.set("coffee-compile.source", undefined)
+
+      output = fsUtil.isPathInSrc testPath
+      expect(output).toBe true
+
     it "should be relative to cwd and return true", ->
       atom.config.set("coffee-compile.cwd", "lib/")
       atom.config.set("coffee-compile.source", ["more/"])

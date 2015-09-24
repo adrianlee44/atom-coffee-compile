@@ -37,6 +37,13 @@ module.exports =
 
     return false unless projectPath
 
+    # Convert source to an array when the type is string
+    if typeof source is 'string'
+      source = [source]
+    # Default to `['.']` when source is other type
+    else if not Array.isArray(source)
+      source = ['.']
+
     source.some (folderPath) ->
       # if for some reason projectPath, cwd or folderPath aren't strings
       if typeof projectPath isnt 'string' or
