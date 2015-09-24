@@ -4,6 +4,12 @@
   "version": "0.18.0",
   "private": true,
   "description": "Preview, compile and/or save CoffeeScript in editor to Javascript",
+  "keywords": [
+    "preview",
+    "compile",
+    "coffeescript",
+    "javascript"
+  ],
   "repository": "https://github.com/adrianlee44/atom-coffee-compile",
   "license": "MIT",
   "engines": {
