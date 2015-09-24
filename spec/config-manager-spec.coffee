@@ -11,6 +11,7 @@ describe 'configManager', ->
     configManager.initProjectConfig('spec/coffee-compile-test.cson')
 
     expect(configManager.configFile).toBeUndefined()
+    expect(configManager.projectConfig).toEqual {}
 
   it 'should set configFile when enableProjectConfig is true', ->
     atom.config.set('coffee-compile.enableProjectConfig', true)
@@ -25,7 +26,6 @@ describe 'configManager', ->
       configManager.initProjectConfig('coffee-compile-test.cson')
 
     it 'should get the proper setting', ->
-      console.log configManager.projectConfig
       atom.config.set('coffee-compile.compileOnSave', false)
       expect(configManager.get('compileOnSave')).toBe true
 
@@ -45,3 +45,22 @@ describe 'configManager', ->
       expect(updatedCallback).not.toHaveBeenCalled()
       configManager.set 'flatten', true
       expect(updatedCallback).toHaveBeenCalled()
+
+  describe 'removing coffee-compile.cson', ->
+    beforeEach ->
+      atom.config.set('coffee-compile.enableProjectConfig', true)
+      configManager.initProjectConfig('coffee-compile-test.cson')
+
+    it 'should unset the project config', ->
+      observe = jasmine.createSpy('observe')
+      configManager.observe 'cwd', observe
+
+      didChange = jasmine.createSpy('did-change')
+
+      configFile = configManager.configFile
+      configManager.emitter.on 'did-change', didChange
+      configFile.emitter.emit 'did-delete'
+
+      expect(configManager.projectConfig).toEqual {}
+      expect(didChange).toHaveBeenCalled()
+      expect(observe).toHaveBeenCalled()

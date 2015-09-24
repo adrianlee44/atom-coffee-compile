@@ -27,7 +27,7 @@ class ConfigManager
 
         @configDisposables.add @configFile.onDidChange => @reloadProjectConfig()
         @configDisposables.add @configFile.onDidDelete =>
-          @upsetConfig()
+          @unsetConfig()
           @configDisposables.dispose()
           @configFile = null
 
@@ -38,10 +38,11 @@ class ConfigManager
     @configFile = null
 
   setConfigFromFile: ->
-    @projectConfig = cson.readFileSync @configFile.getPath()
+    @projectConfig = cson.readFileSync(@configFile.getPath()) or {}
 
   unsetConfig: ->
     @projectConfig = {}
+    @emitter.emit 'did-change'
 
   reloadProjectConfig: ->
     @setConfigFromFile()
@@ -60,7 +61,10 @@ class ConfigManager
   observe: (key, callback) ->
     disposable = new CompositeDisposable
 
-    disposable.add atom.config.observe("#{ConfigManager.configPrefix}#{key}", callback)
+    # Add listener for Atom configuration changes
+    disposable.add atom.config.observe "#{ConfigManager.configPrefix}#{key}", =>
+      callback @get(key)
+    # Add listener for project-based configuration changes
     disposable.add @onDidChangeKey(key, callback)
 
     disposable
@@ -69,8 +73,8 @@ class ConfigManager
     oldValue = @projectConfig[key]
     @emitter.on 'did-change', =>
       newValue = @projectConfig[key]
-      if @projectConfig[key]? and oldValue isnt newValue
+      if oldValue isnt newValue
         oldValue = newValue
-        callback newValue
+        callback @get(key)
 
 module.exports = new ConfigManager()
