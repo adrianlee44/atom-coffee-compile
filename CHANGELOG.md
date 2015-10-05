@@ -1,3 +1,7 @@
+## v0.19.0 (2015-10-05)
+- Add `Split pane direction` option
+  - Can now choose the direction where to show the preview pane
+
 ## v0.18.1 (2015-09-24)
 - Fix project config
   - Fix project config not set on initial load
