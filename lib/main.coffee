@@ -66,14 +66,33 @@ module.exports =
     unless pluginManager.isEditorLanguageSupported editor
       return console.warn("Coffee compile: Invalid language")
 
-    atom.workspace.open "coffeecompile://editor/#{editor.id}",
-      searchAllPanes: true
-      split: "right"
+    @open "coffeecompile://editor/#{editor.id}"
     .then (editor) ->
       editor.renderCompiled()
 
       if configManager.get('focusEditorAfterCompile')
         activePane.activate()
+
+  # Similar to atom.workspace.open
+  # @param {string} A string containing a URI
+  # @return {Promise.<TextEditor>}
+  open: (uri) ->
+    uri = atom.project.resolvePath uri
+
+    pane = atom.workspace.paneForURI(uri)
+    pane ?= switch configManager.get('split').toLowerCase()
+      when 'left'
+        atom.workspace.getActivePane().splitLeft()
+      when 'right'
+        atom.workspace.getActivePane().findOrCreateRightmostSibling()
+      when 'down'
+        atom.workspace.getActivePane().splitDown()
+      when 'up'
+        atom.workspace.getActivePane().splitUp()
+      else
+        atom.workspace.getActivePane()
+
+    atom.workspace.openURIInPane(uri, pane)
 
   registerProviders: (provider) ->
     pluginManager.register provider

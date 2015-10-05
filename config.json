@@ -1,4 +1,10 @@
 {
+  "split": {
+    "type": "string",
+    "default": "Right",
+    "title": "Split pane direction",
+    "enum": ["Right", "Left", "Down", "Up"]
+  },
   "noTopLevelFunctionWrapper": {
     "type": "boolean",
     "default": true
