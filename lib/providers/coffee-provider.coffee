@@ -6,6 +6,7 @@ module.exports =
   id: 'coffee-compile'
   selector: [
     'source.coffee'
+    'source.coffee.jsx'
     'source.litcoffee'
     'text.plain'
     'text.plain.null-grammar'
