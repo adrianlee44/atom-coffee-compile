@@ -1,3 +1,6 @@
+## v0.19.1 (2015-10-08)
+- Add source.coffee.jsx to list of selectors
+
 ## v0.19.0 (2015-10-05)
 - Add `Split pane direction` option
   - Can now choose the direction where to show the preview pane
