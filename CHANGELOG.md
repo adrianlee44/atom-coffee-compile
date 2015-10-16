@@ -1,3 +1,6 @@
+## v0.19.2 (2015-10-16)
+- Fix `auto compile` saving and compiling non-coffee files
+
 ## v0.19.1 (2015-10-08)
 - Add source.coffee.jsx to list of selectors
 
