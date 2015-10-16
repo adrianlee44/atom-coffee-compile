@@ -77,11 +77,24 @@ class PluginManager
     return @languages[scope]?
 
   ###
-  @param {Editor} editor
+  @param {String} scope Language scope
   @returns {Boolean}
   ###
-  isEditorLanguageSupported: (editor) ->
-    return @isScopeSupported editor.getGrammar().scopeName
+  isPlainText: (scope) ->
+    return scope.indexOf('text.plain') > -1 or scope.indexOf('null-grammar') > -1
+
+  ###
+  @param {Editor} editor
+  @param {Boolean} isSaveCompile
+  @returns {Boolean}
+  ###
+  isEditorLanguageSupported: (editor, isSaveCompile = false) ->
+    scopeName = editor.getGrammar().scopeName
+    
+    # Do not try to compile and save plain text files
+    shouldSaveCompile = !isSaveCompile or (isSaveCompile and not @isPlainText(scopeName))
+
+    return @isScopeSupported(scopeName) and shouldSaveCompile
 
   ###
   @param {Editor} editor

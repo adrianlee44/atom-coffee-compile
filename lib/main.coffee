@@ -54,7 +54,7 @@ module.exports =
 
     isPathInSrc = !!editor.getPath() and fsUtil.isPathInSrc(editor.getPath())
 
-    if isPathInSrc and pluginManager.isEditorLanguageSupported(editor)
+    if isPathInSrc and pluginManager.isEditorLanguageSupported(editor, true)
       util.compileToFile editor
 
   display: ->

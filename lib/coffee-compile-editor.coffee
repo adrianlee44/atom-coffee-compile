@@ -9,7 +9,8 @@ class CoffeeCompileEditor extends TextEditor
   constructor: ({@sourceEditor}) ->
     super
 
-    shouldCompileToFile = @sourceEditor? and fsUtil.isPathInSrc(@sourceEditor.getPath())
+    shouldCompileToFile = @sourceEditor? and fsUtil.isPathInSrc(@sourceEditor.getPath()) and
+      pluginManager.isEditorLanguageSupported(@sourceEditor, true)
 
     if shouldCompileToFile and configManager.get('compileOnSave') and not
         configManager.get('compileOnSaveWithoutPreview')

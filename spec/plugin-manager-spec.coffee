@@ -105,27 +105,60 @@ describe "pluginManager", ->
       expect(language.postCompilers.length).toBe 0
 
   describe "getLanguageByScope", ->
-    it "should get language scope", ->
+    beforeEach ->
       pluginManager.register coffeeProvider
 
+    it "should get language scope", ->
       output = pluginManager.getLanguageByScope "source.coffee"
       expect(output).toBeDefined()
 
     it "should not get anything", ->
-      pluginManager.register coffeeProvider
-
       output = pluginManager.getLanguageByScope "source.css"
       expect(output).toBeUndefined()
 
   describe "isScopeSupported", ->
-    it "should get language scope", ->
+    beforeEach ->
       pluginManager.register coffeeProvider
 
+    it "should get language scope", ->
       output = pluginManager.isScopeSupported "source.coffee"
       expect(output).toBe true
 
     it "should not get anything", ->
-      pluginManager.register coffeeProvider
-
       output = pluginManager.isScopeSupported "source.css"
       expect(output).toBe false
+
+  describe "isPlainText", ->
+    it "should return true", ->
+      expect(pluginManager.isPlainText('text.plain.null-grammar')).toBe true
+      expect(pluginManager.isPlainText('other.null-grammar')).toBe true
+
+    it "should return false", ->
+      expect(pluginManager.isPlainText('source.coffee')).toBe false
+
+  describe "isEditorLanguageSupported", ->
+    createFakeEditor = (scopeName) ->
+      getGrammar: -> {scopeName}
+
+    beforeEach ->
+      pluginManager.register coffeeProvider
+
+    it "should be supported for plain text preview", ->
+      fakeEditor = createFakeEditor 'text.plain'
+
+      expect(pluginManager.isEditorLanguageSupported(fakeEditor)).toBe true
+
+    it "should not be supported for plain text compile", ->
+      fakeEditor = createFakeEditor 'text.plain'
+
+      expect(pluginManager.isEditorLanguageSupported(fakeEditor, true)).toBe false
+
+    it "should be supported for coffee preview", ->
+      fakeEditor = createFakeEditor 'source.coffee'
+
+      expect(pluginManager.isEditorLanguageSupported(fakeEditor)).toBe true
+
+    it "should be supported for coffee compile", ->
+      fakeEditor = createFakeEditor 'source.coffee'
+
+      expect(pluginManager.isEditorLanguageSupported(fakeEditor, true)).toBe true
