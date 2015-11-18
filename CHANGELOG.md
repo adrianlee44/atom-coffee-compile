@@ -1,3 +1,6 @@
+## v0.20.0 (2015-11-18)
+- Fix Coffee-Compile failed to create preview text editor
+
 ## v0.19.2 (2015-10-16)
 - Fix `auto compile` saving and compiling non-coffee files
 
