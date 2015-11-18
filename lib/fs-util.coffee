@@ -26,8 +26,9 @@ module.exports =
 
   writeFile: (filename, data) ->
     file = new File(filename)
-    file.create().then ->
-      file.write data
+    file.create()
+    .then -> file.write data
+    .then -> return file
 
   isPathInSrc: (srcPath) ->
     source = configManager.get('source') or ['.']

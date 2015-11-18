@@ -1,6 +1,9 @@
 configManager = require '../lib/config-manager'
 
 describe 'configManager', ->
+  beforeEach ->
+    atom.project.setPaths([__dirname])
+  
   afterEach ->
     atom.config.unset('coffee-compile')
     configManager.unsetConfig()

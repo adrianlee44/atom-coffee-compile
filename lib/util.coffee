@@ -1,3 +1,4 @@
+configManager = require './config-manager'
 fsUtil        = require './fs-util'
 pluginManager = require './plugin-manager'
 
@@ -15,12 +16,13 @@ module.exports =
 
   ###
   @name compile
-  @param {String} code
   @param {Editor} editor
   @returns {String} Compiled code
   ###
-  compile: (code, editor) ->
+  compile: (editor) ->
     language = pluginManager.getLanguageByScope editor.getGrammar().scopeName
+
+    code = @getSelectedCode editor
 
     return code unless language?
 
@@ -60,7 +62,7 @@ module.exports =
 
       return unless fsUtil.isPathInSrc srcPath
 
-      text     = @compile editor.getText(), editor
+      text     = @compile editor
       destPath = fsUtil.resolvePath editor.getPath()
 
       unless atom.project.contains(destPath)
@@ -73,3 +75,52 @@ module.exports =
     catch e
       atom.notifications.addError "Compile-compile: Failed to compile to file",
         detail: e.stack
+
+  compileOrStack: (editor) ->
+    try
+      text = @compile editor
+    catch e
+      text = e.stack
+
+    return text
+
+  renderAndSave: (editor, sourceEditor) ->
+    text = @compileOrStack sourceEditor
+
+    editor.setText text
+
+    @compileToFile sourceEditor
+
+  buildCoffeeCompileEditor: (sourceEditor) ->
+    previewEditor = atom.workspace.buildTextEditor()
+
+    shouldCompileToFile = sourceEditor? and fsUtil.isPathInSrc(sourceEditor.getPath()) and
+      pluginManager.isEditorLanguageSupported(sourceEditor, true)
+
+    if shouldCompileToFile and configManager.get('compileOnSave') and not
+        configManager.get('compileOnSaveWithoutPreview')
+
+      previewEditor.disposables.add(
+        sourceEditor.onDidSave =>
+          @renderAndSave.bind(this, previewEditor, sourceEditor)
+      )
+
+    # set editor grammar to correct language
+    grammar = atom.grammars.selectGrammar pluginManager.getCompiledScopeByEditor(sourceEditor)
+    previewEditor.setGrammar grammar
+
+    if shouldCompileToFile and (configManager.get('compileOnSave') or
+        configManager.get('compileOnSaveWithoutPreview'))
+      @compileToFile sourceEditor
+
+    # HACK: Override TextBuffer saveAs function
+    previewEditor.getBuffer().saveAs = ->
+
+    compiled = @compileOrStack sourceEditor
+    previewEditor.setText compiled
+
+    # HACK: Override getURI and getTitle
+    previewEditor.getTitle = -> "Compiled #{sourceEditor?.getTitle() or ''}".trim()
+    previewEditor.getURI   = -> "coffeecompile://editor/#{sourceEditor.id}"
+
+    return previewEditor

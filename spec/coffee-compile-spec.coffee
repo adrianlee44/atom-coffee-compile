@@ -1,4 +1,3 @@
-CoffeeCompileEditor = require '../lib/coffee-compile-editor'
 util = require '../lib/util'
 
 describe 'CoffeeCompile', ->
@@ -8,6 +7,8 @@ describe 'CoffeeCompile', ->
   beforeEach ->
     workspaceElement = atom.views.getView atom.workspace
     jasmine.attachToDOM workspaceElement
+
+    atom.project.setPaths([__dirname])
 
     waitsForPromise 'language-coffee-script to activate', ->
       atom.packages.activatePackage 'language-coffee-script'
@@ -20,7 +21,7 @@ describe 'CoffeeCompile', ->
         editor = o
 
     runs ->
-      spyOn(CoffeeCompileEditor.prototype, 'renderCompiled').andCallThrough()
+      spyOn(util, 'compileOrStack').andCallThrough()
 
   describe 'compile on save', ->
     beforeEach ->
@@ -94,8 +95,8 @@ describe 'CoffeeCompile', ->
       runs ->
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
 
-      waitsFor 'renderCompiled to be called', ->
-        CoffeeCompileEditor::renderCompiled.callCount > 0
+      waitsFor 'compileOrStack to be called', ->
+        util.compileOrStack.callCount > 0
 
     it 'should always split to the right', ->
       runs ->
@@ -116,8 +117,8 @@ describe 'CoffeeCompile', ->
         atom.config.set('coffee-compile.split', 'Left')
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
 
-      waitsFor 'renderCompiled to be called', ->
-        CoffeeCompileEditor::renderCompiled.callCount > 0
+      waitsFor 'compileOrStack to be called', ->
+        util.compileOrStack.callCount > 0
 
       runs ->
         expect(atom.workspace.paneContainer.root.orientation).toBe 'horizontal'
@@ -132,8 +133,8 @@ describe 'CoffeeCompile', ->
         atom.config.set('coffee-compile.split', 'Down')
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
 
-      waitsFor 'renderCompiled to be called', ->
-        CoffeeCompileEditor::renderCompiled.callCount > 0
+      waitsFor 'compileOrStack to be called', ->
+        util.compileOrStack.callCount > 0
 
       runs ->
         expect(atom.workspace.paneContainer.root.orientation).toBe 'vertical'
@@ -148,8 +149,8 @@ describe 'CoffeeCompile', ->
         atom.config.set('coffee-compile.split', 'Up')
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
 
-      waitsFor 'renderCompiled to be called', ->
-        CoffeeCompileEditor::renderCompiled.callCount > 0
+      waitsFor 'compileOrStack to be called', ->
+        util.compileOrStack.callCount > 0
 
       runs ->
         expect(atom.workspace.paneContainer.root.orientation).toBe 'vertical'

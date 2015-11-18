@@ -5,6 +5,9 @@ path = require 'path'
 describe "fs util", ->
   testPath = "/home/test/github/coffee-compile/lib/fs-util.coffee"
 
+  beforeEach ->
+    atom.project.setPaths([__dirname])
+
   describe "toExt", ->
     it "should convert to js extension", ->
       output = fsUtil.toExt testPath, 'js'
@@ -41,6 +44,7 @@ describe "fs util", ->
   describe "writeFile", ->
     editor = null
     filePath = null
+    file = null
 
     beforeEach ->
       waitsForPromise ->
@@ -53,11 +57,14 @@ describe "fs util", ->
         filePath = path.join folder, "test/lib", "coffee-compile-fixtures.js"
 
     afterEach ->
+      file.unsubscribeFromNativeChangeEvents()
+      exist = fs.existsSync(filePath)
       fs.unlink(filePath) if fs.existsSync(filePath)
 
     it "should make folders and create a js file", ->
       waitsForPromise ->
-        fsUtil.writeFile filePath, "test"
+        fsUtil.writeFile(filePath, "test").then (_file_) ->
+          file = _file_
 
       runs ->
         expect(fs.existsSync(filePath)).toBe true

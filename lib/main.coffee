@@ -2,7 +2,6 @@ url         = require 'url'
 querystring = require 'querystring'
 cson        = require 'season'
 
-CoffeeCompileEditor = require './coffee-compile-editor'
 coffeeProvider      = require './providers/coffee-provider'
 configManager       = require './config-manager'
 fsUtil              = require './fs-util'
@@ -44,7 +43,7 @@ module.exports =
 
       return unless sourceEditor?
 
-      return new CoffeeCompileEditor {sourceEditor}
+      util.buildCoffeeCompileEditor sourceEditor
 
   deactivate: ->
     @pkgDisposables.dispose()
@@ -68,8 +67,6 @@ module.exports =
 
     @open "coffeecompile://editor/#{editor.id}"
     .then (editor) ->
-      editor.renderCompiled()
-
       if configManager.get('focusEditorAfterCompile')
         activePane.activate()
 
