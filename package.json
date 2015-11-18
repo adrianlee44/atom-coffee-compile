@@ -13,7 +13,7 @@
   "repository": "https://github.com/adrianlee44/atom-coffee-compile",
   "license": "MIT",
   "engines": {
-    "atom": ">=0.124.0"
+    "atom": ">=1.2.0"
   },
   "dependencies": {
     "atom-space-pen-views": "^2.1.0",
