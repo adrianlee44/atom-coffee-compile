@@ -66,7 +66,10 @@ module.exports =
       return console.warn("Coffee compile: Invalid language")
 
     @open "coffeecompile://editor/#{editor.id}"
-    .then (editor) ->
+    .then (previewEditor) ->
+      compiled = util.compileOrStack editor
+      previewEditor.setText compiled
+
       if configManager.get('focusEditorAfterCompile')
         activePane.activate()
 

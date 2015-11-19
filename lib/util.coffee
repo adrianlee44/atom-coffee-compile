@@ -116,9 +116,6 @@ module.exports =
     # HACK: Override TextBuffer saveAs function
     previewEditor.getBuffer().saveAs = ->
 
-    compiled = @compileOrStack sourceEditor
-    previewEditor.setText compiled
-
     # HACK: Override getURI and getTitle
     previewEditor.getTitle = -> "Compiled #{sourceEditor?.getTitle() or ''}".trim()
     previewEditor.getURI   = -> "coffeecompile://editor/#{sourceEditor.id}"
