@@ -84,12 +84,12 @@ module.exports =
 
     return text
 
-  renderAndSave: (editor, sourceEditor) ->
+  renderAndSave: (editor, sourceEditor, shouldWriteToFile = true) ->
     text = @compileOrStack sourceEditor
 
     editor.setText text
 
-    @compileToFile sourceEditor
+    @compileToFile(sourceEditor) if shouldWriteToFile
 
   buildCoffeeCompileEditor: (sourceEditor) ->
     previewEditor = atom.workspace.buildTextEditor()
@@ -97,13 +97,13 @@ module.exports =
     shouldCompileToFile = sourceEditor? and fsUtil.isPathInSrc(sourceEditor.getPath()) and
       pluginManager.isEditorLanguageSupported(sourceEditor, true)
 
-    if shouldCompileToFile and configManager.get('compileOnSave') and not
-        configManager.get('compileOnSaveWithoutPreview')
+    previewEditor.disposables.add(
+      sourceEditor.onDidSave =>
+        shouldWriteToFile = shouldCompileToFile and configManager.get('compileOnSave') and not
+            configManager.get('compileOnSaveWithoutPreview')
 
-      previewEditor.disposables.add(
-        sourceEditor.onDidSave =>
-          @renderAndSave.bind(this, previewEditor, sourceEditor)
-      )
+        @renderAndSave previewEditor, sourceEditor, shouldWriteToFile
+    )
 
     # set editor grammar to correct language
     grammar = atom.grammars.selectGrammar pluginManager.getCompiledScopeByEditor(sourceEditor)

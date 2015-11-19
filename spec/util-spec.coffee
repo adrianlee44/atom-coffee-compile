@@ -126,3 +126,30 @@ describe "util", ->
         throw new Error('Hi')
 
       expect(util.compileOrStack({})).toBeDefined()
+
+  describe 'renderAndSave', ->
+    previewEditor = null
+
+    beforeEach ->
+      spyOn(util, 'compileOrStack').andReturn('console.log("compiling")')
+      spyOn(util, 'compileToFile')
+
+      previewEditor = atom.workspace.buildTextEditor()
+
+    it 'should default call compileToFile', ->
+      util.renderAndSave previewEditor, editor
+
+      expect(previewEditor.getText()).toBe('console.log("compiling")')
+      expect(util.compileToFile).toHaveBeenCalled()
+
+    it 'should call compileToFile', ->
+      util.renderAndSave previewEditor, editor, true
+
+      expect(previewEditor.getText()).toBe('console.log("compiling")')
+      expect(util.compileToFile).toHaveBeenCalled()
+
+    it 'should not call compileToFile', ->
+      util.renderAndSave previewEditor, editor, false
+
+      expect(previewEditor.getText()).toBe('console.log("compiling")')
+      expect(util.compileToFile).not.toHaveBeenCalled()
