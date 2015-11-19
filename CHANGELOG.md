@@ -1,3 +1,7 @@
+## v0.20.1 (2015-11-19)
+- Fix recompiling not updating preview pane
+- Update preview panel when saving original editor
+
 ## v0.20.0 (2015-11-18)
 - Fix Coffee-Compile failed to create preview text editor
 
