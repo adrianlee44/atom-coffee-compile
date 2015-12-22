@@ -9,27 +9,28 @@ class ConfigManager
     @configDisposables = new CompositeDisposable
     @emitter           = new Emitter
     @projectConfig     = {}
+    @hasConfigFile     = false
 
   initProjectConfig: (filename = ConfigManager.filename) ->
-    if atom.config.get('coffee-compile.enableProjectConfig')
-      configPath = atom.project.resolvePath(filename)
+    configPath = atom.project.resolvePath(filename)
 
-      return unless configPath
+    return unless configPath
 
-      if @configDisposables?
+    if @configDisposables?
+      @configDisposables.dispose()
+    @configDisposables = new CompositeDisposable
+
+    @configFile = new File(configPath)
+
+    if @hasConfigFile = @configFile.existsSync()
+      @setConfigFromFile()
+
+      @configDisposables.add @configFile.onDidChange => @reloadProjectConfig()
+      @configDisposables.add @configFile.onDidDelete =>
+        @unsetConfig()
         @configDisposables.dispose()
-      @configDisposables = new CompositeDisposable
-
-      @configFile = new File(configPath)
-
-      if @configFile.existsSync()
-        @setConfigFromFile()
-
-        @configDisposables.add @configFile.onDidChange => @reloadProjectConfig()
-        @configDisposables.add @configFile.onDidDelete =>
-          @unsetConfig()
-          @configDisposables.dispose()
-          @configFile = null
+        @configFile = null
+        @hasConfigFile = false
 
   deactivate: ->
     if @configDisposables?

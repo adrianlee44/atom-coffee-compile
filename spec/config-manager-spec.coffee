@@ -3,29 +3,25 @@ configManager = require '../lib/config-manager'
 describe 'configManager', ->
   beforeEach ->
     atom.project.setPaths([__dirname])
-  
+
   afterEach ->
     atom.config.unset('coffee-compile')
     configManager.unsetConfig()
     configManager.deactivate()
 
-  it 'should not set configFile when enableProjectConfig is false', ->
-    atom.config.set('coffee-compile.enableProjectConfig', false)
-    configManager.initProjectConfig('spec/coffee-compile-test.cson')
-
-    expect(configManager.configFile).toBeUndefined()
-    expect(configManager.projectConfig).toEqual {}
-
-  it 'should set configFile when enableProjectConfig is true', ->
-    atom.config.set('coffee-compile.enableProjectConfig', true)
+  it 'should set configFile when the file exist', ->
     configManager.initProjectConfig('coffee-compile-test.cson')
 
-    expect(configManager.configFile).toBeDefined()
-    expect(configManager.configFile.getBaseName()).toBe 'coffee-compile-test.cson'
+    expect(configManager.projectConfig).toBeDefined()
+    expect(configManager.projectConfig.compileOnSave).toBe true
+
+  it 'should not configFile when the file exist', ->
+    configManager.initProjectConfig('coffee-compile-test-not-exist.cson')
+
+    expect(configManager.projectConfig).toEqual({})
 
   describe 'after initProjectConfig', ->
     beforeEach ->
-      atom.config.set('coffee-compile.enableProjectConfig', true)
       configManager.initProjectConfig('coffee-compile-test.cson')
 
     it 'should get the proper setting', ->

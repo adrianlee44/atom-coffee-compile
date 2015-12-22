@@ -5,7 +5,6 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Linux/Windows: `ctrl-alt-c`
 
 ## Options
-- `Enable project based configuration` (default: false)
 - `Compile on save` (default: false)
 - `Compile on save without preview pane` (default: false)
 - `Split pane direction` (default: 'Right')
