@@ -11,10 +11,12 @@
   },
   "compileOnSave": {
     "type": "boolean",
+    "description": "Compile to JS file on save when preview pane is shown",
     "default": false
   },
   "compileOnSaveWithoutPreview": {
     "type": "boolean",
+    "description": "Compile to JS file on save without requiring preview pane",
     "default": false
   },
   "focusEditorAfterCompile": {
