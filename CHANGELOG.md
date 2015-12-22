@@ -1,3 +1,9 @@
+## v0.21.0 (2015-12-23)
+- Remove `enableProjectConfig` option
+- Switch to check for the existence of coffee-compile.cson
+- Update coffee-script to 1.10.0
+- Update compileOnSave and compileOnSaveWithoutPreview descriptions
+
 ## v0.20.1 (2015-11-19)
 - Fix recompiling not updating preview pane
 - Update preview panel when saving original editor
