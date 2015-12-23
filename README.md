@@ -6,13 +6,13 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 
 ## Options
 - `Compile on save` (default: false)
-- `Compile on save without preview pane` (default: false)
+- `Compile on save without preview` (default: false)
 - `Split pane direction` (default: 'Right')
 - `Destination filepath` (default: '.')
 - `Flatten` (default: false)
 - `cwd` - All sources are relative to this path (default: '.')
 - `Source(s)` - Source folders to compile, relative to cwd (default: '.')
-- `No top level function wrapper` (default: true)
+- `Disable top level function wrapper` (default: true)
 - `Focus editor after compile` (default: false)
 - `Compile CJSX` (default: false)
 

@@ -7,20 +7,25 @@
   },
   "noTopLevelFunctionWrapper": {
     "type": "boolean",
+    "title": "Disable top-level function wrapper",
+    "description": "Compile without top-level function safety wrapper",
     "default": true
   },
   "compileOnSave": {
     "type": "boolean",
+    "title": "Compile on save",
     "description": "Compile to JS file on save when preview pane is shown",
     "default": false
   },
   "compileOnSaveWithoutPreview": {
     "type": "boolean",
+    "title": "Compile on save without preview",
     "description": "Compile to JS file on save without requiring preview pane",
     "default": false
   },
   "focusEditorAfterCompile": {
     "type": "boolean",
+    "description": "Keep focus on original editor when showing preview pane",
     "default": false
   },
   "compileCjsx": {
