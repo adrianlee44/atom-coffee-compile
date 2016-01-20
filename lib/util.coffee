@@ -120,4 +120,7 @@ module.exports =
     previewEditor.getTitle = -> "Compiled #{sourceEditor?.getTitle() or ''}".trim()
     previewEditor.getURI   = -> "coffeecompile://editor/#{sourceEditor.id}"
 
+    # Should never prompt to save on preview editor
+    previewEditor.shouldPromptToSave = -> false
+
     return previewEditor
