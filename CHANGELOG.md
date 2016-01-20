@@ -1,3 +1,6 @@
+## v0.21.1 (2016-01-19)
+- Disable prompt to save when closing preview pane (#42)
+
 ## v0.21.0 (2015-12-23)
 - Remove `enableProjectConfig` option
 - Switch to check for the existence of coffee-compile.cson
