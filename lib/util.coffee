@@ -113,8 +113,9 @@ module.exports =
         configManager.get('compileOnSaveWithoutPreview'))
       @compileToFile sourceEditor
 
-    # HACK: Override TextBuffer saveAs function
-    previewEditor.getBuffer().saveAs = ->
+    # HACK: Override TextBuffer save function since there is no buffer content
+    # TODO: Subscribe to saveAs event and convert the editor to use that file
+    previewEditor.getBuffer().save = ->
 
     # HACK: Override getURI and getTitle
     previewEditor.getTitle = -> "Compiled #{sourceEditor?.getTitle() or ''}".trim()
