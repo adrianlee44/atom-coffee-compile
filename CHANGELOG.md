@@ -1,3 +1,7 @@
+## v0.22.0 (2016-08-11)
+- Bump minimum Atom requirement to v1.9.0
+- Fix for saving preview pane as a file (#44)
+
 ## v0.21.1 (2016-01-19)
 - Disable prompt to save when closing preview pane (#42)
 
