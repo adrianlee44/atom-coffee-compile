@@ -1,3 +1,7 @@
+## v0.23.0 (2016-10=31)
+- Use package-local versions of CoffeeScript and coffee-react-transform, if available (#46)
+- Fix deprecated text editor setting
+
 ## v0.22.0 (2016-08-11)
 - Bump minimum Atom requirement to v1.9.0
 - Fix for saving preview pane as a file (#44)
