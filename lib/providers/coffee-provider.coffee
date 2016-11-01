@@ -1,6 +1,11 @@
-coffee         = require 'coffee-script'
 configManager  = require '../config-manager'
-cjsx_transform = null
+resolve        = require 'resolve'
+path           = require 'path'
+
+scopedRequire = (basedir, modName) ->
+  rst = null
+  try rst = path.dirname(resolve.sync(modName, { basedir }))
+  if rst then require "#{rst}" else require modName
 
 module.exports =
   id: 'coffee-compile'
@@ -13,15 +18,16 @@ module.exports =
   ]
   compiledScope: 'source.js'
   preCompile: (code, editor) ->
+    cjsx_transform = null
     if configManager.get('compileCjsx')
-      unless cjsx_transform
-        cjsx_transform = require 'coffee-react-transform'
+      cjsx_transform = scopedRequire path.dirname(editor.getPath()), 'coffee-react-transform'
 
       code = cjsx_transform code
 
     return code
 
   compile: (code, editor) ->
+    coffee = scopedRequire path.dirname(editor.getPath()), 'coffee-script'
     literate = editor.getGrammar().scopeName is "source.litcoffee"
 
     bare  = configManager.get('noTopLevelFunctionWrapper')
