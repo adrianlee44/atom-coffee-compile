@@ -92,7 +92,7 @@ module.exports =
     @compileToFile(sourceEditor) if shouldWriteToFile
 
   buildCoffeeCompileEditor: (sourceEditor) ->
-    previewEditor = atom.workspace.buildTextEditor(autoHeight: true)
+    previewEditor = atom.workspace.buildTextEditor(autoHeight: false)
 
     shouldCompileToFile = sourceEditor? and fsUtil.isPathInSrc(sourceEditor.getPath()) and
       pluginManager.isEditorLanguageSupported(sourceEditor, true)
