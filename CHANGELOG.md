@@ -1,3 +1,6 @@
+## v0.23.1 (2016-11-06)
+- Fix weird editor behavior by setting autoHeight to false (default value) (#47)
+
 ## v0.23.0 (2016-10=31)
 - Use package-local versions of CoffeeScript and coffee-react-transform, if available (#46)
 - Fix deprecated text editor setting
