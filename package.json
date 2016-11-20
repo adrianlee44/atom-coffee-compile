@@ -19,7 +19,7 @@
     "coffee-react-transform": "3.1.0",
     "coffee-script": "1.10.0",
     "resolve": "^1.1.7",
-    "season": "^5.3.0"
+    "season": "^5.4.0"
   },
   "consumedServices": {
     "coffee-compile.provider": {
