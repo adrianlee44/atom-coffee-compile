@@ -28,12 +28,6 @@
     "description": "Keep focus on original editor when showing preview pane",
     "default": false
   },
-  "compileCjsx": {
-    "type": "boolean",
-    "default": false,
-    "description": "Provides support for an equivalent of JSX syntax in Coffeescript",
-    "title": "Compile CJSX"
-  },
   "flatten": {
     "type": "boolean",
     "default": false,

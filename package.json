@@ -16,7 +16,6 @@
     "atom": ">=1.9.0"
   },
   "dependencies": {
-    "coffee-react-transform": "3.1.0",
     "coffee-script": "1.11.1",
     "resolve": "^1.1.7",
     "season": "^5.4.0"

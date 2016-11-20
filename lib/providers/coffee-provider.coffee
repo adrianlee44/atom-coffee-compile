@@ -11,19 +11,12 @@ module.exports =
   id: 'coffee-compile'
   selector: [
     'source.coffee'
-    'source.coffee.jsx'
     'source.litcoffee'
     'text.plain'
     'text.plain.null-grammar'
   ]
   compiledScope: 'source.js'
   preCompile: (code, editor) ->
-    cjsx_transform = null
-    if configManager.get('compileCjsx')
-      cjsx_transform = scopedRequire path.dirname(editor.getPath()), 'coffee-react-transform'
-
-      code = cjsx_transform code
-
     return code
 
   compile: (code, editor) ->
