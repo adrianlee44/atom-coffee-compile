@@ -3,7 +3,7 @@ fsUtil = require '../lib/fs-util'
 path = require 'path'
 
 describe "fs util", ->
-  testPath = "/home/test/github/coffee-compile/lib/fs-util.coffee"
+  testPath = __dirname + "/lib/fs-util.coffee"
 
   beforeEach ->
     atom.project.setPaths([__dirname])
@@ -11,11 +11,11 @@ describe "fs util", ->
   describe "toExt", ->
     it "should convert to js extension", ->
       output = fsUtil.toExt testPath, 'js'
-      expect(output).toBe "/home/test/github/coffee-compile/lib/fs-util.js"
+      expect(output).toBe __dirname + "/lib/fs-util.js"
 
   describe "resolvePath", ->
     beforeEach ->
-      atom.project.setPaths(["/home/test/github/coffee-compile"])
+      atom.project.setPaths([__dirname])
 
     afterEach ->
       atom.config.unset('coffee-compile')
@@ -28,18 +28,12 @@ describe "fs util", ->
       atom.config.set("coffee-compile.destination", "test/folder")
 
       output = fsUtil.resolvePath testPath
-      expect(output).toBe "/home/test/github/coffee-compile/test/folder/lib/fs-util.coffee"
+      expect(output).toBe __dirname + "/test/folder/lib/fs-util.coffee"
 
     it "should flatten path", ->
       atom.config.set("coffee-compile.flatten", true)
       output = fsUtil.resolvePath testPath
-      expect(output).toBe "/home/test/github/coffee-compile/fs-util.coffee"
-
-    it "should join cwd path", ->
-      atom.config.set("coffee-compile.cwd", "lib")
-      cwdTestPath = "/home/test/github/coffee-compile/lib/more/folder/fs-util.coffee"
-      output = fsUtil.resolvePath cwdTestPath
-      expect(output).toBe "/home/test/github/coffee-compile/more/folder/fs-util.coffee"
+      expect(output).toBe __dirname + "/fs-util.coffee"
 
   describe "writeFile", ->
     editor = null
@@ -71,7 +65,7 @@ describe "fs util", ->
 
   describe "isPathInSrc", ->
     beforeEach ->
-      atom.project.setPaths(["/home/test/github/coffee-compile"])
+      atom.project.setPaths([__dirname])
 
     afterEach ->
       atom.config.unset('coffee-compile')
@@ -109,7 +103,7 @@ describe "fs util", ->
     it "should be relative to cwd and return true", ->
       atom.config.set("coffee-compile.cwd", "lib/")
       atom.config.set("coffee-compile.source", ["more/"])
-      cwdTestPath = "/home/test/github/coffee-compile/lib/more/folder/fs-util.coffee"
+      cwdTestPath = __dirname + "/lib/more/folder/fs-util.coffee"
 
       output = fsUtil.isPathInSrc cwdTestPath
       expect(output).toBe true
@@ -117,7 +111,7 @@ describe "fs util", ->
     it "should not be relative to cwd and return false", ->
       atom.config.set("coffee-compile.cwd", "spec")
       atom.config.set("coffee-compile.source", ["."])
-      cwdTestPath = "/home/test/github/coffee-compile/lib/more/folder/fs-util.coffee"
+      cwdTestPath = __dirname + "/lib/more/folder/fs-util.coffee"
 
       output = fsUtil.isPathInSrc cwdTestPath
       expect(output).toBe false
