@@ -14,7 +14,6 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - `Source(s)` - Source folders to compile, relative to cwd (default: '.')
 - `Disable top level function wrapper` (default: true)
 - `Focus editor after compile` (default: false)
-- `Compile CJSX` (default: false)
 
 ### Project based configuration
 Add `coffee-compile.cson` to the project root
