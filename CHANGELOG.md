@@ -1,3 +1,14 @@
+## v0.24.0 (2016-11-21)
+- Update CoffeeScript to v1.11.1
+- Update season to 5.4.1
+- Removing cjsx support and removing package
+
+#### Breaking changes:
+As coffee-react-transform is now deprecated, this package is dropping
+support for cjsx and will not be able to compile those coffee files
+properly. If user is still compiling cjsx, one can stay at v0.23.1 of
+coffee-compile or write a plugin for coffee-compile.
+
 ## v0.23.1 (2016-11-06)
 - Fix weird editor behavior by setting autoHeight to false (default value) (#47)
 
