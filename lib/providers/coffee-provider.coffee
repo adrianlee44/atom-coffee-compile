@@ -2,10 +2,13 @@ configManager  = require '../config-manager'
 resolve        = require 'resolve'
 path           = require 'path'
 
-scopedRequire = (basedir, modName) ->
+# Check if there is a local coffee-script package, use that package if it exists
+scopedRequire = (filepath) ->
+  basedir = path.dirname(filepath)
+
   rst = null
-  try rst = path.dirname(resolve.sync(modName, { basedir }))
-  if rst then require "#{rst}" else require modName
+  try rst = path.dirname(resolve.sync('coffee-script', { basedir }))
+  if rst then require rst else require 'coffee-script'
 
 module.exports =
   id: 'coffee-compile'
@@ -20,7 +23,9 @@ module.exports =
     return code
 
   compile: (code, editor) ->
-    coffee = scopedRequire path.dirname(editor.getPath()), 'coffee-script'
+    filepath = editor.getPath()
+
+    coffee = if filepath then scopedRequire(filepath) else require('coffee-script')
     literate = editor.getGrammar().scopeName is "source.litcoffee"
 
     bare  = configManager.get('noTopLevelFunctionWrapper')
