@@ -18,7 +18,7 @@
   "dependencies": {
     "coffee-script": "1.12.4",
     "resolve": "^1.1.7",
-    "season": "^5.4.0"
+    "season": "^6.0.0"
   },
   "consumedServices": {
     "coffee-compile.provider": {
