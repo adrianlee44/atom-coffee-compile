@@ -1,3 +1,6 @@
+## v0.26.0 (2017-05-21)
+- Bump coffee-script to 1.12.6
+
 ## v0.25.0 (2017-04-01)
 - Bump season to 6.0.0
 - Dobule check editor has path before resolving path (#48)
