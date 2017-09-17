@@ -8,6 +8,7 @@ fsUtil              = require './fs-util'
 pluginManager       = require './plugin-manager'
 util                = require './util'
 {CompositeDisposable} = require 'atom'
+PreviewEditor = require './preview-editor'
 
 module.exports =
   config: require '../config'
@@ -43,7 +44,7 @@ module.exports =
 
       return unless sourceEditor?
 
-      util.buildCoffeeCompileEditor sourceEditor
+      new PreviewEditor sourceEditor
 
   deactivate: ->
     @pkgDisposables.dispose()
@@ -71,6 +72,7 @@ module.exports =
       previewEditor.setText compiled
 
       if configManager.get('focusEditorAfterCompile')
+        console.log(activePane)
         activePane.activate()
 
   # Similar to atom.workspace.open

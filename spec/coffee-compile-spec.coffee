@@ -55,7 +55,7 @@ describe 'CoffeeCompile', ->
         atom.config.set 'coffee-compile.compileOnSaveWithoutPreview', true
 
       it 'should call util.compileToFile on editor save', ->
-        runs ->
+        waitsFor ->
           editor.save()
 
         waitsFor ->
@@ -100,15 +100,15 @@ describe 'CoffeeCompile', ->
 
     it 'should always split to the right', ->
       runs ->
-        expect(atom.workspace.paneContainer.root.orientation).toBe 'horizontal'
-        expect(atom.workspace.getPanes()).toHaveLength 2
-        [editorPane, compiledPane] = atom.workspace.getPanes()
+        expect(atom.workspace.getActivePaneContainer().paneContainer.getRoot().getOrientation()).toBe 'horizontal'
+
+        [editorPane, compiledPane] = atom.workspace.getCenter().getPanes()
 
         expect(editorPane.items).toHaveLength 1
 
     it 'should focus on compiled pane', ->
       runs ->
-        [editorPane, compiledPane] = atom.workspace.getPanes()
+        [editorPane, compiledPane] = atom.workspace.getCenter().getPanes()
         expect(compiledPane.isActive()).toBe(true)
 
   describe 'open a new pane with config', ->
@@ -121,9 +121,10 @@ describe 'CoffeeCompile', ->
         util.compileOrStack.callCount > 0
 
       runs ->
-        expect(atom.workspace.paneContainer.root.orientation).toBe 'horizontal'
-        expect(atom.workspace.getPanes()).toHaveLength 2
-        [compiledPane, editorPane] = atom.workspace.getPanes()
+        expect(atom.workspace.getActivePaneContainer().paneContainer.getRoot().getOrientation()).toBe 'horizontal'
+
+        expect(atom.workspace.getCenter().getPanes()).toHaveLength 2
+        [compiledPane, editorPane] = atom.workspace.getCenter().getPanes()
 
         expect(editorPane.items).toHaveLength 1
         expect(editorPane.items[0]).toBe editor
@@ -137,9 +138,9 @@ describe 'CoffeeCompile', ->
         util.compileOrStack.callCount > 0
 
       runs ->
-        expect(atom.workspace.paneContainer.root.orientation).toBe 'vertical'
-        expect(atom.workspace.getPanes()).toHaveLength 2
-        [editorPane, compiledPane] = atom.workspace.getPanes()
+        expect(atom.workspace.getActivePaneContainer().paneContainer.getRoot().getOrientation()).toBe 'vertical'
+        expect(atom.workspace.getCenter().getPanes()).toHaveLength 2
+        [editorPane, compiledPane] = atom.workspace.getCenter().getPanes()
 
         expect(editorPane.items).toHaveLength 1
         expect(editorPane.items[0]).toBe editor
@@ -153,9 +154,9 @@ describe 'CoffeeCompile', ->
         util.compileOrStack.callCount > 0
 
       runs ->
-        expect(atom.workspace.paneContainer.root.orientation).toBe 'vertical'
-        expect(atom.workspace.getPanes()).toHaveLength 2
-        [compiledPane, editorPane] = atom.workspace.getPanes()
+        expect(atom.workspace.getActivePaneContainer().paneContainer.getRoot().getOrientation()).toBe 'vertical'
+        expect(atom.workspace.getCenter().getPanes()).toHaveLength 2
+        [compiledPane, editorPane] = atom.workspace.getCenter().getPanes()
 
         expect(editorPane.items).toHaveLength 1
         expect(editorPane.items[0]).toBe editor
@@ -171,6 +172,8 @@ describe 'CoffeeCompile', ->
       atom.workspace.onDidOpen callback
 
     it 'should focus editor when option is set', ->
+      originalPane = atom.workspace.getActivePane()
+
       runs ->
         atom.commands.dispatch workspaceElement, 'coffee-compile:compile'
 
@@ -178,5 +181,4 @@ describe 'CoffeeCompile', ->
         callback.callCount > 0
 
       runs ->
-        [editorPane, compiledPane] = atom.workspace.getPanes()
-        expect(editorPane.isActive()).toBe(true)
+        expect(atom.workspace.getActivePane()).toBe(originalPane)

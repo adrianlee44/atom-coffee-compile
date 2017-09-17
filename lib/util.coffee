@@ -90,38 +90,3 @@ module.exports =
     editor.setText text
 
     @compileToFile(sourceEditor) if shouldWriteToFile
-
-  buildCoffeeCompileEditor: (sourceEditor) ->
-    previewEditor = atom.workspace.buildTextEditor(autoHeight: false)
-
-    shouldCompileToFile = sourceEditor? and fsUtil.isPathInSrc(sourceEditor.getPath()) and
-      pluginManager.isEditorLanguageSupported(sourceEditor, true)
-
-    previewEditor.disposables.add(
-      sourceEditor.onDidSave =>
-        shouldWriteToFile = shouldCompileToFile and configManager.get('compileOnSave') and not
-            configManager.get('compileOnSaveWithoutPreview')
-
-        @renderAndSave previewEditor, sourceEditor, shouldWriteToFile
-    )
-
-    # set editor grammar to correct language
-    grammar = atom.grammars.selectGrammar pluginManager.getCompiledScopeByEditor(sourceEditor)
-    previewEditor.setGrammar grammar
-
-    if shouldCompileToFile and (configManager.get('compileOnSave') or
-        configManager.get('compileOnSaveWithoutPreview'))
-      @compileToFile sourceEditor
-
-    # HACK: Override TextBuffer save function since there is no buffer content
-    # TODO: Subscribe to saveAs event and convert the editor to use that file
-    previewEditor.getBuffer().save = ->
-
-    # HACK: Override getURI and getTitle
-    previewEditor.getTitle = -> "Compiled #{sourceEditor?.getTitle() or ''}".trim()
-    previewEditor.getURI   = -> "coffeecompile://editor/#{sourceEditor.id}"
-
-    # Should never prompt to save on preview editor
-    previewEditor.shouldPromptToSave = -> false
-
-    return previewEditor
