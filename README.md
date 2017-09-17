@@ -22,9 +22,5 @@ See [wiki](https://github.com/adrianlee44/atom-coffee-compile/wiki/Project-based
 
 ![](https://raw.github.com/adrianlee44/atom-coffee-compile/master/screenshot.png)
 
-## TODO
-- Recompile on change option
-- Add sourcemap support
-
 ## Changelog
 See [changelog](https://github.com/adrianlee44/atom-coffee-compile/blob/master/CHANGELOG.md) for more information
