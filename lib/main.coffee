@@ -11,7 +11,6 @@ util                = require './util'
 PreviewEditor = require './preview-editor'
 
 module.exports =
-  config: require '../config'
   activate: ->
     configManager.initProjectConfig()
 

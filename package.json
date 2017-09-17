@@ -27,5 +27,62 @@
         "1.0.0": "registerProviders"
       }
     }
+  },
+  "configSchema": {
+    "split": {
+      "type": "string",
+      "default": "Right",
+      "title": "Split pane direction",
+      "enum": ["Right", "Left", "Down", "Up"]
+    },
+    "noTopLevelFunctionWrapper": {
+      "type": "boolean",
+      "title": "Disable top-level function wrapper",
+      "description": "Compile without top-level function safety wrapper",
+      "default": true
+    },
+    "compileOnSave": {
+      "type": "boolean",
+      "title": "Compile on save",
+      "description": "Compile to JS file on save when preview pane is shown",
+      "default": false
+    },
+    "compileOnSaveWithoutPreview": {
+      "type": "boolean",
+      "title": "Compile on save without preview",
+      "description": "Compile to JS file on save without requiring preview pane",
+      "default": false
+    },
+    "focusEditorAfterCompile": {
+      "type": "boolean",
+      "description": "Keep focus on original editor when showing preview pane",
+      "default": false
+    },
+    "flatten": {
+      "type": "boolean",
+      "default": false,
+      "description": "Remove all path parts"
+    },
+    "cwd": {
+      "type": "string",
+      "default": ".",
+      "title": "cwd",
+      "description": "All sources are relative to this path"
+    },
+    "destination": {
+      "type": "string",
+      "default": ".",
+      "title": "Destination filepath",
+      "description": "Relative to project root"
+    },
+    "source": {
+      "type": "array",
+      "default": ["."],
+      "title": "Source filepath(s)",
+      "description": "Source folder, relative to cwd",
+      "items": {
+        "type": "string"
+      }
+    }
   }
 }
