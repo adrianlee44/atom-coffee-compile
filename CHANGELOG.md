@@ -1,3 +1,9 @@
+## v0.27.0 (2017-09-16)
+- Add preview editor
+- Bump coffee-script to 1.12.7
+- Switch to configSchema
+- Switch to use cursor scope instead of editor scope
+
 ## v0.26.0 (2017-05-21)
 - Bump coffee-script to 1.12.6
 
