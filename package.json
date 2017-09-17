@@ -1,7 +1,7 @@
 {
   "name": "coffee-compile",
   "main": "./lib/main",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "private": true,
   "description": "Preview, compile and/or save CoffeeScript in editor to Javascript",
   "keywords": [
@@ -33,7 +33,12 @@
       "type": "string",
       "default": "Right",
       "title": "Split pane direction",
-      "enum": ["Right", "Left", "Down", "Up"]
+      "enum": [
+        "Right",
+        "Left",
+        "Down",
+        "Up"
+      ]
     },
     "noTopLevelFunctionWrapper": {
       "type": "boolean",
@@ -77,7 +82,9 @@
     },
     "source": {
       "type": "array",
-      "default": ["."],
+      "default": [
+        "."
+      ],
       "title": "Source filepath(s)",
       "description": "Source folder, relative to cwd",
       "items": {
