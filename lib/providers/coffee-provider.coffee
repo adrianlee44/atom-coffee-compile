@@ -16,7 +16,8 @@ module.exports =
     'source.coffee'
     'source.litcoffee'
     'text.plain'
-    'text.plain.null-grammar'
+    'text.plain.null-grammar',
+    'source.coffee.embedded.html'
   ]
   compiledScope: 'source.js'
   preCompile: (code, editor) ->
