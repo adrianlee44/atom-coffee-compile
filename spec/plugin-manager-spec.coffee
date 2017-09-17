@@ -2,6 +2,11 @@ pluginManager = require '../lib/plugin-manager'
 coffeeProvider = require '../lib/providers/coffee-provider'
 {Disposable} = require 'atom'
 
+createFakeEditor = (scopeName) ->
+  getGrammar: -> {scopeName}
+  getCursorScope: ->
+    getScopesArray: -> [scopeName]
+
 describe "pluginManager", ->
   beforeEach ->
     # Reset plugin manager for every test
@@ -109,11 +114,11 @@ describe "pluginManager", ->
       pluginManager.register coffeeProvider
 
     it "should get language scope", ->
-      output = pluginManager.getLanguageByScope "source.coffee"
+      output = pluginManager.getLanguageByScope createFakeEditor 'source.coffee'
       expect(output).toBeDefined()
 
     it "should not get anything", ->
-      output = pluginManager.getLanguageByScope "source.css"
+      output = pluginManager.getLanguageByScope createFakeEditor 'source.css'
       expect(output).toBeUndefined()
 
   describe "isScopeSupported", ->
@@ -121,44 +126,40 @@ describe "pluginManager", ->
       pluginManager.register coffeeProvider
 
     it "should get language scope", ->
-      output = pluginManager.isScopeSupported "source.coffee"
+      output = pluginManager.isScopeSupported ["source.coffee"]
       expect(output).toBe true
 
     it "should not get anything", ->
-      output = pluginManager.isScopeSupported "source.css"
+      output = pluginManager.isScopeSupported ["source.css"]
       expect(output).toBe false
 
   describe "isPlainText", ->
     it "should return true", ->
-      expect(pluginManager.isPlainText('text.plain.null-grammar')).toBe true
-      expect(pluginManager.isPlainText('other.null-grammar')).toBe true
+      expect(pluginManager.isPlainText(['text.plain.null-grammar'])).toBe true
 
     it "should return false", ->
-      expect(pluginManager.isPlainText('source.coffee')).toBe false
+      expect(pluginManager.isPlainText(['source.coffee'])).toBe false
 
-  describe "isEditorLanguageSupported", ->
-    createFakeEditor = (scopeName) ->
-      getGrammar: -> {scopeName}
-
+  describe "isSelectionLanguageSupported", ->
     beforeEach ->
       pluginManager.register coffeeProvider
 
     it "should be supported for plain text preview", ->
-      fakeEditor = createFakeEditor 'text.plain'
+      fakeEditor = createFakeEditor 'text.plain.null-grammar'
 
-      expect(pluginManager.isEditorLanguageSupported(fakeEditor)).toBe true
+      expect(pluginManager.isSelectionLanguageSupported(fakeEditor)).toBe true
 
     it "should not be supported for plain text compile", ->
-      fakeEditor = createFakeEditor 'text.plain'
+      fakeEditor = createFakeEditor 'text.plain.null-grammar'
 
-      expect(pluginManager.isEditorLanguageSupported(fakeEditor, true)).toBe false
+      expect(pluginManager.isSelectionLanguageSupported(fakeEditor, true)).toBe false
 
     it "should be supported for coffee preview", ->
       fakeEditor = createFakeEditor 'source.coffee'
 
-      expect(pluginManager.isEditorLanguageSupported(fakeEditor)).toBe true
+      expect(pluginManager.isSelectionLanguageSupported(fakeEditor)).toBe true
 
     it "should be supported for coffee compile", ->
       fakeEditor = createFakeEditor 'source.coffee'
 
-      expect(pluginManager.isEditorLanguageSupported(fakeEditor, true)).toBe true
+      expect(pluginManager.isSelectionLanguageSupported(fakeEditor, true)).toBe true

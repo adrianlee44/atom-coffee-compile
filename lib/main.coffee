@@ -53,7 +53,7 @@ module.exports =
 
     isPathInSrc = !!editor.getPath() and fsUtil.isPathInSrc(editor.getPath())
 
-    if isPathInSrc and pluginManager.isEditorLanguageSupported(editor, true)
+    if isPathInSrc and pluginManager.isSelectionLanguageSupported(editor, true)
       util.compileToFile editor
 
   display: ->
@@ -62,7 +62,7 @@ module.exports =
 
     return unless editor?
 
-    unless pluginManager.isEditorLanguageSupported editor
+    unless pluginManager.isSelectionLanguageSupported editor
       return console.warn("Coffee compile: Invalid language")
 
     @open "coffeecompile://editor/#{editor.id}"
@@ -71,7 +71,6 @@ module.exports =
       previewEditor.setText compiled
 
       if configManager.get('focusEditorAfterCompile')
-        console.log(activePane)
         activePane.activate()
 
   # Similar to atom.workspace.open

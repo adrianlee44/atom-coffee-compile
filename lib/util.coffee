@@ -20,7 +20,7 @@ module.exports =
   @returns {String} Compiled code
   ###
   compile: (editor) ->
-    language = pluginManager.getLanguageByScope editor.getGrammar().scopeName
+    language = pluginManager.getLanguageByScope editor
 
     code = @getSelectedCode editor
 

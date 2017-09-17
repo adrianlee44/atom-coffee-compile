@@ -63,45 +63,46 @@ class PluginManager
       @plugins.splice index, 1
 
   ###
-  @param {String} scope Language scope
+  @param {Editor} scope Language scope
   @returns {Object} Language configuration
   ###
-  getLanguageByScope: (scope) ->
-    return @languages[scope]
+  getLanguageByScope: (editor) ->
+    scopes = editor.getCursorScope().getScopesArray()
+    return @languages[scope] for scope in scopes when @languages[scope]?
 
   ###
-  @param {String} scope Language scope
+  @param {Array<String>} scope Language scope
   @returns {Boolean}
   ###
-  isScopeSupported: (scope) ->
-    return @languages[scope]?
+  isScopeSupported: (scopes) ->
+    scopes.some (scope) => @languages[scope]?
 
   ###
-  @param {String} scope Language scope
+  @param {Array<String>} scope Language scope
   @returns {Boolean}
   ###
-  isPlainText: (scope) ->
-    return scope.indexOf('text.plain') > -1 or scope.indexOf('null-grammar') > -1
+  isPlainText: (scopes) ->
+    return scopes.indexOf('text.plain.null-grammar') > -1
 
   ###
   @param {Editor} editor
   @param {Boolean} isSaveCompile
   @returns {Boolean}
   ###
-  isEditorLanguageSupported: (editor, isSaveCompile = false) ->
-    scopeName = editor.getGrammar().scopeName
-    
-    # Do not try to compile and save plain text files
-    shouldSaveCompile = !isSaveCompile or (isSaveCompile and not @isPlainText(scopeName))
+  isSelectionLanguageSupported: (editor, isSaveCompile = false) ->
+    scopeNames = editor.getCursorScope().getScopesArray()
 
-    return @isScopeSupported(scopeName) and shouldSaveCompile
+    # Do not try to compile and save plain text files
+    shouldSaveCompile = !isSaveCompile or (isSaveCompile and not @isPlainText(scopeNames))
+
+    return @isScopeSupported(scopeNames) and shouldSaveCompile
 
   ###
   @param {Editor} editor
   @returns {String}
   ###
   getCompiledScopeByEditor: (editor) ->
-    return @languages[editor.getGrammar().scopeName]?.compiledScope or ''
+    return @getLanguageByScope(editor)?.compiledScope or ''
 
   ###
   @param {Object} plugin

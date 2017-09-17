@@ -12,7 +12,7 @@ class PreviewEditor extends TextEditor
     super autoHeight: false
 
     shouldCompileToFile = @_sourceEditor? and fsUtil.isPathInSrc(@_sourceEditor.getPath()) and
-      pluginManager.isEditorLanguageSupported(@_sourceEditor, true)
+      pluginManager.isSelectionLanguageSupported(@_sourceEditor, true)
 
     @disposables.add(
       @_sourceEditor.onDidSave =>
