@@ -11,9 +11,9 @@ getCompiler = (editor) ->
   coffeescriptVersion = configManager.get('coffeescriptVersion')
   switch coffeescriptVersion
     when '2.0.2'
-      return require('../../coffee-bin/2.0.2/lib/coffeescript/index')
+      return require('coffeescript')
     else # default back to 1.12.7
-      return require('../../coffee-bin/1.12.7/lib/coffee-script/coffee-script')
+      return require('coffee-script')
 
 # Check if there is a local coffee-script package, use that package if it exists
 maybeGetLocalCoffeescript = (filepath) ->
