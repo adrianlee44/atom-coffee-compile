@@ -1,3 +1,7 @@
+## v0.28.1 (2017-11-05)
+- Remove local binaries of Coffeescript
+- Add support for CS@2 when looking up local CS
+
 ## v0.28.0 (2017-11-04)
 - Add support for Coffeescript v2
 - Add option to toggle between Coffeescript 1 and 2
