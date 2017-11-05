@@ -8,6 +8,12 @@ describe "util", ->
     atom.project.setPaths([__dirname])
 
     waitsForPromise ->
+      atom.packages.activatePackage 'language-coffee-script'
+
+    waitsForPromise ->
+      atom.packages.activatePackage 'coffee-compile'
+
+    waitsForPromise ->
       atom.workspace.open('coffee-compile-fixtures.coffee').then (o) ->
         editor = o
 
@@ -39,6 +45,16 @@ describe "util", ->
         hello(world);
 
       }).call(this);
+
+      """
+
+      expect(util.compile(editor)).toBe expected
+
+    it 'should compile with coffeescript v2', ->
+      atom.config.set('coffee-compile.coffeescriptVersion', '2.0.2')
+
+      expected = """
+      hello(world);
 
       """
 

@@ -1,14 +1,27 @@
-configManager  = require '../config-manager'
-resolve        = require 'resolve'
-path           = require 'path'
+configManager = require '../config-manager'
+resolve       = require 'resolve'
+path          = require 'path'
+
+getCompiler = (editor) ->
+  filepath = editor.getPath()
+
+  coffee = if filepath then maybeGetLocalCoffeescript(filepath)
+  if coffee? then return coffee
+
+  coffeescriptVersion = configManager.get('coffeescriptVersion')
+  switch coffeescriptVersion
+    when '2.0.2'
+      return require('../../coffee-bin/2.0.2/lib/coffeescript/index')
+    else # default back to 1.12.7
+      return require('../../coffee-bin/1.12.7/lib/coffee-script/coffee-script')
 
 # Check if there is a local coffee-script package, use that package if it exists
-scopedRequire = (filepath) ->
+maybeGetLocalCoffeescript = (filepath) ->
   basedir = path.dirname(filepath)
 
   rst = null
   try rst = path.dirname(resolve.sync('coffee-script', { basedir }))
-  if rst then require rst else require 'coffee-script'
+  if rst then require rst
 
 module.exports =
   id: 'coffee-compile'
@@ -24,9 +37,7 @@ module.exports =
     return code
 
   compile: (code, editor) ->
-    filepath = editor.getPath()
-
-    coffee = if filepath then scopedRequire(filepath) else require('coffee-script')
+    coffee = getCompiler editor
     literate = editor.getGrammar().scopeName is "source.litcoffee"
 
     bare  = configManager.get('noTopLevelFunctionWrapper')

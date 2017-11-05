@@ -16,7 +16,6 @@
     "atom": ">=1.9.0"
   },
   "dependencies": {
-    "coffee-script": "1.12.7",
     "resolve": "^1.1.7",
     "season": "^6.0.0"
   },
@@ -90,6 +89,15 @@
       "items": {
         "type": "string"
       }
+    },
+    "coffeescriptVersion": {
+      "type": "string",
+      "default": "1.12.7",
+      "title": "Coffeescript version to compile with",
+      "enum": [
+        "1.12.7",
+        "2.0.2"
+      ]
     }
   }
 }
