@@ -1,6 +1,6 @@
 # coffee-compile package [![Build Status](https://img.shields.io/travis/adrianlee44/atom-coffee-compile/master.svg?style=flat-square)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
 
-Preview, compile and/or save CoffeeScript in editor to Javascript
+Preview, compile and/or save CoffeeScript 1 or 2 in editor to Javascript
 - Mac: `cmd+shift+c`
 - Linux/Windows: `ctrl-alt-c`
 
@@ -14,6 +14,7 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - `Source(s)` - Source folders to compile, relative to cwd (default: '.')
 - `Disable top level function wrapper` (default: true)
 - `Focus editor after compile` (default: false)
+- `Coffeescript version to compile with` (default: 1.12.7)
 
 ### Project based configuration
 Add `coffee-compile.cson` to the project root

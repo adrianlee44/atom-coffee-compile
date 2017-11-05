@@ -3,7 +3,7 @@
   "main": "./lib/main",
   "version": "0.27.0",
   "private": true,
-  "description": "Preview, compile and/or save CoffeeScript in editor to Javascript",
+  "description": "Preview, compile and/or save CoffeeScript 1 or 2 in editor to Javascript",
   "keywords": [
     "preview",
     "compile",
