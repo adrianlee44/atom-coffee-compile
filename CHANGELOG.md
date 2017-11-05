@@ -1,3 +1,7 @@
+## v0.28.0 (2017-11-04)
+- Add support for Coffeescript v2
+- Add option to toggle between Coffeescript 1 and 2
+
 ## v0.27.0 (2017-09-16)
 - Add preview editor
 - Bump coffee-script to 1.12.7
