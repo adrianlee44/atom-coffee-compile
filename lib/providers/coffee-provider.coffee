@@ -16,11 +16,17 @@ getCompiler = (editor) ->
       return require('coffee-script')
 
 # Check if there is a local coffee-script package, use that package if it exists
+# Convert this lookup to an option
 maybeGetLocalCoffeescript = (filepath) ->
   basedir = path.dirname(filepath)
 
   rst = null
-  try rst = path.dirname(resolve.sync('coffee-script', { basedir }))
+  try
+    # Check for CS v1
+    rst = path.dirname(resolve.sync('coffee-script', { basedir }))
+    if not rst
+      rst = path.dirname(resolve.sync('coffeescript', { basedir }))
+
   if rst then require rst
 
 module.exports =
