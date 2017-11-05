@@ -1,0 +1,85 @@
+{
+  "_from": "coffeescript",
+  "_id": "coffeescript@2.0.2",
+  "_inBundle": false,
+  "_integrity": "sha512-/bCMyzu7KSJPF2gRNYWpbEmfPkNL8AzXs78ktxhPTpSXlKetZRl7kIYGqU055UqUVnkKRJK4eUkUhRHQpvdilA==",
+  "_location": "/coffeescript",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "coffeescript",
+    "name": "coffeescript",
+    "escapedName": "coffeescript",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/coffeescript/-/coffeescript-2.0.2.tgz",
+  "_shasum": "065702a484b46194b8c7eb08481e6d4dc38b87c9",
+  "_spec": "coffeescript",
+  "_where": "/Users/adrianlee/github/coffee-compile",
+  "author": {
+    "name": "Jeremy Ashkenas"
+  },
+  "bin": {
+    "coffee": "./bin/coffee",
+    "cake": "./bin/cake"
+  },
+  "browser": "./lib/coffeescript/browser",
+  "bugs": {
+    "url": "https://github.com/jashkenas/coffeescript/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Unfancy JavaScript",
+  "devDependencies": {
+    "babel-core": "~6.26.0",
+    "babel-preset-babili": "~0.1.4",
+    "babel-preset-env": "~1.6.0",
+    "babel-preset-minify": "^0.2.0",
+    "codemirror": "^5.29.0",
+    "docco": "~0.7.0",
+    "highlight.js": "~9.12.0",
+    "jison": ">=0.4.18",
+    "markdown-it": "~8.4.0",
+    "underscore": "~1.8.3",
+    "webpack": "~3.6.0"
+  },
+  "directories": {
+    "lib": "./lib/coffeescript"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "register.js",
+    "repl.js"
+  ],
+  "homepage": "http://coffeescript.org",
+  "keywords": [
+    "javascript",
+    "language",
+    "coffeescript",
+    "compiler"
+  ],
+  "license": "MIT",
+  "main": "./lib/coffeescript/index",
+  "name": "coffeescript",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jashkenas/coffeescript.git"
+  },
+  "scripts": {
+    "test": "node ./bin/cake test",
+    "test-harmony": "node --harmony ./bin/cake test"
+  },
+  "version": "2.0.2"
+}
