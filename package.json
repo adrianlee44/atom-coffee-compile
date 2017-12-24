@@ -10,7 +10,7 @@
     "coffeescript",
     "javascript"
   ],
-  "repository": "https://github.com/adrianlee44/atom-coffee-compile",
+  "repository": "git@github.com:adrianlee44/atom-coffee-compile.git",
   "license": "MIT",
   "engines": {
     "atom": ">=1.9.0"
