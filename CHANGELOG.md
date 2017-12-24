@@ -1,3 +1,6 @@
+## v0.29.0 (2017-12-24)
+- Fix TypeError by converting PreviewEditor to Javascript
+
 ## v0.28.1 (2017-11-05)
 - Remove local binaries of Coffeescript
 - Add support for CS@2 when looking up local CS
