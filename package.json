@@ -19,7 +19,7 @@
     "coffee-script": "1.12.7",
     "coffeescript": "2.3.0",
     "resolve": "^1.1.7",
-    "season": "^6.0.0"
+    "season": "^6.0.2"
   },
   "consumedServices": {
     "coffee-compile.provider": {
