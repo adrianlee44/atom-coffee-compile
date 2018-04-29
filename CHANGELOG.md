@@ -1,3 +1,7 @@
+## v0.30.0 (2018-04-29)
+- Bump coffeescript v2 to 2.3.0
+- Bump season to 6.0.2
+
 ## v0.29.0 (2017-12-24)
 - Fix TypeError by converting PreviewEditor to Javascript
 
