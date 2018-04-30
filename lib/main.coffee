@@ -4,7 +4,6 @@ cson        = require 'season'
 
 coffeeProvider      = require './providers/coffee-provider'
 configManager       = require './config-manager'
-fsUtil              = require './fs-util'
 pluginManager       = require './plugin-manager'
 util                = require './util'
 {CompositeDisposable} = require 'atom'
@@ -18,15 +17,6 @@ module.exports =
     @pkgDisposables = new CompositeDisposable
 
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
-
-    @pkgDisposables.add configManager.observe 'compileOnSaveWithoutPreview', (value) =>
-      @saveDisposables.dispose()
-      @saveDisposables = new CompositeDisposable
-
-      if value
-        @saveDisposables.add atom.workspace.observeTextEditors (editor) =>
-          @saveDisposables.add editor.onDidSave =>
-            @save(editor)
 
     # NOTE: Remove once coffeescript provider is moved to a new package
     unless pluginManager.isPluginRegistered(coffeeProvider)
@@ -47,14 +37,6 @@ module.exports =
 
   deactivate: ->
     @pkgDisposables.dispose()
-
-  save: (editor) ->
-    return unless editor?
-
-    isPathInSrc = !!editor.getPath() and fsUtil.isPathInSrc(editor.getPath())
-
-    if isPathInSrc and pluginManager.isSelectionLanguageSupported(editor, true)
-      util.compileToFile editor
 
   display: ->
     editor     = atom.workspace.getActiveTextEditor()

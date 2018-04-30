@@ -1,3 +1,1 @@
-compileOnSave: true
-destination: 'dest/'
-cwd: 'lib/'
+noTopLevelFunctionWrapper: true
