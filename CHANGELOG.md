@@ -1,3 +1,6 @@
+## v0.31.0 (2018-08-19)
+- Bump coffeescript to 2.3.1
+
 ## v0.30.0 (2018-04-29)
 - Bump coffeescript v2 to 2.3.0
 - Bump season to 6.0.2
