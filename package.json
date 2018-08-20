@@ -1,7 +1,7 @@
 {
   "name": "coffee-compile",
   "main": "./lib/main",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "private": true,
   "description": "Preview, compile and/or save CoffeeScript 1 or 2 in editor to Javascript",
   "keywords": [
