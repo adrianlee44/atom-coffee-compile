@@ -1,4 +1,4 @@
-# coffee-compile package [![Build Status](https://img.shields.io/travis/adrianlee44/atom-coffee-compile/master.svg?style=flat-square)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
+# coffee-compile package [![Build Status](https://img.shields.io/travis/adrianlee44/atom-coffee-compile/master.svg?style=flat-square)](https://travis-ci.org/adrianlee44/atom-coffee-compile) [![Greenkeeper badge](https://badges.greenkeeper.io/adrianlee44/atom-coffee-compile.svg)](https://greenkeeper.io/)
 
 Preview, compile and/or save CoffeeScript 1 or 2 in editor to Javascript
 - Mac: `cmd+shift+c`
