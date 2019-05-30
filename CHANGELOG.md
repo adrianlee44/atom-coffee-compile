@@ -1,3 +1,7 @@
+## v0.32.0 (2019-05-29)
+- Bump coffeescript to 2.4.1
+- Do not try to compile code on txt file
+
 ## v0.31.0 (2018-08-19)
 - Bump coffeescript to 2.3.1
 
