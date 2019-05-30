@@ -34,8 +34,8 @@ module.exports =
   selector: [
     'source.coffee'
     'source.litcoffee'
-    'text.plain.null-grammar',
-    'source.embedded.coffee',
+    'text.plain.null-grammar'
+    'source.embedded.coffee'
     'source.coffee.embedded.html'
   ]
   compiledScope: 'source.js'
