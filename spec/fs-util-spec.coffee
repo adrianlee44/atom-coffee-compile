@@ -52,8 +52,7 @@ describe "fs util", ->
 
     afterEach ->
       file.unsubscribeFromNativeChangeEvents()
-      exist = fs.existsSync(filePath)
-      fs.unlink(filePath) if fs.existsSync(filePath)
+      fs.unlinkSync(filePath) if fs.existsSync(filePath)
 
     it "should make folders and create a js file", ->
       waitsForPromise ->

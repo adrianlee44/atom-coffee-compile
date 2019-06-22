@@ -121,7 +121,7 @@ describe "util", ->
 
     afterEach ->
       file.unsubscribeFromNativeChangeEvents()
-      fs.unlink(filePath) if fs.existsSync(filePath)
+      fs.unlinkSync(filePath) if fs.existsSync(filePath)
 
     it 'should create a js file', ->
       waitsForPromise ->
