@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "coffee-script": "1.12.7",
-    "coffeescript": "2.4.1",
+    "coffeescript": "2.5.1",
     "resolve": "^1.11.1",
     "season": "^6.0.2"
   },
