@@ -98,7 +98,7 @@
       "title": "Coffeescript version to compile with",
       "enum": [
         "1.12.7",
-        "2.4.1"
+        "2.5.1"
       ]
     }
   }

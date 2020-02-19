@@ -10,7 +10,7 @@ getCompiler = (editor) ->
 
   coffeescriptVersion = configManager.get('coffeescriptVersion')
   switch coffeescriptVersion
-    when '2.4.1'
+    when '2.5.1'
       return require('coffeescript')
     else # default back to 1.12.7
       return require('coffee-script')
