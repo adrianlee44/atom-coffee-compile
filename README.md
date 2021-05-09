@@ -1,4 +1,4 @@
-# coffee-compile package [![Build Status](https://img.shields.io/travis/adrianlee44/atom-coffee-compile/master.svg?style=flat-square)](https://travis-ci.org/adrianlee44/atom-coffee-compile)
+# coffee-compile package [![CI](https://github.com/adrianlee44/atom-coffee-compile/actions/workflows/ci.yml/badge.svg)](https://github.com/adrianlee44/atom-coffee-compile/actions/workflows/ci.yml)
 
 Preview, compile and/or save CoffeeScript 1 or 2 in editor to Javascript
 - Mac: `cmd+shift+c`
