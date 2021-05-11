@@ -1,3 +1,9 @@
+## v0.34.0 (2021-05-10)
+- Update y18n to 3.2.2
+- Update resolve to 1.20.0
+- Update packages to patch security issues
+- Switch over to use Github actions for CI
+
 ## v0.33.0 (2020-02-18)
 - Update CoffeeScript to 2.5.1
 
